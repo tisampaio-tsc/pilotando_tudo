@@ -43,11 +43,11 @@ export default function FAQ() {
           Dúvidas Frequentes
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-start">
           {items.map((item, i) => (
             <div
               key={i}
-              className="border border-navy-900/10 rounded-xl overflow-hidden transition-colors duration-200 hover:bg-[#f5f2ee]"
+              className="border border-navy-900/10 rounded-xl overflow-hidden transition-colors duration-200 hover:bg-[#f5f2ee] min-h-[3.5rem]"
             >
               <button
                 type="button"
