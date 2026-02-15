@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilotando Tudo - Cursos de Pilotagem e Modelagem de Costura</title>
+    <link rel="icon" type="image/png" href="Assets/logo.png">
+    <link rel="shortcut icon" type="image/png" href="Assets/logo.png">
+    <link rel="apple-touch-icon" href="Assets/logo.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1a1a1a;
+            line-height: 1.7;
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #1a1a1a;
+            padding: 1.2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: #1a1a1a;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: #667eea;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #1a1a1a;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            padding: 200px 2rem 120px;
+            text-align: center;
+            margin-top: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.95);
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 1.2rem 3rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            background: #f8f9fa;
+        }
+
+        .link-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.9rem 2rem;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            margin: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .link-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        section.process {
+            padding: 100px 2rem;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            padding-bottom: 1.5rem;
+            font-weight: 800;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about {
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .about-text {
+            font-size: 1.15rem;
+            color: #4a4a4a;
+        }
+
+        .about-text p {
+            margin-bottom: 1.8rem;
+        }
+
+        .about-photos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .about-photo {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            object-fit: cover;
+            aspect-ratio: 1;
+            border: 3px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .about-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .highlight-box h3 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Process Section */
+        .process {
+            background: #FAFAFA;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            text-align: center;
+            line-height: 60px;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .step-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+        }
+
+        /* Market Section */
+        .market {
+            background: white;
+        }
+
+        .market-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .market-text {
+            font-size: 1.1rem;
+        }
+
+        .market-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-box h3 {
+            color: white;
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .piloteira-info {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .piloteira-info h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        /* Opportunities Section */
+        .opportunities {
+            background: #FAFAFA;
+        }
+
+        .opportunities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .opportunity-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .opportunity-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .opportunity-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        .opportunity-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+        }
+
+        /* Courses Section */
+        .courses {
+            background: white;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .course-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.25);
+            border-color: rgba(102, 126, 234, 0.4);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .course-card h3 {
+            color: #667eea;
+            margin-bottom: 1.2rem;
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .course-features {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .course-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .course-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: #FAFAFA;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495E;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.2rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .contact-info h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+
+        .whatsapp-link {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+            width: 100%;
+            text-align: center;
+        }
+
+        .whatsapp-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            .logo img {
+                height: 40px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                padding: 0.5rem 0;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .about-content,
+            .market-content,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .about-photos {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 60px 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="Assets/logo.png" alt="Pilotando Tudo - Logo">
+                <span>Pilotando Tudo</span>
+            </div>
+            <nav>
+                <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+                <ul id="nav-menu">
+                    <li><a href="#inicio">Início</a></li>
+                    <li><a href="#sobre">Sobre</a></li>
+                    <li><a href="#processo">Processo</a></li>
+                    <li><a href="#mercado">Mercado</a></li>
+                    <li><a href="#oportunidades">Oportunidades</a></li>
+                    <li><a href="#cursos">Cursos</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Do Jeans à Renda: Transforme Sua Paixão em Oportunidade</h1>
+            <p>Aprenda a arte de costurar calças jeans e entre em um mercado carente de profissionais qualificados. Descubra como transformar sua paixão pela costura em uma carreira promissora na indústria da moda.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem;">
+                <a href="https://go.hotmart.com/I100203009T" target="_blank" class="cta-button">Oficina da Calça Jeans - Curso Completo</a>
+                <a href="https://szh1y1py.forms.app/formulario-de-inscricao-de-modelo" target="_blank" class="link-button">Formulário de Inscrição</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="sobre">
+        <h2 class="section-title">Sobre Mim</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <div class="about-photos">
+                    <img src="Assets/Adriana/A1.jpeg" alt="Adriana Barbosa - Especialista em Costura de Jeans" class="about-photo">
+                    <img src="Assets/Adriana/A2.jpeg" alt="Adriana Barbosa - Piloteira Profissional" class="about-photo">
+                </div>
+                <p>Com mais de 30 anos de experiência na costura e especialização em pilotagem de máquinas de costura, dedico minha vida a ensinar e compartilhar o conhecimento que transforma vidas.</p>
+                <p>Aos 55 anos, entendo perfeitamente as necessidades e desafios de mulheres que buscam uma nova oportunidade profissional ou querem empreender na área de confecção.</p>
+                <p>Minha paixão pela costura começou cedo, e ao longo dos anos, me especializei em técnicas avançadas de pilotagem e modelagem, especialmente em calças jeans, uma das peças mais desafiadoras e valorizadas do mercado.</p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                    <a href="https://go.hotmart.com/I100203009T" target="_blank" class="link-button">Oficina da Calça Jeans</a>
+                    <a href="https://szh1y1py.forms.app/formulario-de-inscricao-de-modelo" target="_blank" class="link-button">Inscreva-se Agora</a>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <a href="https://instagram.com/adrianabarbosa" target="_blank" style="color: #667eea; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        📷 Siga-me no Instagram: <span style="color: #764ba2;">@adrianabarbosa</span>
+                    </a>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <h3>Por que escolher meus cursos?</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="padding: 0.5rem 0;">✓ Experiência comprovada de mais de 30 anos</li>
+                    <li style="padding: 0.5rem 0;">✓ Metodologia prática e didática</li>
+                    <li style="padding: 0.5rem 0;">✓ Foco em técnicas de mercado</li>
+                    <li style="padding: 0.5rem 0;">✓ Acompanhamento personalizado</li>
+                    <li style="padding: 0.5rem 0;">✓ Suporte contínuo após o curso</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="processo">
+        <h2 class="section-title">Do Tecido à Peça Final: O Processo Completo</h2>
+        <p style="text-align: center; font-size: 1.1rem; max-width: 800px; margin: 0 auto 3rem;">
+            Aprenda cada etapa do processo de confecção de uma calça jeans, desde a escolha do material até os acabamentos finais que dão identidade à peça.
+        </p>
+        <div class="process-steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Escolha do Material</h3>
+                <p>O jeans pode ser leve, médio ou pesado. A escolha depende do estilo de calça desejado e da estação. Você aprenderá a identificar a qualidade do tecido, escolher a linha reforçada adequada e selecionar a agulha própria para tecidos grossos, garantindo durabilidade e acabamento profissional.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Molde e Corte</h3>
+                <p>Iniciantes podem usar uma calça antiga como referência para criar o molde. Você dominará técnicas de modelagem profissional, aprendendo a fazer ajustes precisos e a cortar sempre deixando sobras adequadas para costura, garantindo ajustes posteriores e acabamento perfeito.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Montagem e Acabamento</h3>
+                <p>A ordem é estratégica: frente, costas, laterais e entrepernas. Depois, vem o cós, o zíper ou botão. Pespontos característicos e bolsos são o detalhe final que dão identidade ao jeans. Você aprenderá cada ponto de costura e acabamento que faz a diferença.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Market Section -->
+    <section class="market" id="mercado">
+        <h2 class="section-title">Mercado em Busca de Mão de Obra Qualificada</h2>
+        <div class="market-content">
+            <div class="market-text">
+                <p>O setor de confecção jeanswear é um dos mais fortes da moda brasileira, representando uma parcela significativa da indústria têxtil nacional. No entanto, enfrenta um problema constante e crescente: a <strong>carência de mão de obra qualificada</strong>.</p>
+                <p>Costureiras e piloteiras especializadas em jeans são profissionais raros no mercado, e justamente por isso, são <strong>muito valorizadas e bem remuneradas</strong>. Enquanto muitas indústrias e ateliês lutam para preencher vagas, quem domina a técnica de costurar jeans tem a possibilidade de escolher onde trabalhar.</p>
+                <div class="piloteira-info">
+                    <h3>O que é uma Piloteira?</h3>
+                    <p>Uma <strong>piloteira</strong> é uma profissional especializada em operar máquinas de costura industriais, especialmente aquelas usadas na confecção de peças de jeans. Ela domina técnicas avançadas de pilotagem, conhece diferentes tipos de máquinas (reta, overlock, pesponto, etc.) e é capaz de executar costuras complexas com precisão e qualidade profissional. É uma das profissões mais procuradas e valorizadas na indústria da moda.</p>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                        <a href="https://go.hotmart.com/I100203009T" target="_blank" class="link-button">Ver Curso Completo</a>
+                        <a href="#cursos" class="link-button">Saiba Mais Sobre Piloteiras</a>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-box">
+                <h3>Oportunidades</h3>
+                <p style="font-size: 1.2rem; margin-top: 1rem;">Quem domina a técnica pode atuar em:</p>
+                <ul style="list-style: none; margin-top: 1.5rem; text-align: left;">
+                    <li style="padding: 0.5rem 0;">✓ Ateliês de pequeno porte</li>
+                    <li style="padding: 0.5rem 0;">✓ Grandes confecções</li>
+                    <li style="padding: 0.5rem 0;">✓ Empreendimento próprio</li>
+                    <li style="padding: 0.5rem 0;">✓ Trabalho remoto/freelance</li>
+                </ul>
+                <p style="margin-top: 2rem; font-size: 1.1rem;">Além de empreender, há a chance concreta de <strong>empregabilidade imediata</strong> em um mercado que não para de crescer.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Opportunities Section -->
+    <section class="opportunities" id="oportunidades">
+        <h2 class="section-title">Como Lucrar com Jeans: Múltiplas Possibilidades</h2>
+        <p style="text-align: center; font-size: 1.1rem; max-width: 800px; margin: 0 auto 3rem;">
+            Descubra as diversas formas de transformar seu conhecimento em renda, seja trabalhando por conta própria ou prestando serviços especializados.
+        </p>
+        <div class="opportunities-grid">
+            <div class="opportunity-card">
+                <div class="opportunity-icon">👔</div>
+                <h3>Sob Medida</h3>
+                <p>Calças feitas de acordo com o corpo do cliente. Um mercado em alta que valoriza peças únicas e ajustes perfeitos, com margem de lucro significativa.</p>
+            </div>
+            <div class="opportunity-card">
+                <div class="opportunity-icon">✨</div>
+                <h3>Customização</h3>
+                <p>Rasgos, bordados, pinturas e aplicações tornam cada peça única. A customização é uma tendência forte e permite cobrar valores premium pelas peças.</p>
+            </div>
+            <div class="opportunity-card">
+                <div class="opportunity-icon">♻️</div>
+                <h3>Upcycling</h3>
+                <p>Transformar jeans antigos em peças novas é uma tendência sustentável que agrega valor ecológico e permite trabalhar com matéria-prima de baixo custo.</p>
+            </div>
+            <div class="opportunity-card">
+                <div class="opportunity-icon">🛒</div>
+                <h3>Venda Online e Presencial</h3>
+                <p>De marketplaces digitais a feiras locais, há espaço para todos os perfis de produção. O e-commerce de moda está em constante crescimento.</p>
+            </div>
+            <div class="opportunity-card">
+                <div class="opportunity-icon">📚</div>
+                <h3>Cursos e Oficinas</h3>
+                <p>Quem domina a técnica pode ensinar e monetizar o conhecimento. Oficinas e cursos presenciais ou online são uma fonte de renda complementar excelente.</p>
+            </div>
+            <div class="opportunity-card">
+                <div class="opportunity-icon">🏭</div>
+                <h3>Prestação de Serviços</h3>
+                <p>Trabalhe como piloteira freelancer para confecções, ateliês ou particulares. A demanda por serviços especializados é alta e bem remunerada.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses" id="cursos">
+        <h2 class="section-title">Nossos Cursos</h2>
+        <p style="text-align: center; font-size: 1.1rem; max-width: 800px; margin: 0 auto 3rem;">
+            Cursos práticos e completos para você dominar a arte de costurar jeans e se tornar uma profissional qualificada no mercado.
+        </p>
+        <div class="courses-grid">
+            <div class="course-card">
+                <h3>Oficina da Calça Jeans - Curso Completo</h3>
+                <p>Curso completo pensado para quem deseja se especializar na costura de jeans com qualidade e técnica profissional. Ao concluir, você será capaz de costurar qualquer modelo de calça jeans com segurança, acabamento e estilo.</p>
+                <ul class="course-features">
+                    <li>Técnicas profissionais de costura</li>
+                    <li>Pilotagem de máquinas industriais</li>
+                    <li>Modelagem e ajustes precisos</li>
+                    <li>Acabamentos de alta qualidade</li>
+                    <li>Acesso vitalício ao conteúdo</li>
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <a href="https://go.hotmart.com/I100203009T" target="_blank" class="link-button" style="width: 100%; text-align: center; display: block;">Acessar Curso Completo</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <h3>Formulário de Inscrição</h3>
+                <p>Inscreva-se para receber informações sobre nossos cursos, novidades e oportunidades exclusivas. Preencha o formulário e comece sua jornada na costura profissional de jeans.</p>
+                <ul class="course-features">
+                    <li>Cadastro rápido e simples</li>
+                    <li>Informações sobre novos cursos</li>
+                    <li>Ofertas exclusivas</li>
+                    <li>Dicas e conteúdos gratuitos</li>
+                    <li>Suporte personalizado</li>
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <a href="https://szh1y1py.forms.app/formulario-de-inscricao-de-modelo" target="_blank" class="link-button" style="width: 100%; text-align: center; display: block;">Preencher Formulário</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <h3>Pilotagem e Modelagem</h3>
+                <p>Domine as técnicas avançadas de pilotagem de máquinas de costura e modelagem profissional. Aprenda desde o básico até técnicas complexas usadas na indústria da moda.</p>
+                <ul class="course-features">
+                    <li>Operação de máquinas industriais</li>
+                    <li>Técnicas de costura avançadas</li>
+                    <li>Criação de moldes profissionais</li>
+                    <li>Acabamentos de alta qualidade</li>
+                    <li>Preparação para o mercado</li>
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <a href="https://go.hotmart.com/I100203009T" target="_blank" class="link-button" style="width: 100%; text-align: center; display: block;">Ver Curso Completo</a>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="https://go.hotmart.com/I100203009T" target="_blank" class="cta-button" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Oficina da Calça Jeans</a>
+                <a href="https://szh1y1py.forms.app/formulario-de-inscricao-de-modelo" target="_blank" class="cta-button" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">Formulário de Inscrição</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contato">
+        <h2 class="section-title">Entre em Contato</h2>
+        <div class="contact-container">
+            <div class="contact-form">
+                <h3 style="margin-bottom: 1.5rem; color: #667eea;">Envie sua Mensagem</h3>
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="nome">Nome Completo</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone/WhatsApp</label>
+                        <input type="tel" id="telefone" name="telefone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensagem">Mensagem</label>
+                        <textarea id="mensagem" name="mensagem" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Enviar Mensagem</button>
+                </form>
+            </div>
+            <div class="contact-info">
+                <h3>Informações de Contato</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <strong>E-mail</strong><br>
+                        contato@pilotandotudo.com.br
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <div>
+                        <strong>WhatsApp</strong><br>
+                        Entre em contato pelo WhatsApp para informações sobre cursos e matrículas
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <strong>Localização</strong><br>
+                        Atendimento presencial e online disponível
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📷</div>
+                    <div>
+                        <strong>Instagram</strong><br>
+                        <a href="https://instagram.com/adrianabarbosa" target="_blank" style="color: white; text-decoration: underline;">@adrianabarbosa</a>
+                    </div>
+                </div>
+                <a href="https://wa.me/5511999999999?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20cursos%20de%20costura%20de%20jeans." class="whatsapp-link" target="_blank">
+                    💬 Falar no WhatsApp
+                </a>
+                <a href="https://instagram.com/adrianabarbosa" target="_blank" class="link-button" style="background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; text-align: center; margin-top: 1rem;">
+                    📷 Seguir no Instagram
+                </a>
+                <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+                    <a href="https://go.hotmart.com/I100203009T" target="_blank" class="link-button" style="background: white; color: #667eea; text-align: center;">🎓 Oficina da Calça Jeans</a>
+                    <a href="https://szh1y1py.forms.app/formulario-de-inscricao-de-modelo" target="_blank" class="link-button" style="background: white; color: #667eea; text-align: center;">📝 Formulário de Inscrição</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#inicio">Início</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#cursos">Cursos</a>
+                <a href="#contato">Contato</a>
+            </div>
+            <div style="margin: 2rem 0; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="https://go.hotmart.com/I100203009T" target="_blank" style="color: white; text-decoration: none; padding: 0.8rem 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px; transition: all 0.3s;">🎓 Oficina da Calça Jeans</a>
+                <a href="https://szh1y1py.forms.app/formulario-de-inscricao-de-modelo" target="_blank" style="color: white; text-decoration: none; padding: 0.8rem 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px; transition: all 0.3s;">📝 Formulário de Inscrição</a>
+                <a href="https://instagram.com/adrianabarbosa" target="_blank" style="color: white; text-decoration: none; padding: 0.8rem 1.5rem; background: rgba(255,255,255,0.1); border-radius: 8px; transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">📷 @adrianabarbosa</a>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.8;">
+                © 2025 Pilotando Tudo. Todos os direitos reservados.<br>
+                Transformando paixão em profissão na indústria da moda.<br>
+                <a href="https://instagram.com/adrianabarbosa" target="_blank" style="color: white; text-decoration: underline; margin-top: 0.5rem; display: inline-block;">Siga-nos no Instagram: @adrianabarbosa</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('active');
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Obrigada pelo seu interesse! Entraremos em contato em breve.');
+            event.target.reset();
+        }
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                const menu = document.getElementById('nav-menu');
+                if (window.innerWidth <= 768) {
+                    menu.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

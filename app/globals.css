@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy-900: #0f172a;
+  --gold: #b8860b;
+  --gold-light: #d4af37;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-sans text-navy-900 antialiased;
+  background-color: #0f172a;
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" fill="none">
+  <rect width="400" height="400" fill="#1e293b"/>
+  <circle cx="200" cy="180" r="60" fill="#334155"/>
+  <rect x="140" y="240" width="120" height="120" rx="8" fill="#475569"/>
+  <text x="200" y="320" text-anchor="middle" fill="#b8860b" font-size="14" font-family="sans-serif">Adriana Barbosa</text>
+  <text x="200" y="340" text-anchor="middle" fill="#94a3b8" font-size="12">Foto A1</text>
+</svg>
