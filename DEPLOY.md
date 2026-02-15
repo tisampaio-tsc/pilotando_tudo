@@ -35,10 +35,23 @@ git push -u origin main
    - **Build command:** `npm run build`
    - **Build output directory:** `out`
    - **Root directory:** (deixe em branco)
+   - Se existir **Deploy command** (comando de deploy separado), use: `npx wrangler pages deploy` (e não `npx wrangler deploy`). Se a opção for “deixar em branco”, deixe em branco para o Cloudflare usar só a pasta `out`.
 6. Clique em **Save and Deploy**.
 
 Após o primeiro deploy, o site ficará em um endereço como:  
 `https://nome-do-projeto.pages.dev`.
+
+---
+
+### Se der erro "Missing entry-point to Worker script or to assets directory"
+
+O projeto inclui um `wrangler.toml` que aponta a saída para a pasta `out`. Se o Cloudflare estiver usando um **Deploy command** como `npx wrangler deploy`, troque para:
+
+```bash
+npx wrangler pages deploy
+```
+
+Assim o Wrangler faz deploy como **Pages** (site estático) usando a pasta `out`, e não como Worker. Se na configuração do projeto não houver campo “Deploy command”, remova qualquer comando de deploy customizado e deixe apenas **Build command** e **Build output directory** (`out`).
 
 ---
 
