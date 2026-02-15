@@ -23,11 +23,14 @@ const cards = [
 
 export default function ParaVoce() {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-[#faf9f7]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h2 className="font-display font-bold text-navy-900 text-2xl md:text-3xl text-center mb-12 md:mb-16">
-          Este site é para você que…
-        </h2>
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="font-display font-extrabold text-navy-900 text-2xl md:text-3xl">
+            Este site é para você que…
+          </h2>
+          <div className="mt-2 w-16 h-0.5 bg-gold mx-auto rounded-full" aria-hidden />
+        </div>
         <div className="grid sm:grid-cols-3 gap-8 md:gap-10">
           {cards.map(({ icon: Icon, title, description }) => (
             <div

@@ -36,7 +36,7 @@ export default function Hero() {
       {/* Conteúdo à esquerda */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
-          <h1 className="font-display font-bold text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 md:mb-6">
+          <h1 className="font-display font-extrabold text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 md:mb-6">
             Domine a arte da costura e conquiste sua independência financeira.
           </h1>
           <p className="text-white/95 text-base sm:text-lg mb-6 md:mb-8">
@@ -46,7 +46,7 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-10">
             <Link
               href="#cursos"
-              className="inline-flex items-center justify-center px-6 py-3.5 bg-gold hover:bg-gold-light text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+              className="inline-flex items-center justify-center px-6 py-3.5 bg-orange-500 hover:bg-orange-400 text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
             >
               QUERO CONHECER OS CURSOS
             </Link>
@@ -54,7 +54,7 @@ export default function Hero() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 py-3.5 border-2 border-gold text-gold hover:bg-gold hover:text-white font-semibold rounded-md transition-all duration-300"
+              className="inline-flex items-center justify-center px-6 py-3.5 border-2 border-gold text-gold bg-transparent hover:bg-gold/10 font-semibold rounded-md transition-all duration-300"
             >
               Falar no WhatsApp
             </a>

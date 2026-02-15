@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { ChevronDown, MessageCircle } from "lucide-react";
 import { WHATSAPP_URL } from "@/lib/links";
 
@@ -37,38 +36,50 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-[#faf9f7]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h2 className="font-display font-bold text-navy-900 text-2xl md:text-3xl text-center mb-12 md:mb-16">
-          Dúvidas Frequentes
-        </h2>
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="font-display font-extrabold text-navy-900 text-2xl md:text-3xl">
+            Dúvidas Frequentes
+          </h2>
+          <div className="mt-2 w-16 h-0.5 bg-gold mx-auto rounded-full" aria-hidden />
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 items-start">
-          {items.map((item, i) => (
-            <div
-              key={i}
-              className="border border-navy-900/10 rounded-xl overflow-hidden transition-colors duration-200 hover:bg-[#f5f2ee] min-h-[3.5rem]"
-            >
-              <button
-                type="button"
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left font-semibold text-navy-900 transition-colors duration-200 hover:bg-[#f5f2ee] rounded-xl"
+          {items.map((item, i) => {
+            const isOpen = openIndex === i;
+            return (
+              <div
+                key={i}
+                className={`rounded-xl overflow-hidden transition-all duration-200 min-h-[3.5rem] border-l-4 ${
+                  isOpen
+                    ? "border-l-gold bg-gold/10 border border-gold/30 shadow-sm"
+                    : "border-l-gold/40 border border-navy-900/10 bg-white hover:bg-gold/5 hover:border-gold/20"
+                }`}
               >
-                <span>{item.pergunta}</span>
-                <ChevronDown
-                  size={20}
-                  className={`flex-shrink-0 text-gold transition-transform ${
-                    openIndex === i ? "rotate-180" : ""
+                <button
+                  type="button"
+                  onClick={() => setOpenIndex(isOpen ? null : i)}
+                  className={`w-full flex items-center justify-between gap-4 px-5 py-4 text-left font-semibold text-navy-900 transition-colors duration-200 rounded-xl ${
+                    isOpen ? "bg-gold/5" : ""
                   }`}
-                />
-              </button>
-              {openIndex === i && (
-                <div className="px-5 pb-4 pt-0 text-navy-700 text-sm md:text-base leading-relaxed border-t border-navy-900/5">
-                  {item.resposta}
-                </div>
-              )}
-            </div>
-          ))}
+                >
+                  <span>{item.pergunta}</span>
+                  <ChevronDown
+                    size={20}
+                    className={`flex-shrink-0 text-gold transition-transform ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-4 pt-0 text-navy-700 text-sm md:text-base leading-relaxed border-t border-gold/20">
+                    {item.resposta}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <div className="mt-12 md:mt-16 flex justify-center">

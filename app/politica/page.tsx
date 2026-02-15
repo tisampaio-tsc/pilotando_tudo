@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function PoliticaPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#faf9f7]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         <Link
           href="/"

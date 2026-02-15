@@ -31,9 +31,12 @@ export default function ProvaSocial() {
   return (
     <section id="alunas" className="py-16 md:py-24 bg-navy-900">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h2 className="font-display font-bold text-white text-2xl md:text-3xl text-center mb-12 md:mb-16">
-          O que nossas alunas dizem
-        </h2>
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="font-display font-extrabold text-white text-2xl md:text-3xl">
+            O que nossas alunas dizem
+          </h2>
+          <div className="mt-2 w-16 h-0.5 bg-gold mx-auto rounded-full" aria-hidden />
+        </div>
 
         <div className="relative">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-8 md:p-10 max-w-2xl mx-auto min-h-[220px] flex flex-col justify-center">
