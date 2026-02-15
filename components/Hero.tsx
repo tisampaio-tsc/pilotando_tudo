@@ -20,7 +20,7 @@ export default function Hero() {
       {/* Imagem de fundo em todo o hero */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/Assets/hero.jpg"
+          src="/Assets/Hero.jpg"
           alt=""
           fill
           className="object-cover object-top border-0 outline-none"
