@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   title: "Adriana Barbosa | Cursos de Costura e Calça Jeans",
   description:
     "Domine a arte da costura e conquiste sua independência financeira. Cursos Oficina da Calça Jeans e Pilotando Tudo com Adriana Barbosa.",
+  icons: {
+    icon: "/Assets/logo.png",
+    apple: "/Assets/logo.png",
+  },
 };
 
 export default function RootLayout({
