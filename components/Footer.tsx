@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Instagram, Facebook, Youtube, MessageCircle, BookOpen } from "lucide-react";
+import { Instagram, MessageCircle, BookOpen } from "lucide-react";
 import {
   WHATSAPP_URL,
   INSTAGRAM_URL,
@@ -9,8 +9,6 @@ import {
 
 const socials = [
   { href: INSTAGRAM_URL, icon: Instagram, label: "Instagram" },
-  { href: "#", icon: Facebook, label: "Facebook" },
-  { href: "#", icon: Youtube, label: "YouTube" },
 ];
 
 export default function Footer() {

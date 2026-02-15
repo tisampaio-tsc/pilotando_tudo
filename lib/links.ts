@@ -12,4 +12,4 @@ export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURICo
   "Olá! Gostaria de saber mais sobre os cursos de costura."
 )}`;
 
-export const INSTAGRAM_URL = "https://instagram.com/adrianabarbosa";
+export const INSTAGRAM_URL = "https://www.instagram.com/pilotando_tudo/";
