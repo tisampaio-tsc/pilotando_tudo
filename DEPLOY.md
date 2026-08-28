@@ -100,3 +100,106 @@ No Cloudflare, o SSL para domínios customizados no Pages costuma ser ativado au
 | **Domínio**       | Comprar em dominio.br e apontar DNS para o Cloudflare Pages conforme o painel do Cloudflare. |
 
 Se quiser usar **www** e **sem www** (raiz), adicione os dois como custom domains no mesmo projeto Pages e configure no dominio.br um registro para `@` e outro para `www`, conforme as instruções do Cloudflare.
+
+---
+
+## 6. Configurar o CMS (painel /admin)
+
+O painel de administração usa **Cloudflare D1** (banco), **R2** (fotos) e **Pages Functions** (API). Faça estes passos **uma única vez** após o primeiro deploy.
+
+### 6.1 Criar banco D1
+
+1. Cloudflare Dashboard → **Workers & Pages** → **D1 SQL Database** → **Create**
+2. Nome: `adriana-cms`
+3. Copie o **Database ID** e substitua em `wrangler.toml`:
+
+```toml
+[[d1_databases]]
+binding = "DB"
+database_name = "adriana-cms"
+database_id = "SEU-DATABASE-ID-AQUI"
+```
+
+4. No terminal, na pasta do projeto:
+
+```bash
+npm run db:setup
+```
+
+Isso cria as tabelas (`users`, `content`, `versions`, etc.).
+
+### 6.2 Criar bucket R2 para fotos
+
+1. Cloudflare Dashboard → **R2 Object Storage** → **Create bucket**
+2. Nome: `adriana-media`
+3. O binding já está em `wrangler.toml`:
+
+```toml
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "adriana-media"
+```
+
+### 6.3 Vincular D1 e R2 ao projeto Pages
+
+1. **Workers & Pages** → seu projeto → **Settings** → **Functions**
+2. Em **D1 database bindings**, adicione: variable name `DB` → database `adriana-cms`
+3. Em **R2 bucket bindings**, adicione: variable name `MEDIA` → bucket `adriana-media`
+
+> Alternativa: faça commit do `wrangler.toml` atualizado — o Cloudflare pode aplicar os bindings automaticamente.
+
+### 6.4 Variáveis de ambiente
+
+Em **Settings** → **Environment variables** (Production):
+
+| Variável | Valor | Descrição |
+|----------|-------|-----------|
+| `SESSION_SECRET` | string aleatória longa (32+ chars) | Assina cookies de sessão |
+| `DEPLOY_HOOK_URL` | URL do Deploy Hook | Rebuild automático ao publicar |
+| `SITE_URL` | `https://seusite.com.br` | Usado no build para baixar conteúdo |
+
+Para gerar `SESSION_SECRET`:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### 6.5 Criar Deploy Hook
+
+1. **Workers & Pages** → seu projeto → **Settings** → **Deploy Hooks**
+2. **Add hook** → nome: `cms-publish` → branch: `main`
+3. Copie a URL gerada e cole em `DEPLOY_HOOK_URL`
+
+### 6.6 Popular banco (usuário + conteúdo inicial)
+
+```bash
+npm run db:seed
+```
+
+Isso cria:
+- Usuário `adriana` (senha definida no seed — troque após primeiro login)
+- Conteúdo inicial copiado de `content/site.json`
+
+### 6.7 Redeploy
+
+Faça um novo deploy (push no Git ou **Retry deployment**). Depois acesse:
+
+- Site: `https://seusite.com.br`
+- Painel: `https://seusite.com.br/admin`
+
+Consulte também [MANUAL-ADRIANA.md](MANUAL-ADRIANA.md) — guia para a Adriana usar o painel.
+
+---
+
+## Resumo CMS
+
+| Recurso | Função |
+|---------|--------|
+| `/admin` | Painel de edição (PWA instalável) |
+| `/api/content/published` | Conteúdo público (usado no build) |
+| `/api/content/draft` | Rascunho (autenticado) |
+| `/api/media` | Upload de fotos |
+| `/img/*` | Entrega de imagens do R2 |
+| D1 | Rascunho, publicado, versões, login |
+| R2 | Galeria de fotos |
+| Deploy Hook | Rebuild ao clicar em Publicar |

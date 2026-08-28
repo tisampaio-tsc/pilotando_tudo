@@ -16,3 +16,15 @@ body {
   @apply font-sans text-navy-900 antialiased;
   background-color: #0f172a;
 }
+
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.admin-safe-area {
+  padding-top: env(safe-area-inset-top, 0);
+}

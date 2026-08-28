@@ -23,11 +23,20 @@ Se você tinha uma pasta `Assets` na raiz, copie o conteúdo para `public/Assets
 
 ## Stack
 
-- Next.js 14 (App Router)
+- Next.js 14 (App Router, export estático)
 - React 18
 - Tailwind CSS
 - lucide-react
 - TypeScript
+- Cloudflare Pages Functions + D1 + R2 (CMS)
+
+## Painel de administração (CMS)
+
+Acesse `/admin` para editar textos, fotos, links e seções do site.
+
+- Login inicial: usuário `adriana` (senha configurada no seed do banco)
+- Guia completo: [MANUAL-ADRIANA.md](MANUAL-ADRIANA.md)
+- Configuração no Cloudflare: [DEPLOY.md](DEPLOY.md) seção 6
 
 ## Contato / WhatsApp
 

@@ -4,9 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/fetch-content.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed:user": "node scripts/seed-user.mjs",
+    "seed:content": "node scripts/seed-content.mjs",
+    "db:setup": "npx wrangler d1 execute adriana-cms --remote --file=db/schema.sql",
+    "db:seed": "npm run seed:user && npm run seed:content && npx wrangler d1 execute adriana-cms --remote --file=db/seed-user.sql && npx wrangler d1 execute adriana-cms --remote --file=db/seed-content.sql"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",
@@ -15,6 +20,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250214.0",
     "@types/node": "^20.17.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",

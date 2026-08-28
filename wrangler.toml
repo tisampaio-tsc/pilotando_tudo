@@ -1,4 +1,15 @@
-# Cloudflare Pages - deploy da pasta out (Next.js static export)
 name = "pilotando-tudo"
 compatibility_date = "2026-02-15"
 pages_build_output_dir = "./out"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "adriana-cms"
+database_id = "00000000-0000-0000-0000-000000000001"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "adriana-media"
+
+[vars]
+# SESSION_SECRET e DEPLOY_HOOK_URL devem ser definidos no painel Cloudflare Pages

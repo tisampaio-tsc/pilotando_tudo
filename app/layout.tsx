@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -16,15 +14,7 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Adriana Barbosa | Cursos de Costura e Calça Jeans",
-  description:
-    "Domine a arte da costura e conquiste sua independência financeira. Cursos Oficina da Calça Jeans e Pilotando Tudo com Adriana Barbosa.",
-  icons: {
-    icon: "/Assets/logo.png",
-    apple: "/Assets/logo.png",
-  },
-};
+export const metadata: Metadata = {};
 
 export default function RootLayout({
   children,
@@ -33,11 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </body>
+      <body className="min-h-screen">{children}</body>
     </html>
   );
 }

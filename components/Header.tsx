@@ -4,15 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import type { HeaderContent } from "@/lib/content-schema";
 
-const navLinks = [
-  { href: "#cursos", label: "Cursos" },
-  { href: "#sobre", label: "Sobre" },
-  { href: "#alunas", label: "Alunas" },
-];
+interface HeaderProps {
+  header: HeaderContent;
+}
 
-export default function Header() {
+export default function Header({ header }: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const navLinks = header.navLinks.filter((link) => link.visible);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#faf9f7]/95 backdrop-blur-sm shadow-sm">
@@ -20,19 +20,21 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2 md:gap-3">
           <div className="relative w-14 h-14 md:w-20 md:h-20 rounded-full overflow-hidden flex-shrink-0">
             <Image
-              src="/Assets/logo.png"
-              alt="Adriana Barbosa - Pilotando Tudo"
+              src={header.logo}
+              alt={header.logoAlt}
               fill
               className="object-cover"
               sizes="80px"
             />
           </div>
           <span className="font-display font-semibold text-navy-900 text-sm md:text-base">
-            ADRIANA BARBOSA
+            {header.name}
           </span>
-          <span className="hidden sm:inline text-gold text-sm font-medium">
-            Pilotando Tudo
-          </span>
+          {header.tagline ? (
+            <span className="hidden sm:inline text-gold text-sm font-medium">
+              {header.tagline}
+            </span>
+          ) : null}
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
