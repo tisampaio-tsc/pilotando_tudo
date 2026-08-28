@@ -1,5 +1,8 @@
 import type { Config } from "tailwindcss";
 
+/** Cores vindas de variáveis CSS para permitir a troca de tema (ver app/globals.css). */
+const themed = (variable: string) => `rgb(var(${variable}) / <alpha-value>)`;
+
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,15 +13,26 @@ const config: Config = {
     extend: {
       colors: {
         navy: {
-          900: "#0f172a",
-          800: "#1e293b",
-          700: "#334155",
+          900: themed("--c-dark-900"),
+          800: themed("--c-dark-800"),
+          700: themed("--c-dark-700"),
         },
         gold: {
-          DEFAULT: "#b8860b",
-          light: "#d4af37",
-          bege: "#c9a962",
+          DEFAULT: themed("--c-accent"),
+          light: themed("--c-accent-light"),
+          bege: themed("--c-accent-bege"),
         },
+        cream: themed("--c-cream"),
+        cta: {
+          DEFAULT: themed("--c-cta"),
+          hover: themed("--c-cta-hover"),
+          text: themed("--c-cta-text"),
+        },
+        action: {
+          DEFAULT: themed("--c-action"),
+          hover: themed("--c-action-hover"),
+        },
+        check: themed("--c-check"),
       },
       fontFamily: {
         display: ["var(--font-playfair)", "serif"],

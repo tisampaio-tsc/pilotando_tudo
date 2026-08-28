@@ -46,14 +46,14 @@ export default function Hero({ data, contatos }: HeroProps) {
                 href={primary.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3.5 bg-orange-500 hover:bg-orange-400 text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                className="inline-flex items-center justify-center px-6 py-3.5 bg-action hover:bg-action-hover text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
               >
                 {data.primaryButton.text}
               </a>
             ) : (
               <Link
                 href={primary.url}
-                className="inline-flex items-center justify-center px-6 py-3.5 bg-orange-500 hover:bg-orange-400 text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                className="inline-flex items-center justify-center px-6 py-3.5 bg-action hover:bg-action-hover text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
               >
                 {data.primaryButton.text}
               </Link>

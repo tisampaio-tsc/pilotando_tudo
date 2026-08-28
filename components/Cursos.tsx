@@ -94,7 +94,7 @@ export default function Cursos({ data, contatos }: CursosProps) {
                       href={href.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-[#CCFF00] hover:bg-[#b8e600] text-black font-bold rounded-[12px] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(204,255,0,0.5)]"
+                      className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-cta hover:bg-cta-hover text-cta-text font-bold rounded-[12px] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgb(var(--c-cta)/0.5)]"
                     >
                       {curso.buttonText}
                     </Link>

@@ -15,7 +15,7 @@ export default function FAQ({ data, contatos }: FAQProps) {
   const whatsappUrl = getWhatsappUrl(contatos);
 
   return (
-    <section className="py-16 md:py-24 bg-[#faf9f7]">
+    <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="font-display font-extrabold text-navy-900 text-2xl md:text-3xl">

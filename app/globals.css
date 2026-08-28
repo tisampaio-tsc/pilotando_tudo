@@ -2,10 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --navy-900: #0f172a;
-  --gold: #b8860b;
-  --gold-light: #d4af37;
+/*
+  Paletas de tema. Os valores são canais RGB separados por espaço para que o
+  Tailwind consiga aplicar opacidade (ex.: bg-navy-900/75).
+  O tema é escolhido no painel /admin e gravado no <html data-theme="...">.
+*/
+
+:root,
+[data-theme="classico"] {
+  --c-dark-900: 15 23 42;
+  --c-dark-800: 30 41 59;
+  --c-dark-700: 51 65 85;
+  --c-accent: 184 134 11;
+  --c-accent-light: 212 175 55;
+  --c-accent-bege: 201 169 98;
+  --c-cream: 250 249 247;
+  --c-cta: 204 255 0;
+  --c-cta-hover: 184 230 0;
+  --c-cta-text: 0 0 0;
+  --c-action: 249 115 22;
+  --c-action-hover: 251 146 60;
+  --c-check: 204 255 0;
+}
+
+[data-theme="rose"] {
+  --c-dark-900: 59 23 37;
+  --c-dark-800: 82 34 52;
+  --c-dark-700: 107 58 74;
+  --c-accent: 201 123 138;
+  --c-accent-light: 226 169 180;
+  --c-accent-bege: 217 179 186;
+  --c-cream: 253 246 244;
+  --c-cta: 255 92 138;
+  --c-cta-hover: 255 61 117;
+  --c-cta-text: 255 255 255;
+  --c-action: 199 63 96;
+  --c-action-hover: 217 95 127;
+  --c-check: 199 63 96;
+}
+
+[data-theme="oliva"] {
+  --c-dark-900: 22 40 28;
+  --c-dark-800: 33 56 42;
+  --c-dark-700: 61 92 71;
+  --c-accent: 184 137 44;
+  --c-accent-light: 214 176 90;
+  --c-accent-bege: 194 178 128;
+  --c-cream: 246 250 245;
+  --c-cta: 182 227 77;
+  --c-cta-hover: 163 209 54;
+  --c-cta-text: 16 35 15;
+  --c-action: 47 125 79;
+  --c-action-hover: 58 148 96;
+  --c-check: 47 125 79;
+}
+
+[data-theme="oceano"] {
+  --c-dark-900: 10 37 64;
+  --c-dark-800: 18 58 94;
+  --c-dark-700: 45 85 124;
+  --c-accent: 37 150 190;
+  --c-accent-light: 109 197 226;
+  --c-accent-bege: 159 201 217;
+  --c-cream: 243 249 252;
+  --c-cta: 255 183 3;
+  --c-cta-hover: 240 165 0;
+  --c-cta-text: 26 26 26;
+  --c-action: 194 65 12;
+  --c-action-hover: 234 88 12;
+  --c-check: 15 127 163;
+}
+
+[data-theme="terracota"] {
+  --c-dark-900: 47 29 22;
+  --c-dark-800: 67 43 32;
+  --c-dark-700: 94 64 48;
+  --c-accent: 196 124 56;
+  --c-accent-light: 224 165 105;
+  --c-accent-bege: 217 195 165;
+  --c-cream: 251 245 239;
+  --c-cta: 242 181 68;
+  --c-cta-hover: 224 163 47;
+  --c-cta-text: 47 29 22;
+  --c-action: 193 68 14;
+  --c-action-hover: 217 84 28;
+  --c-check: 193 68 14;
+}
+
+[data-theme="onix"] {
+  --c-dark-900: 18 18 18;
+  --c-dark-800: 30 30 30;
+  --c-dark-700: 63 63 63;
+  --c-accent: 184 134 11;
+  --c-accent-light: 224 192 96;
+  --c-accent-bege: 217 201 163;
+  --c-cream: 245 244 242;
+  --c-cta: 255 213 74;
+  --c-cta-hover: 245 197 24;
+  --c-cta-text: 18 18 18;
+  --c-action: 166 124 0;
+  --c-action-hover: 194 149 0;
+  --c-check: 166 124 0;
 }
 
 html {
@@ -13,8 +110,7 @@ html {
 }
 
 body {
-  @apply font-sans text-navy-900 antialiased;
-  background-color: #0f172a;
+  @apply font-sans text-navy-900 bg-navy-900 antialiased;
 }
 
 .safe-top {

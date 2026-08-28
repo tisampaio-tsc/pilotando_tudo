@@ -32,7 +32,11 @@ Se você tinha uma pasta `Assets` na raiz, copie o conteúdo para `public/Assets
 
 ## Painel de administração (CMS)
 
-Acesse `/admin` para editar textos, links e a ordem/visibilidade das seções do site. As imagens não são editadas pelo painel: ficam em `public/Assets/` e são trocadas direto no projeto.
+Acesse `/admin` para editar textos, links, a ordem/visibilidade das seções e o tema de cores do site. As imagens não são editadas pelo painel: ficam em `public/Assets/` e são trocadas direto no projeto.
+
+### Temas
+
+As cores vêm de variáveis CSS declaradas em `app/globals.css` (`:root` e `[data-theme="..."]`) e são expostas ao Tailwind em `tailwind.config.ts` como `navy`, `gold`, `cream`, `cta`, `action` e `check`. O tema escolhido fica em `tema` no conteúdo e é aplicado em `<html data-theme="...">`. Para adicionar um tema novo, crie o bloco de variáveis no CSS e registre o id em `lib/theme.ts`.
 
 - Login inicial: usuário `adriana` (senha configurada no seed do banco)
 - Guia completo: [MANUAL-ADRIANA.md](MANUAL-ADRIANA.md)

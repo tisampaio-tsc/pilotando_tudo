@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   LayoutGrid,
+  Palette,
   Rocket,
   Settings,
   LogOut,
@@ -17,6 +18,7 @@ import {
 } from "lucide-react";
 import type { SiteContent, SiteSection } from "@/lib/content-schema";
 import { SECTION_LABELS, createId } from "@/lib/content-schema";
+import { getThemeOption, normalizeTheme } from "@/lib/theme";
 import {
   checkAuth,
   login,
@@ -34,10 +36,18 @@ import {
   clearOfflineDraft,
 } from "@/lib/admin-api";
 import SectionRenderer from "@/components/SectionRenderer";
+import Footer from "@/components/Footer";
 import LoginForm from "./LoginForm";
 import Field from "./Field";
+import ThemePicker from "./ThemePicker";
 
-type Tab = "content" | "publish" | "settings";
+type Tab = "content" | "aparencia" | "publish" | "settings";
+type PreviewMode = "section" | "site" | null;
+
+/** Rascunhos antigos podem não ter o campo de tema. */
+function withTheme(content: SiteContent): SiteContent {
+  return { ...content, tema: normalizeTheme(content.tema) };
+}
 
 export default function AdminApp() {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
@@ -50,7 +60,7 @@ export default function AdminApp() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
-  const [showPreview, setShowPreview] = useState(false);
+  const [preview, setPreview] = useState<PreviewMode>(null);
   const [online, setOnline] = useState(true);
   const [versions, setVersions] = useState<
     { id: number; published_at: string; label: string | null }[]
@@ -63,13 +73,13 @@ export default function AdminApp() {
   const loadContent = useCallback(async () => {
     try {
       const data = await fetchDraft();
-      setContent(data.draft);
+      setContent(withTheme(data.draft));
       setHasChanges(data.hasUnpublishedChanges);
       clearOfflineDraft();
     } catch {
       const offline = loadOfflineDraft();
       if (offline) {
-        setContent(offline);
+        setContent(withTheme(offline));
         setHasChanges(true);
         setMessage("Modo offline — alterações salvas localmente");
       }
@@ -247,26 +257,43 @@ export default function AdminApp() {
     );
   }
 
-  if (showPreview) {
+  if (preview) {
+    const previewSections =
+      preview === "site"
+        ? content.secoes.filter((s) => s.visible)
+        : [
+            editingSection ??
+              content.secoes.find((s) => s.visible) ??
+              content.secoes[0],
+          ].filter(Boolean);
+
     return (
       <div className="min-h-screen bg-white">
         <div className="sticky top-0 z-50 bg-navy-900 text-white px-4 py-3 flex items-center justify-between safe-top">
-          <span className="font-semibold text-sm">Pré-visualização</span>
+          <span className="font-semibold text-sm">
+            {preview === "site"
+              ? `Prévia do site — ${getThemeOption(content.tema).name}`
+              : "Pré-visualização"}
+          </span>
           <button
             type="button"
-            onClick={() => setShowPreview(false)}
+            onClick={() => setPreview(null)}
             className="px-4 py-2 bg-gold text-navy-900 rounded-lg text-sm font-semibold"
           >
-            Voltar ao editor
+            Voltar ao painel
           </button>
         </div>
-        <div className="pointer-events-none">
-          <SectionRenderer
-            section={
-              editingSection ?? content.secoes.find((s) => s.visible) ?? content.secoes[0]
-            }
-            contatos={content.contatos}
-          />
+        <div data-theme={content.tema} className="pointer-events-none">
+          {previewSections.map((section) => (
+            <SectionRenderer
+              key={section.id}
+              section={section}
+              contatos={content.contatos}
+            />
+          ))}
+          {preview === "site" && (
+            <Footer footer={content.footer} contatos={content.contatos} />
+          )}
         </div>
       </div>
     );
@@ -277,7 +304,7 @@ export default function AdminApp() {
       <SectionEditor
         section={editingSection}
         onBack={() => setEditingSectionId(null)}
-        onPreview={() => setShowPreview(true)}
+        onPreview={() => setPreview("section")}
         onChange={(updated) =>
           updateContent((prev) => ({
             ...prev,
@@ -349,6 +376,16 @@ export default function AdminApp() {
             }
           />
         )}
+        {tab === "aparencia" && (
+          <ThemePicker
+            value={content.tema}
+            onChange={(tema) => {
+              updateContent((prev) => ({ ...prev, tema }));
+              setMessage("Cor escolhida! Vá em Publicar para o site mudar.");
+            }}
+            onPreview={() => setPreview("site")}
+          />
+        )}
         {tab === "publish" && (
           <PublishTab
             hasChanges={hasChanges}
@@ -358,7 +395,7 @@ export default function AdminApp() {
             onPublish={handlePublish}
             onRestore={async (id) => {
               const result = await restoreVersion(id);
-              setContent(result.draft);
+              setContent(withTheme(result.draft));
               setHasChanges(true);
               setMessage("Versão restaurada como rascunho");
             }}
@@ -380,6 +417,7 @@ export default function AdminApp() {
           {(
             [
               { id: "content", icon: LayoutGrid, label: "Conteúdo" },
+              { id: "aparencia", icon: Palette, label: "Cores" },
               { id: "publish", icon: Rocket, label: "Publicar" },
               { id: "settings", icon: Settings, label: "Ajustes" },
             ] as const

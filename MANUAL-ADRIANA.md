@@ -30,11 +30,12 @@ Este guia explica como administrar os textos do site pelo celular ou computador,
 
 ## 3. Editar o conteúdo
 
-O painel tem 3 abas na parte de baixo:
+O painel tem 4 abas na parte de baixo:
 
 | Aba | O que faz |
 |-----|-----------|
 | **Conteúdo** | Editar textos, seções e configurações |
+| **Cores** | Escolher o visual do site |
 | **Publicar** | Colocar alterações no ar |
 | **Ajustes** | Senha e instalar app |
 
@@ -68,11 +69,35 @@ Ainda na aba **Conteúdo**, mais abaixo, você edita:
 - **Rodapé** — textos do rodapé
 - **Página de política** — textos da página de termos
 
-## 4. Trocar as fotos
+## 4. Mudar as cores do site
+
+Na aba **Cores** você escolhe o visual do site inteiro. São 6 opções prontas:
+
+| Opção | Como fica |
+|-------|-----------|
+| **Azul e Dourado** | O visual original do site |
+| **Vinho e Rosé** | Delicado e feminino |
+| **Verde e Dourado** | Natural e acolhedor |
+| **Azul e Turquesa** | Leve e moderno |
+| **Marrom e Laranja** | Quente e artesanal |
+| **Preto e Dourado** | Sofisticado e elegante |
+
+Como usar:
+
+1. Toque na aba **Cores**
+2. Cada opção mostra uma miniatura com as cores de verdade
+3. Toque na que você gostar — ela ganha uma borda dourada e a marca **✓ Em uso**
+4. Toque em **Ver o site inteiro nesta cor** para conferir antes
+5. Vá na aba **Publicar** e toque em **Publicar agora**
+
+> Trocar a cor **não apaga nada**. Textos, depoimentos e perguntas continuam
+> exatamente iguais. Se não gostar, é só escolher outra cor.
+
+## 5. Trocar as fotos
 
 As fotos do site **não** são editadas pelo painel. Se precisar trocar alguma imagem, peça para quem cuida do site — a troca é feita direto no projeto.
 
-## 5. Publicar alterações
+## 6. Publicar alterações
 
 > **Importante:** Editar e salvar **não** muda o site publicado. Só o botão **Publicar** faz isso.
 
@@ -85,7 +110,7 @@ As fotos do site **não** são editadas pelo painel. Se precisar trocar alguma i
 
 Na mesma aba, você vê as publicações anteriores. Toque em **Restaurar** para trazer uma versão antiga como rascunho (depois publique de novo).
 
-## 6. Modo offline
+## 7. Modo offline
 
 Se perder a internet enquanto edita:
 
@@ -93,7 +118,7 @@ Se perder a internet enquanto edita:
 - Quando a internet voltar, o painel sincroniza automaticamente
 - Um ícone mostra se você está online ou offline
 
-## 7. Alterar senha
+## 8. Alterar senha
 
 1. Aba **Ajustes**
 2. Preencha senha atual e nova senha

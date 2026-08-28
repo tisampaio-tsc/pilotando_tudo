@@ -1,3 +1,5 @@
+import type { ThemeName } from "./theme";
+
 export type IconName = "scissors" | "shirt" | "dollarSign";
 
 export type SectionType =
@@ -167,6 +169,7 @@ export interface PoliticaContent {
 
 export interface SiteContent {
   site: SiteMeta;
+  tema: ThemeName;
   contatos: Contatos;
   header: HeaderContent;
   secoes: SiteSection[];

@@ -27,7 +27,11 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-navy-900 text-white admin-safe-area">
+    // O painel mantém sempre as cores padrão, independentemente do tema do site.
+    <div
+      data-theme="classico"
+      className="min-h-screen bg-navy-900 text-white admin-safe-area"
+    >
       {children}
     </div>
   );

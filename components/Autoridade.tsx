@@ -13,7 +13,7 @@ export default function Autoridade({ data, contatos }: AutoridadeProps) {
   const whatsappUrl = getWhatsappUrl(contatos);
 
   return (
-    <section id="sobre" className="py-16 md:py-24 bg-[#faf9f7]">
+    <section id="sobre" className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="font-display font-extrabold text-navy-900 text-2xl md:text-3xl">
@@ -47,7 +47,7 @@ export default function Autoridade({ data, contatos }: AutoridadeProps) {
             <ul className="mt-2 space-y-2 text-navy-700">
               {data.highlights.map((item) => (
                 <li key={item} className="flex items-center gap-2">
-                  <span className="text-[#CCFF00] font-bold">✓</span> {item}
+                  <span className="text-check font-bold">✓</span> {item}
                 </li>
               ))}
             </ul>
