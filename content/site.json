@@ -2,7 +2,8 @@
   "site": {
     "title": "Adriana Barbosa | Cursos de Costura e Calça Jeans",
     "description": "Domine a arte da costura e conquiste sua independência financeira. Cursos Oficina da Calça Jeans e Pilotando Tudo com Adriana Barbosa.",
-    "favicon": "/Assets/logo.png"
+    "favicon": "/Assets/logo.png",
+    "url": "https://pilotandotudo.com.br"
   },
   "contatos": {
     "whatsappNumber": "5511960614120",
@@ -263,5 +264,6 @@
         "content": "Esta política e o uso do site estão sujeitos às leis da República Federativa do Brasil. Eventuais disputas serão submetidas ao foro da comarca do domicílio da produtora, com renúncia a qualquer outro, por mais privilegiado que seja."
       }
     ]
-  }
+  },
+  "tema": "classico"
 }

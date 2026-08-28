@@ -21,7 +21,7 @@ function formatDate(isoDate: string): string {
 
 export default function PoliticaPage() {
   return (
-    <div className="min-h-screen bg-[#faf9f7]">
+    <div className="min-h-screen bg-cream">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         <Link
           href="/"
@@ -34,7 +34,7 @@ export default function PoliticaPage() {
         <h1 className="font-display font-bold text-navy-900 text-2xl md:text-3xl mb-2">
           Política de Direitos Reservados e Termos de Uso
         </h1>
-        <p className="text-navy-600 text-sm mb-10">
+        <p className="text-navy-700 text-sm mb-10">
           Última atualização: {formatDate(politica.lastUpdated)}
         </p>
 
