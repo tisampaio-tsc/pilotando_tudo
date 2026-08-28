@@ -28,11 +28,11 @@ Se você tinha uma pasta `Assets` na raiz, copie o conteúdo para `public/Assets
 - Tailwind CSS
 - lucide-react
 - TypeScript
-- Cloudflare Pages Functions + D1 + R2 (CMS)
+- Cloudflare Pages Functions + D1 (CMS)
 
 ## Painel de administração (CMS)
 
-Acesse `/admin` para editar textos, fotos, links e seções do site.
+Acesse `/admin` para editar textos, links e a ordem/visibilidade das seções do site. As imagens não são editadas pelo painel: ficam em `public/Assets/` e são trocadas direto no projeto.
 
 - Login inicial: usuário `adriana` (senha configurada no seed do banco)
 - Guia completo: [MANUAL-ADRIANA.md](MANUAL-ADRIANA.md)

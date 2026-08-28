@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   LayoutGrid,
-  Image as ImageIcon,
   Rocket,
   Settings,
   LogOut,
@@ -12,7 +11,6 @@ import {
   ChevronDown,
   Plus,
   Trash2,
-  Copy,
   Wifi,
   WifiOff,
   Download,
@@ -28,9 +26,6 @@ import {
   publishContent,
   fetchVersions,
   restoreVersion,
-  fetchMedia,
-  uploadMedia,
-  deleteMedia,
   fetchDeployStatus,
   markDeployComplete,
   changePassword,
@@ -41,9 +36,8 @@ import {
 import SectionRenderer from "@/components/SectionRenderer";
 import LoginForm from "./LoginForm";
 import Field from "./Field";
-import ImagePicker from "./ImagePicker";
 
-type Tab = "content" | "media" | "publish" | "settings";
+type Tab = "content" | "publish" | "settings";
 
 export default function AdminApp() {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
@@ -58,9 +52,6 @@ export default function AdminApp() {
   const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [online, setOnline] = useState(true);
-  const [mediaFiles, setMediaFiles] = useState<
-    { key: string; url: string; size: number; uploaded: string }[]
-  >([]);
   const [versions, setVersions] = useState<
     { id: number; published_at: string; label: string | null }[]
   >([]);
@@ -121,7 +112,6 @@ export default function AdminApp() {
   useEffect(() => {
     if (authenticated) {
       loadContent();
-      fetchMedia().then((d) => setMediaFiles(d.files)).catch(() => {});
       fetchVersions().then((d) => setVersions(d.versions)).catch(() => {});
     }
   }, [authenticated, loadContent]);
@@ -286,7 +276,6 @@ export default function AdminApp() {
     return (
       <SectionEditor
         section={editingSection}
-        mediaFiles={mediaFiles}
         onBack={() => setEditingSectionId(null)}
         onPreview={() => setShowPreview(true)}
         onChange={(updated) =>
@@ -297,12 +286,6 @@ export default function AdminApp() {
             ),
           }))
         }
-        onUpload={async (file) => {
-          const result = await uploadMedia(file);
-          const list = await fetchMedia();
-          setMediaFiles(list.files);
-          return result.url;
-        }}
       />
     );
   }
@@ -366,21 +349,6 @@ export default function AdminApp() {
             }
           />
         )}
-        {tab === "media" && (
-          <MediaTab
-            files={mediaFiles}
-            onUpload={async (file) => {
-              await uploadMedia(file);
-              const list = await fetchMedia();
-              setMediaFiles(list.files);
-            }}
-            onDelete={async (key) => {
-              await deleteMedia(key);
-              const list = await fetchMedia();
-              setMediaFiles(list.files);
-            }}
-          />
-        )}
         {tab === "publish" && (
           <PublishTab
             hasChanges={hasChanges}
@@ -412,7 +380,6 @@ export default function AdminApp() {
           {(
             [
               { id: "content", icon: LayoutGrid, label: "Conteúdo" },
-              { id: "media", icon: ImageIcon, label: "Fotos" },
               { id: "publish", icon: Rocket, label: "Publicar" },
               { id: "settings", icon: Settings, label: "Ajustes" },
             ] as const
@@ -714,89 +681,6 @@ function ContentTab({
   );
 }
 
-function MediaTab({
-  files,
-  onUpload,
-  onDelete,
-}: {
-  files: { key: string; url: string; size: number; uploaded: string }[];
-  onUpload: (file: File) => Promise<void>;
-  onDelete: (key: string) => Promise<void>;
-}) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
-
-  const handleFile = async (fileList: FileList | null) => {
-    if (!fileList?.length) return;
-    setUploading(true);
-    try {
-      for (const file of Array.from(fileList)) {
-        await onUpload(file);
-      }
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  return (
-    <div>
-      <h2 className="font-display font-bold text-xl mb-4">Galeria de fotos</h2>
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        capture="environment"
-        className="hidden"
-        onChange={(e) => handleFile(e.target.files)}
-      />
-      <button
-        type="button"
-        onClick={() => inputRef.current?.click()}
-        disabled={uploading}
-        className="w-full py-4 border-2 border-dashed border-gold/40 rounded-xl text-gold font-semibold mb-6 hover:bg-gold/10 transition-colors disabled:opacity-50"
-      >
-        {uploading ? "Enviando..." : "+ Enviar foto (câmera ou galeria)"}
-      </button>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {files.map((file) => (
-          <div
-            key={file.key}
-            className="relative aspect-square rounded-xl overflow-hidden bg-white/5 group"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={file.url}
-              alt=""
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-2">
-              <button
-                type="button"
-                onClick={() => navigator.clipboard.writeText(file.url)}
-                className="text-xs bg-white/20 px-2 py-1 rounded"
-              >
-                Copiar URL
-              </button>
-              <button
-                type="button"
-                onClick={() => onDelete(file.key)}
-                className="text-xs bg-red-500/80 px-2 py-1 rounded"
-              >
-                Excluir
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-      {files.length === 0 && (
-        <p className="text-white/50 text-center py-8">
-          Nenhuma foto enviada ainda.
-        </p>
-      )}
-    </div>
-  );
-}
-
 function PublishTab({
   hasChanges,
   publishing,
@@ -960,18 +844,14 @@ function SettingsTab({
 
 function SectionEditor({
   section,
-  mediaFiles,
   onBack,
   onPreview,
   onChange,
-  onUpload,
 }: {
   section: SiteSection;
-  mediaFiles: { key: string; url: string }[];
   onBack: () => void;
   onPreview: () => void;
   onChange: (section: SiteSection) => void;
-  onUpload: (file: File) => Promise<string>;
 }) {
   return (
     <div className="min-h-screen flex flex-col pb-6">
@@ -992,12 +872,7 @@ function SectionEditor({
       </header>
 
       <div className="flex-1 px-4 py-6 max-w-2xl mx-auto w-full space-y-4">
-        <SectionFields
-          section={section}
-          mediaFiles={mediaFiles}
-          onChange={onChange}
-          onUpload={onUpload}
-        />
+        <SectionFields section={section} onChange={onChange} />
       </div>
     </div>
   );
@@ -1005,14 +880,10 @@ function SectionEditor({
 
 function SectionFields({
   section,
-  mediaFiles,
   onChange,
-  onUpload,
 }: {
   section: SiteSection;
-  mediaFiles: { key: string; url: string }[];
   onChange: (s: SiteSection) => void;
-  onUpload: (file: File) => Promise<string>;
 }) {
   switch (section.type) {
     case "hero":
@@ -1020,7 +891,6 @@ function SectionFields({
         <>
           <Field label="Título principal" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
           <Field label="Subtítulo" value={section.subtitle} onChange={(v) => onChange({ ...section, subtitle: v })} multiline />
-          <ImagePicker label="Foto de fundo" value={section.backgroundImage} mediaFiles={mediaFiles} onChange={(v) => onChange({ ...section, backgroundImage: v })} onUpload={onUpload} />
           <Field label="Texto do botão principal" value={section.primaryButton.text} onChange={(v) => onChange({ ...section, primaryButton: { ...section.primaryButton, text: v } })} />
           <Field label="Texto do botão WhatsApp" value={section.secondaryButton.text} onChange={(v) => onChange({ ...section, secondaryButton: { ...section.secondaryButton, text: v } })} />
           <ListEditor
@@ -1071,7 +941,6 @@ function SectionFields({
               <p className="text-sm font-semibold text-gold">{curso.title}</p>
               <Field label="Subtítulo" value={curso.subtitle} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, subtitle: v }; onChange({ ...section, cursos }); }} />
               <Field label="Descrição" value={curso.description} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, description: v }; onChange({ ...section, cursos }); }} multiline />
-              <ImagePicker label="Capa do curso" value={curso.image} mediaFiles={mediaFiles} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, image: v }; onChange({ ...section, cursos }); }} onUpload={onUpload} />
               <Field label="Texto do botão" value={curso.buttonText} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, buttonText: v }; onChange({ ...section, cursos }); }} />
               <ListEditor label={curso.learnLabel} items={curso.learnList} onChange={(items) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, learnList: items }; onChange({ ...section, cursos }); }} />
               <ListEditor label={curso.bonusLabel} items={curso.bonusList} onChange={(items) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, bonusList: items }; onChange({ ...section, cursos }); }} />
@@ -1083,7 +952,6 @@ function SectionFields({
       return (
         <>
           <Field label="Título" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
-          <ImagePicker label="Foto da Adriana" value={section.image} mediaFiles={mediaFiles} onChange={(v) => onChange({ ...section, image: v })} onUpload={onUpload} />
           <ListEditor label="Parágrafos (use **texto** para negrito)" items={section.paragraphs} onChange={(items) => onChange({ ...section, paragraphs: items })} />
           <Field label="Título dos diferenciais" value={section.highlightsTitle} onChange={(v) => onChange({ ...section, highlightsTitle: v })} />
           <ListEditor label="Diferenciais" items={section.highlights} onChange={(items) => onChange({ ...section, highlights: items })} />

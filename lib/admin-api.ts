@@ -105,37 +105,6 @@ export async function restoreVersion(versionId: number): Promise<{
   });
 }
 
-export async function fetchMedia(): Promise<{
-  files: { key: string; url: string; size: number; uploaded: string }[];
-}> {
-  return request("/media");
-}
-
-export async function uploadMedia(file: File): Promise<{
-  ok: boolean;
-  key: string;
-  url: string;
-}> {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const res = await fetch(`${API}/media`, {
-    method: "POST",
-    credentials: "include",
-    body: formData,
-  });
-
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error ?? "Erro no upload");
-  return data;
-}
-
-export async function deleteMedia(key: string): Promise<void> {
-  await request(`/media?key=${encodeURIComponent(key)}`, {
-    method: "DELETE",
-  });
-}
-
 export async function fetchDeployStatus(): Promise<{
   status: string;
   startedAt: string | null;

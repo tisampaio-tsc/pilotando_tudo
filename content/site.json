@@ -17,9 +17,24 @@
     "name": "ADRIANA BARBOSA",
     "tagline": "Pilotando Tudo",
     "navLinks": [
-      { "id": "nav-cursos", "href": "#cursos", "label": "Cursos", "visible": true },
-      { "id": "nav-sobre", "href": "#sobre", "label": "Sobre", "visible": true },
-      { "id": "nav-alunas", "href": "#alunas", "label": "Alunas", "visible": true }
+      {
+        "id": "nav-cursos",
+        "href": "#cursos",
+        "label": "Cursos",
+        "visible": true
+      },
+      {
+        "id": "nav-sobre",
+        "href": "#sobre",
+        "label": "Sobre",
+        "visible": true
+      },
+      {
+        "id": "nav-alunas",
+        "href": "#alunas",
+        "label": "Alunas",
+        "visible": true
+      }
     ]
   },
   "secoes": [
@@ -41,7 +56,11 @@
         "variant": "secondary",
         "external": true
       },
-      "trustBadges": ["MÉTODO VALIDADO", "PARA QUEM?", "ACESSO VITALÍCIO"]
+      "trustBadges": [
+        "MÉTODO VALIDADO",
+        "PARA QUEM?",
+        "ACESSO VITALÍCIO"
+      ]
     },
     {
       "id": "sec-para-voce",

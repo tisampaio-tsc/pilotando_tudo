@@ -7,10 +7,5 @@ binding = "DB"
 database_name = "adriana-cms"
 database_id = "45817734-8e06-40b4-8241-3a47e117cf15"
 
-# R2: descomente após habilitar R2 no painel Cloudflare e criar o bucket adriana-media
-# [[r2_buckets]]
-# binding = "MEDIA"
-# bucket_name = "adriana-media"
-
 [vars]
 SITE_URL = "https://pilotandotudo.com.br"

@@ -105,7 +105,9 @@ Se quiser usar **www** e **sem www** (raiz), adicione os dois como custom domain
 
 ## 6. Configurar o CMS (painel /admin)
 
-O painel de administração usa **Cloudflare D1** (banco), **R2** (fotos) e **Pages Functions** (API). Faça estes passos **uma única vez** após o primeiro deploy.
+O painel de administração usa **Cloudflare D1** (banco) e **Pages Functions** (API). Faça estes passos **uma única vez** após o primeiro deploy.
+
+O painel edita apenas textos, listas, links e a ordem/visibilidade das seções. As imagens do site ficam em `public/Assets/` e são trocadas direto no projeto.
 
 ### 6.1 Criar banco D1
 
@@ -128,27 +130,14 @@ npm run db:setup
 
 Isso cria as tabelas (`users`, `content`, `versions`, etc.).
 
-### 6.2 Criar bucket R2 para fotos
-
-1. Cloudflare Dashboard → **R2 Object Storage** → **Create bucket**
-2. Nome: `adriana-media`
-3. O binding já está em `wrangler.toml`:
-
-```toml
-[[r2_buckets]]
-binding = "MEDIA"
-bucket_name = "adriana-media"
-```
-
-### 6.3 Vincular D1 e R2 ao projeto Pages
+### 6.2 Vincular D1 ao projeto Pages
 
 1. **Workers & Pages** → seu projeto → **Settings** → **Functions**
 2. Em **D1 database bindings**, adicione: variable name `DB` → database `adriana-cms`
-3. Em **R2 bucket bindings**, adicione: variable name `MEDIA` → bucket `adriana-media`
 
-> Alternativa: faça commit do `wrangler.toml` atualizado — o Cloudflare pode aplicar os bindings automaticamente.
+> Alternativa: faça commit do `wrangler.toml` atualizado — o Cloudflare pode aplicar o binding automaticamente.
 
-### 6.4 Variáveis de ambiente
+### 6.3 Variáveis de ambiente
 
 Em **Settings** → **Environment variables** (Production):
 
@@ -164,13 +153,13 @@ Para gerar `SESSION_SECRET`:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-### 6.5 Criar Deploy Hook
+### 6.4 Criar Deploy Hook
 
 1. **Workers & Pages** → seu projeto → **Settings** → **Deploy Hooks**
 2. **Add hook** → nome: `cms-publish` → branch: `main`
 3. Copie a URL gerada e cole em `DEPLOY_HOOK_URL`
 
-### 6.6 Popular banco (usuário + conteúdo inicial)
+### 6.5 Popular banco (usuário + conteúdo inicial)
 
 ```bash
 npm run db:seed
@@ -180,7 +169,7 @@ Isso cria:
 - Usuário `adriana` (senha definida no seed — troque após primeiro login)
 - Conteúdo inicial copiado de `content/site.json`
 
-### 6.7 Redeploy
+### 6.6 Redeploy
 
 Faça um novo deploy (push no Git ou **Retry deployment**). Depois acesse:
 
@@ -198,8 +187,7 @@ Consulte também [MANUAL-ADRIANA.md](MANUAL-ADRIANA.md) — guia para a Adriana 
 | `/admin` | Painel de edição (PWA instalável) |
 | `/api/content/published` | Conteúdo público (usado no build) |
 | `/api/content/draft` | Rascunho (autenticado) |
-| `/api/media` | Upload de fotos |
-| `/img/*` | Entrega de imagens do R2 |
 | D1 | Rascunho, publicado, versões, login |
-| R2 | Galeria de fotos |
 | Deploy Hook | Rebuild ao clicar em Publicar |
+
+As imagens ficam em `public/Assets/` e são versionadas junto com o código.

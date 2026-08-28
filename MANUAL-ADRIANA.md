@@ -1,11 +1,11 @@
 # Manual do Painel — Adriana Barbosa
 
-Este guia explica como administrar o site pelo celular ou computador, sem precisar editar código.
+Este guia explica como administrar os textos do site pelo celular ou computador, sem precisar editar código.
 
 ## 1. Como entrar
 
 1. Abra o navegador (Chrome, Safari, etc.)
-2. Acesse: **seusite.com.br/admin**
+2. Acesse: **pilotandotudo.com.br/admin**
 3. Digite seu usuário e senha
 4. Toque em **Entrar**
 
@@ -30,12 +30,11 @@ Este guia explica como administrar o site pelo celular ou computador, sem precis
 
 ## 3. Editar o conteúdo
 
-O painel tem 4 abas na parte de baixo:
+O painel tem 3 abas na parte de baixo:
 
 | Aba | O que faz |
 |-----|-----------|
 | **Conteúdo** | Editar textos, seções e configurações |
-| **Fotos** | Enviar e gerenciar imagens |
 | **Publicar** | Colocar alterações no ar |
 | **Ajustes** | Senha e instalar app |
 
@@ -57,21 +56,21 @@ Dentro de cada seção (depoimentos, perguntas, cards):
 
 - **+ Adicionar** — cria um item novo
 - **↑ ↓** — reordena
-- **Lixeira** — remove (com confirmação visual)
+- **Lixeira** — remove
 
-### Trocar fotos
+### Configurações gerais
 
-1. No editor da seção, toque em **Enviar foto** (câmera ou galeria)
-2. Ou toque em **Galeria** para reutilizar uma foto já enviada
-3. Também pode colar a URL manualmente
+Ainda na aba **Conteúdo**, mais abaixo, você edita:
 
-## 4. Galeria de fotos
+- **Site** — título e descrição que aparecem no Google
+- **Contatos e links** — WhatsApp, Instagram e links da Hotmart
+- **Menu e logo** — nome e itens do menu
+- **Rodapé** — textos do rodapé
+- **Página de política** — textos da página de termos
 
-Na aba **Fotos**:
+## 4. Trocar as fotos
 
-- **+ Enviar foto** — tira foto ou escolhe da galeria
-- **Copiar URL** — copia o endereço para usar em qualquer campo
-- **Excluir** — remove a foto (cuidado: se estiver em uso no site, a imagem some)
+As fotos do site **não** são editadas pelo painel. Se precisar trocar alguma imagem, peça para quem cuida do site — a troca é feita direto no projeto.
 
 ## 5. Publicar alterações
 
@@ -80,7 +79,7 @@ Na aba **Fotos**:
 1. Vá na aba **Publicar**
 2. Confira se aparece "alterações não publicadas"
 3. Toque em **Publicar agora**
-4. Aguarde 1 a 2 minutos — o site será reconstruído automaticamente
+4. Aguarde 1 a 2 minutos — o site será atualizado automaticamente
 
 ### Histórico de versões
 
