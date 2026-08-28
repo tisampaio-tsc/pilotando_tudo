@@ -32,7 +32,7 @@ Se você tinha uma pasta `Assets` na raiz, copie o conteúdo para `public/Assets
 
 ## Painel de administração (CMS)
 
-Acesse `/admin` para editar textos, links, a ordem/visibilidade das seções e o tema de cores do site. As imagens não são editadas pelo painel: ficam em `public/Assets/` e são trocadas direto no projeto.
+Acesse `/admin` para editar textos, links, a ordem/visibilidade das seções e o tema de cores do site. O painel também monta textos prontos de divulgação (aba Divulgar) e é instalável como PWA no celular — só o painel, o site continua um site comum. As imagens não são editadas pelo painel: ficam em `public/Assets/` e são trocadas direto no projeto.
 
 ### Temas
 

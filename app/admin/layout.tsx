@@ -10,7 +10,8 @@ export const metadata: Metadata = {
     title: "Painel Adriana",
   },
   icons: {
-    apple: "/Assets/logo.png",
+    icon: "/Assets/icon-192.png",
+    apple: "/Assets/apple-touch-icon.png",
   },
 };
 

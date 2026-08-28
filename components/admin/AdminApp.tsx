@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   LayoutGrid,
   Palette,
+  Share2,
   Rocket,
   Settings,
   LogOut,
@@ -40,9 +41,15 @@ import Footer from "@/components/Footer";
 import LoginForm from "./LoginForm";
 import Field from "./Field";
 import ThemePicker from "./ThemePicker";
+import ShareTab from "./ShareTab";
 
-type Tab = "content" | "aparencia" | "publish" | "settings";
+type Tab = "content" | "aparencia" | "share" | "publish" | "settings";
 type PreviewMode = "section" | "site" | null;
+
+const INSTALL_DISMISSED_KEY = "admin-install-dismissed";
+
+/** Safari no iPhone expõe o modo instalado fora do padrão. */
+type NavigatorStandalone = Navigator & { standalone?: boolean };
 
 /** Rascunhos antigos podem não ter o campo de tema. */
 function withTheme(content: SiteContent): SiteContent {
@@ -69,6 +76,8 @@ export default function AdminApp() {
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showIosInstall, setShowIosInstall] = useState(false);
+  const [installed, setInstalled] = useState(false);
+  const [installDismissed, setInstallDismissed] = useState(false);
 
   const loadContent = useCallback(async () => {
     try {
@@ -104,9 +113,22 @@ export default function AdminApp() {
     };
     window.addEventListener("beforeinstallprompt", onBIP);
 
+    const onInstalled = () => {
+      setInstalled(true);
+      setDeferredPrompt(null);
+      setShowIosInstall(false);
+    };
+    window.addEventListener("appinstalled", onInstalled);
+
     const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-    if (isIos && !isStandalone) setShowIosInstall(true);
+    const standalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (window.navigator as NavigatorStandalone).standalone === true;
+    setInstalled(standalone);
+    if (isIos && !standalone) setShowIosInstall(true);
+    if (localStorage.getItem(INSTALL_DISMISSED_KEY) === "1") {
+      setInstallDismissed(true);
+    }
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(() => {});
@@ -116,6 +138,7 @@ export default function AdminApp() {
       window.removeEventListener("online", onOnline);
       window.removeEventListener("offline", onOffline);
       window.removeEventListener("beforeinstallprompt", onBIP);
+      window.removeEventListener("appinstalled", onInstalled);
     };
   }, []);
 
@@ -212,9 +235,17 @@ export default function AdminApp() {
   const handleInstall = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
+    const choice = await deferredPrompt.userChoice;
     setDeferredPrompt(null);
+    if (choice.outcome === "accepted") setInstalled(true);
   };
+
+  const dismissInstall = () => {
+    setInstallDismissed(true);
+    localStorage.setItem(INSTALL_DISMISSED_KEY, "1");
+  };
+
+  const canInstall = !installed && (deferredPrompt !== null || showIosInstall);
 
   const moveSection = (index: number, direction: -1 | 1) => {
     updateContent((prev) => {
@@ -365,6 +396,39 @@ export default function AdminApp() {
       </header>
 
       <main className="flex-1 px-4 py-6 max-w-4xl mx-auto w-full">
+        {canInstall && !installDismissed && (
+          <div className="mb-6 bg-gold/10 border border-gold/30 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <Download size={24} className="text-gold shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold">Deixe o painel na tela do celular</p>
+                <p className="text-white/70 text-sm mt-0.5">
+                  {deferredPrompt
+                    ? "Assim você abre direto, como um aplicativo, sem precisar digitar o endereço."
+                    : "No iPhone: toque em Compartilhar e depois em Adicionar à Tela de Início."}
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2 mt-3">
+              {deferredPrompt && (
+                <button
+                  type="button"
+                  onClick={handleInstall}
+                  className="flex-1 py-3 bg-gold text-navy-900 font-bold rounded-lg min-h-[44px]"
+                >
+                  Instalar agora
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={dismissInstall}
+                className="flex-1 py-3 bg-white/10 hover:bg-white/20 rounded-lg font-semibold min-h-[44px]"
+              >
+                Agora não
+              </button>
+            </div>
+          </div>
+        )}
         {tab === "content" && (
           <ContentTab
             content={content}
@@ -386,6 +450,7 @@ export default function AdminApp() {
             onPreview={() => setPreview("site")}
           />
         )}
+        {tab === "share" && <ShareTab content={content} />}
         {tab === "publish" && (
           <PublishTab
             hasChanges={hasChanges}
@@ -406,6 +471,7 @@ export default function AdminApp() {
             onChangePassword={changePassword}
             deferredPrompt={deferredPrompt}
             showIosInstall={showIosInstall}
+            installed={installed}
             onInstall={handleInstall}
           />
         )}
@@ -418,6 +484,7 @@ export default function AdminApp() {
             [
               { id: "content", icon: LayoutGrid, label: "Conteúdo" },
               { id: "aparencia", icon: Palette, label: "Cores" },
+              { id: "share", icon: Share2, label: "Divulgar" },
               { id: "publish", icon: Rocket, label: "Publicar" },
               { id: "settings", icon: Settings, label: "Ajustes" },
             ] as const
@@ -426,7 +493,7 @@ export default function AdminApp() {
               key={id}
               type="button"
               onClick={() => setTab(id)}
-              className={`flex-1 flex flex-col items-center py-3 gap-1 text-xs transition-colors ${
+              className={`flex-1 flex flex-col items-center py-3 gap-1 text-[11px] leading-tight transition-colors ${
                 tab === id ? "text-gold" : "text-white/50"
               }`}
             >
@@ -553,6 +620,12 @@ function ContentTab({
                 onEditGlobal("site", { ...content.site, description: v })
               }
               multiline
+            />
+            <Field
+              label="Endereço do site"
+              value={content.site.url ?? ""}
+              onChange={(v) => onEditGlobal("site", { ...content.site, url: v })}
+              hint="Usado nos textos da aba Divulgar"
             />
           </div>
         )}
@@ -797,11 +870,13 @@ function SettingsTab({
   onChangePassword,
   deferredPrompt,
   showIosInstall,
+  installed,
   onInstall,
 }: {
   onChangePassword: (current: string, newPass: string) => Promise<void>;
   deferredPrompt: BeforeInstallPromptEvent | null;
   showIosInstall: boolean;
+  installed: boolean;
   onInstall: () => void;
 }) {
   const [current, setCurrent] = useState("");
@@ -825,33 +900,50 @@ function SettingsTab({
 
   return (
     <div className="space-y-6">
-      {(deferredPrompt || showIosInstall) && (
-        <div className="bg-gold/10 border border-gold/30 rounded-xl p-4">
-          <div className="flex items-center gap-3 mb-3">
-            <Download size={24} className="text-gold" />
-            <div>
-              <p className="font-semibold">Instalar como app</p>
-              <p className="text-white/60 text-xs">
-                Acesse o painel direto da tela inicial
-              </p>
-            </div>
-          </div>
-          {deferredPrompt ? (
-            <button
-              type="button"
-              onClick={onInstall}
-              className="w-full py-3 bg-gold text-navy-900 font-bold rounded-lg"
-            >
-              Instalar app
-            </button>
-          ) : (
-            <p className="text-sm text-white/70">
-              No iPhone: toque em <strong>Compartilhar</strong> →{" "}
-              <strong>Adicionar à Tela de Início</strong>
+      <div className="bg-gold/10 border border-gold/30 rounded-xl p-4">
+        <div className="flex items-center gap-3 mb-3">
+          <Download size={24} className="text-gold shrink-0" />
+          <div>
+            <p className="font-semibold">Painel como aplicativo</p>
+            <p className="text-white/60 text-sm">
+              Abra o painel direto da tela do celular
             </p>
-          )}
+          </div>
         </div>
-      )}
+        {installed ? (
+          <p className="text-sm text-green-300">
+            Pronto! O painel já está instalado neste aparelho.
+          </p>
+        ) : deferredPrompt ? (
+          <button
+            type="button"
+            onClick={onInstall}
+            className="w-full py-3 bg-gold text-navy-900 font-bold rounded-lg min-h-[44px]"
+          >
+            Instalar agora
+          </button>
+        ) : showIosInstall ? (
+          <ol className="text-sm text-white/70 space-y-1.5 list-decimal list-inside">
+            <li>
+              Toque no botão <strong>Compartilhar</strong> (quadrado com uma
+              seta para cima), na barra do Safari
+            </li>
+            <li>
+              Role a lista e toque em{" "}
+              <strong>Adicionar à Tela de Início</strong>
+            </li>
+            <li>
+              Toque em <strong>Adicionar</strong>
+            </li>
+          </ol>
+        ) : (
+          <p className="text-sm text-white/70">
+            Para instalar, abra o painel no celular pelo Chrome (Android) ou
+            Safari (iPhone). No computador, use o ícone de instalação na barra
+            de endereço.
+          </p>
+        )}
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <h2 className="font-display font-bold text-xl">Alterar senha</h2>

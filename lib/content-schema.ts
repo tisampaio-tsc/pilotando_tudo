@@ -129,6 +129,8 @@ export interface SiteMeta {
   title: string;
   description: string;
   favicon: string;
+  /** Endereço público do site, usado nos textos de divulgação. */
+  url?: string;
 }
 
 export interface Contatos {
