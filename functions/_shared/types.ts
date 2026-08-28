@@ -1,8 +1,9 @@
 export interface Env {
   DB: D1Database;
-  MEDIA: R2Bucket;
+  MEDIA?: R2Bucket;
   SESSION_SECRET: string;
   DEPLOY_HOOK_URL?: string;
+  SITE_URL?: string;
 }
 
 export interface SessionPayload {

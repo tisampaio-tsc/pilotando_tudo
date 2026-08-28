@@ -5,11 +5,12 @@ pages_build_output_dir = "./out"
 [[d1_databases]]
 binding = "DB"
 database_name = "adriana-cms"
-database_id = "00000000-0000-0000-0000-000000000001"
+database_id = "fbdb29d6-0f3e-46eb-bfb3-9723f29aa4dd"
 
-[[r2_buckets]]
-binding = "MEDIA"
-bucket_name = "adriana-media"
+# R2: descomente após habilitar R2 no painel Cloudflare e criar o bucket adriana-media
+# [[r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "adriana-media"
 
 [vars]
-# SESSION_SECRET e DEPLOY_HOOK_URL devem ser definidos no painel Cloudflare Pages
+SITE_URL = "https://pilotando-tudo-18z.pages.dev"

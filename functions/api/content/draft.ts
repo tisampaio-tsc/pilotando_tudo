@@ -1,6 +1,6 @@
-import type { Env } from "../../../_shared/types";
-import { jsonResponse, requireAuth } from "../../../_shared/auth";
-import { getDraftContent, getPublishedContent, saveDraft } from "../../../_shared/db";
+import type { Env } from "../../_shared/types";
+import { jsonResponse, requireAuth } from "../../_shared/auth";
+import { getDraftContent, getPublishedContent, saveDraft } from "../../_shared/db";
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   const secret = context.env.SESSION_SECRET ?? "dev-secret-change-me";

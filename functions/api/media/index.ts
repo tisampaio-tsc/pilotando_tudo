@@ -15,6 +15,13 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const session = await requireAuth(context.request, secret);
   if (!session) return jsonResponse({ error: "Não autorizado" }, 401);
 
+  if (!context.env.MEDIA) {
+    return jsonResponse(
+      { error: "Galeria indisponível — habilite o R2 no Cloudflare", files: [] },
+      503
+    );
+  }
+
   const listed = await context.env.MEDIA.list();
   const files = await Promise.all(
     (listed.objects ?? []).map(async (obj) => ({
@@ -37,6 +44,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const secret = env.SESSION_SECRET ?? "dev-secret-change-me";
   const session = await requireAuth(request, secret);
   if (!session) return jsonResponse({ error: "Não autorizado" }, 401);
+
+  if (!env.MEDIA) {
+    return jsonResponse(
+      { error: "Upload indisponível — habilite o R2 no Cloudflare" },
+      503
+    );
+  }
 
   const formData = await request.formData();
   const file = formData.get("file");
@@ -83,6 +97,10 @@ export const onRequestDelete: PagesFunction<Env> = async (context) => {
 
   if (!key) {
     return jsonResponse({ error: "Parâmetro key é obrigatório" }, 400);
+  }
+
+  if (!context.env.MEDIA) {
+    return jsonResponse({ error: "Galeria indisponível" }, 503);
   }
 
   await context.env.MEDIA.delete(key);

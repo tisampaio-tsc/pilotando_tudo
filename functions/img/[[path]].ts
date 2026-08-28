@@ -15,6 +15,10 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     return new Response("Not found", { status: 404 });
   }
 
+  if (!context.env.MEDIA) {
+    return new Response("Media storage not configured", { status: 503 });
+  }
+
   const object = await context.env.MEDIA.get(path);
   if (!object) {
     return new Response("Not found", { status: 404 });

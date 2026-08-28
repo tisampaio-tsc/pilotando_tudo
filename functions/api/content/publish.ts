@@ -1,10 +1,10 @@
-import type { Env } from "../../../_shared/types";
-import { jsonResponse, requireAuth } from "../../../_shared/auth";
+import type { Env } from "../../_shared/types";
+import { jsonResponse, requireAuth } from "../../_shared/auth";
 import {
   ensureDeployStatus,
   getDraftContent,
   publishContent,
-} from "../../../_shared/db";
+} from "../../_shared/db";
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
