@@ -5,7 +5,7 @@ pages_build_output_dir = "./out"
 [[d1_databases]]
 binding = "DB"
 database_name = "adriana-cms"
-database_id = "fbdb29d6-0f3e-46eb-bfb3-9723f29aa4dd"
+database_id = "45817734-8e06-40b4-8241-3a47e117cf15"
 
 # R2: descomente após habilitar R2 no painel Cloudflare e criar o bucket adriana-media
 # [[r2_buckets]]
