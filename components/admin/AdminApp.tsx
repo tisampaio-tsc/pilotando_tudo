@@ -8,7 +8,7 @@ import {
   Rocket,
   Settings,
   LogOut,
-  Eye,
+  Monitor,
   ChevronUp,
   ChevronDown,
   Plus,
@@ -17,7 +17,12 @@ import {
   WifiOff,
   Download,
 } from "lucide-react";
-import type { SiteContent, SiteSection } from "@/lib/content-schema";
+import type {
+  FooterContent,
+  HeaderContent,
+  SiteContent,
+  SiteSection,
+} from "@/lib/content-schema";
 import { SECTION_LABELS, createId } from "@/lib/content-schema";
 import { getThemeOption, normalizeTheme } from "@/lib/theme";
 import {
@@ -37,15 +42,17 @@ import {
   clearOfflineDraft,
 } from "@/lib/admin-api";
 import SectionRenderer from "@/components/SectionRenderer";
-import Footer from "@/components/Footer";
+import SiteHeader from "@/components/Header";
+import SiteFooter from "@/components/Footer";
 import LoginForm from "./LoginForm";
 import Field from "./Field";
 import ThemePicker from "./ThemePicker";
 import ShareTab from "./ShareTab";
 import StitchDivider from "./StitchDivider";
+import EditableBlock from "./EditableBlock";
 
 type Tab = "content" | "aparencia" | "share" | "publish" | "settings";
-type PreviewMode = "section" | "site" | null;
+type PreviewMode = "site" | null;
 
 const INSTALL_DISMISSED_KEY = "admin-install-dismissed";
 
@@ -67,7 +74,6 @@ export default function AdminApp() {
   const [publishing, setPublishing] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [preview, setPreview] = useState<PreviewMode>(null);
   const [online, setOnline] = useState(true);
   const [versions, setVersions] = useState<
@@ -267,7 +273,12 @@ export default function AdminApp() {
     }));
   };
 
-  const editingSection = content?.secoes.find((s) => s.id === editingSectionId);
+  const updateSection = (id: string, updated: SiteSection) => {
+    updateContent((prev) => ({
+      ...prev,
+      secoes: prev.secoes.map((s) => (s.id === id ? updated : s)),
+    }));
+  };
 
   if (authenticated === null) {
     return (
@@ -290,22 +301,11 @@ export default function AdminApp() {
   }
 
   if (preview) {
-    const previewSections =
-      preview === "site"
-        ? content.secoes.filter((s) => s.visible)
-        : [
-            editingSection ??
-              content.secoes.find((s) => s.visible) ??
-              content.secoes[0],
-          ].filter(Boolean);
-
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white admin-live-preview">
         <div className="sticky top-0 z-50 bg-denim-dark text-white px-4 py-3 flex items-center justify-between safe-top">
           <span className="font-semibold text-sm">
-            {preview === "site"
-              ? `Prévia do site — ${getThemeOption(content.tema).name}`
-              : "Pré-visualização"}
+            Prévia do site — {getThemeOption(content.tema).name}
           </span>
           <button
             type="button"
@@ -316,36 +316,19 @@ export default function AdminApp() {
           </button>
         </div>
         <div data-theme={content.tema} className="pointer-events-none">
-          {previewSections.map((section) => (
-            <SectionRenderer
-              key={section.id}
-              section={section}
-              contatos={content.contatos}
-            />
-          ))}
-          {preview === "site" && (
-            <Footer footer={content.footer} contatos={content.contatos} />
-          )}
+          <SiteHeader header={content.header} />
+          {content.secoes
+            .filter((s) => s.visible)
+            .map((section) => (
+              <SectionRenderer
+                key={section.id}
+                section={section}
+                contatos={content.contatos}
+              />
+            ))}
+          <SiteFooter footer={content.footer} contatos={content.contatos} />
         </div>
       </div>
-    );
-  }
-
-  if (editingSection) {
-    return (
-      <SectionEditor
-        section={editingSection}
-        onBack={() => setEditingSectionId(null)}
-        onPreview={() => setPreview("section")}
-        onChange={(updated) =>
-          updateContent((prev) => ({
-            ...prev,
-            secoes: prev.secoes.map((s) =>
-              s.id === updated.id ? updated : s
-            ),
-          }))
-        }
-      />
     );
   }
 
@@ -433,12 +416,13 @@ export default function AdminApp() {
         {tab === "content" && (
           <ContentTab
             content={content}
-            onEdit={setEditingSectionId}
-            onMove={moveSection}
-            onToggle={toggleSection}
+            onMoveSection={moveSection}
+            onToggleSection={toggleSection}
+            onUpdateSection={updateSection}
             onEditGlobal={(key, value) =>
               updateContent((prev) => ({ ...prev, [key]: value }))
             }
+            onPreviewSite={() => setPreview("site")}
           />
         )}
         {tab === "aparencia" && (
@@ -515,286 +499,332 @@ export default function AdminApp() {
 
 function ContentTab({
   content,
-  onEdit,
-  onMove,
-  onToggle,
+  onMoveSection,
+  onToggleSection,
+  onUpdateSection,
   onEditGlobal,
+  onPreviewSite,
 }: {
   content: SiteContent;
-  onEdit: (id: string) => void;
-  onMove: (index: number, dir: -1 | 1) => void;
-  onToggle: (id: string) => void;
+  onMoveSection: (index: number, dir: -1 | 1) => void;
+  onToggleSection: (id: string) => void;
+  onUpdateSection: (id: string, section: SiteSection) => void;
   onEditGlobal: (key: "site" | "contatos" | "header" | "footer" | "politica", value: unknown) => void;
+  onPreviewSite: () => void;
 }) {
-  const [globalEdit, setGlobalEdit] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const toggleExpanded = (id: string) =>
+    setExpanded((prev) => (prev === id ? null : id));
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="font-semibold text-xl mb-1 text-panel-ink">Seções da página</h2>
-        <StitchDivider className="ml-0 mr-auto mb-4" />
-        <div className="space-y-3">
-          {content.secoes.map((section, index) => (
-            <div
-              key={section.id}
-              className="bg-panel-surface border border-panel-border rounded-xl p-4 flex items-center gap-3 shadow-sm"
-            >
-              <div className="flex flex-col gap-1">
-                <button
-                  type="button"
-                  onClick={() => onMove(index, -1)}
-                  disabled={index === 0}
-                  className="p-1 text-panel-muted disabled:opacity-20"
-                  aria-label="Mover para cima"
-                >
-                  <ChevronUp size={18} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onMove(index, 1)}
-                  disabled={index === content.secoes.length - 1}
-                  className="p-1 text-panel-muted disabled:opacity-20"
-                  aria-label="Mover para baixo"
-                >
-                  <ChevronDown size={18} />
-                </button>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold truncate text-panel-ink">
-                  {SECTION_LABELS[section.type]}
-                </p>
-                <p className="text-panel-muted text-xs">
-                  {section.visible ? "Visível" : "Oculta"}
-                </p>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={section.visible}
-                  onChange={() => onToggle(section.id)}
-                  className="sr-only peer"
-                />
-                <div className="w-11 h-6 bg-panel-border peer-focus:outline-none rounded-full peer peer-checked:bg-denim after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
-              </label>
-              <button
-                type="button"
-                onClick={() => onEdit(section.id)}
-                className="px-4 py-2 bg-denim hover:bg-denim-dark text-white rounded-lg text-sm font-semibold shrink-0 transition-colors"
-              >
-                Editar
-              </button>
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h2 className="font-semibold text-xl text-panel-ink">Seu site, em tempo real</h2>
+          <StitchDivider className="ml-0 mr-auto mt-1 mb-1.5" />
+          <p className="text-panel-muted text-sm">
+            Toque em <strong className="text-denim-dark">Editar</strong> em qualquer parte.
+            A mudança já aparece aqui, como rascunho.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onPreviewSite}
+          className="hidden sm:flex items-center gap-1.5 px-3 py-2 bg-panel-surface border border-panel-border rounded-lg text-xs font-semibold text-panel-ink shrink-0 hover:bg-denim-light transition-colors"
+        >
+          <Monitor size={15} /> Ver sem os botões
+        </button>
+      </div>
+
+      <div className="admin-live-preview" data-theme={content.tema}>
+        <EditableBlock
+          label="Cabeçalho e menu"
+          clip={false}
+          expanded={expanded === "header"}
+          onToggleExpand={() => toggleExpanded("header")}
+          editor={
+            <HeaderFields
+              header={content.header}
+              onChange={(header) => onEditGlobal("header", header)}
+            />
+          }
+        >
+          <SiteHeader header={content.header} />
+        </EditableBlock>
+
+        {content.secoes.map((section, index) => (
+          <EditableBlock
+            key={section.id}
+            label={SECTION_LABELS[section.type]}
+            visible={section.visible}
+            onToggleVisible={() => onToggleSection(section.id)}
+            onMoveUp={() => onMoveSection(index, -1)}
+            onMoveDown={() => onMoveSection(index, 1)}
+            canMoveUp={index > 0}
+            canMoveDown={index < content.secoes.length - 1}
+            expanded={expanded === section.id}
+            onToggleExpand={() => toggleExpanded(section.id)}
+            editor={
+              <SectionFields
+                section={section}
+                onChange={(updated) => onUpdateSection(section.id, updated)}
+              />
+            }
+          >
+            <SectionRenderer
+              section={{ ...section, visible: true }}
+              contatos={content.contatos}
+            />
+          </EditableBlock>
+        ))}
+
+        <EditableBlock
+          label="Rodapé"
+          expanded={expanded === "footer"}
+          onToggleExpand={() => toggleExpanded("footer")}
+          editor={
+            <FooterFields
+              footer={content.footer}
+              onChange={(footer) => onEditGlobal("footer", footer)}
+            />
+          }
+        >
+          <SiteFooter footer={content.footer} contatos={content.contatos} />
+        </EditableBlock>
+      </div>
+
+      <SettingsAccordion
+        content={content}
+        expanded={expanded}
+        onToggleExpanded={toggleExpanded}
+        onEditGlobal={onEditGlobal}
+      />
+    </div>
+  );
+}
+
+function SettingsAccordion({
+  content,
+  expanded,
+  onToggleExpanded,
+  onEditGlobal,
+}: {
+  content: SiteContent;
+  expanded: string | null;
+  onToggleExpanded: (id: string) => void;
+  onEditGlobal: (key: "site" | "contatos" | "header" | "footer" | "politica", value: unknown) => void;
+}) {
+  return (
+    <div>
+      <h2 className="font-semibold text-xl mb-1 text-panel-ink">Outras configurações</h2>
+      <StitchDivider className="ml-0 mr-auto mb-4" />
+      <div className="space-y-2">
+        {[
+          { id: "site", label: "Site (título, descrição, endereço)" },
+          { id: "contatos", label: "WhatsApp, Instagram e links de venda" },
+          { id: "politica", label: "Página de política" },
+        ].map(({ id, label }) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => onToggleExpanded(id)}
+            className="w-full text-left flex items-center justify-between gap-2 bg-panel-surface border border-panel-border rounded-xl p-4 font-medium text-panel-ink hover:border-denim/40 transition-colors shadow-sm"
+          >
+            {label}
+            {expanded === id ? (
+              <ChevronUp size={18} className="text-denim shrink-0" />
+            ) : (
+              <ChevronDown size={18} className="text-panel-muted shrink-0" />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {expanded === "site" && (
+        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
+          <Field
+            label="Título do site (Google)"
+            value={content.site.title}
+            onChange={(v) =>
+              onEditGlobal("site", { ...content.site, title: v })
+            }
+          />
+          <Field
+            label="Descrição (Google)"
+            value={content.site.description}
+            onChange={(v) =>
+              onEditGlobal("site", { ...content.site, description: v })
+            }
+            multiline
+          />
+          <Field
+            label="Endereço do site"
+            value={content.site.url ?? ""}
+            onChange={(v) => onEditGlobal("site", { ...content.site, url: v })}
+            hint="Usado nos textos da aba Divulgar"
+          />
+        </div>
+      )}
+
+      {expanded === "contatos" && (
+        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
+          <Field
+            label="WhatsApp (número com DDI)"
+            value={content.contatos.whatsappNumber}
+            onChange={(v) =>
+              onEditGlobal("contatos", {
+                ...content.contatos,
+                whatsappNumber: v,
+              })
+            }
+            hint="Ex: 5511960614120"
+            inputMode="numeric"
+          />
+          <Field
+            label="Mensagem padrão do WhatsApp"
+            value={content.contatos.whatsappMessage}
+            onChange={(v) =>
+              onEditGlobal("contatos", {
+                ...content.contatos,
+                whatsappMessage: v,
+              })
+            }
+            multiline
+          />
+          <Field
+            label="Instagram"
+            value={content.contatos.instagram}
+            onChange={(v) =>
+              onEditGlobal("contatos", { ...content.contatos, instagram: v })
+            }
+          />
+          <Field
+            label="Link Hotmart — Oficina da Calça Jeans"
+            value={content.contatos.hotmartOficina}
+            onChange={(v) =>
+              onEditGlobal("contatos", {
+                ...content.contatos,
+                hotmartOficina: v,
+              })
+            }
+          />
+          <Field
+            label="Link Hotmart — Pilotando Tudo"
+            value={content.contatos.hotmartPilotando}
+            onChange={(v) =>
+              onEditGlobal("contatos", {
+                ...content.contatos,
+                hotmartPilotando: v,
+              })
+            }
+          />
+        </div>
+      )}
+
+      {expanded === "politica" && (
+        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
+          <Field
+            label="Data da última atualização"
+            value={content.politica.lastUpdated}
+            onChange={(v) =>
+              onEditGlobal("politica", {
+                ...content.politica,
+                lastUpdated: v,
+              })
+            }
+            hint="Formato: AAAA-MM-DD"
+          />
+          {content.politica.sections.map((sec, i) => (
+            <div key={sec.title} className="border-t border-panel-border pt-3">
+              <Field
+                label={`Seção ${i + 1} — título`}
+                value={sec.title}
+                onChange={(v) => {
+                  const sections = [...content.politica.sections];
+                  sections[i] = { ...sec, title: v };
+                  onEditGlobal("politica", {
+                    ...content.politica,
+                    sections,
+                  });
+                }}
+              />
+              <Field
+                label="Conteúdo"
+                value={sec.content}
+                onChange={(v) => {
+                  const sections = [...content.politica.sections];
+                  sections[i] = { ...sec, content: v };
+                  onEditGlobal("politica", {
+                    ...content.politica,
+                    sections,
+                  });
+                }}
+                multiline
+              />
             </div>
           ))}
         </div>
-      </div>
-
-      <div>
-        <h2 className="font-semibold text-xl mb-1 text-panel-ink">Configurações gerais</h2>
-        <StitchDivider className="ml-0 mr-auto mb-4" />
-        <div className="space-y-2">
-          {[
-            { id: "site", label: "Site (título, descrição)" },
-            { id: "contatos", label: "Contatos e links" },
-            { id: "header", label: "Menu e logo" },
-            { id: "footer", label: "Rodapé" },
-            { id: "politica", label: "Página de política" },
-          ].map(({ id, label }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setGlobalEdit(globalEdit === id ? null : id)}
-              className="w-full text-left bg-panel-surface border border-panel-border rounded-xl p-4 font-medium text-panel-ink hover:border-denim/40 transition-colors shadow-sm"
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-
-        {globalEdit === "site" && (
-          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
-            <Field
-              label="Título do site (Google)"
-              value={content.site.title}
-              onChange={(v) =>
-                onEditGlobal("site", { ...content.site, title: v })
-              }
-            />
-            <Field
-              label="Descrição (Google)"
-              value={content.site.description}
-              onChange={(v) =>
-                onEditGlobal("site", { ...content.site, description: v })
-              }
-              multiline
-            />
-            <Field
-              label="Endereço do site"
-              value={content.site.url ?? ""}
-              onChange={(v) => onEditGlobal("site", { ...content.site, url: v })}
-              hint="Usado nos textos da aba Divulgar"
-            />
-          </div>
-        )}
-
-        {globalEdit === "contatos" && (
-          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
-            <Field
-              label="WhatsApp (número com DDI)"
-              value={content.contatos.whatsappNumber}
-              onChange={(v) =>
-                onEditGlobal("contatos", {
-                  ...content.contatos,
-                  whatsappNumber: v,
-                })
-              }
-              hint="Ex: 5511960614120"
-              inputMode="numeric"
-            />
-            <Field
-              label="Mensagem padrão do WhatsApp"
-              value={content.contatos.whatsappMessage}
-              onChange={(v) =>
-                onEditGlobal("contatos", {
-                  ...content.contatos,
-                  whatsappMessage: v,
-                })
-              }
-              multiline
-            />
-            <Field
-              label="Instagram"
-              value={content.contatos.instagram}
-              onChange={(v) =>
-                onEditGlobal("contatos", { ...content.contatos, instagram: v })
-              }
-            />
-            <Field
-              label="Link Hotmart — Oficina da Calça Jeans"
-              value={content.contatos.hotmartOficina}
-              onChange={(v) =>
-                onEditGlobal("contatos", {
-                  ...content.contatos,
-                  hotmartOficina: v,
-                })
-              }
-            />
-            <Field
-              label="Link Hotmart — Pilotando Tudo"
-              value={content.contatos.hotmartPilotando}
-              onChange={(v) =>
-                onEditGlobal("contatos", {
-                  ...content.contatos,
-                  hotmartPilotando: v,
-                })
-              }
-            />
-          </div>
-        )}
-
-        {globalEdit === "header" && (
-          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
-            <Field
-              label="Nome no menu"
-              value={content.header.name}
-              onChange={(v) =>
-                onEditGlobal("header", { ...content.header, name: v })
-              }
-            />
-            <Field
-              label="Tagline"
-              value={content.header.tagline}
-              onChange={(v) =>
-                onEditGlobal("header", { ...content.header, tagline: v })
-              }
-            />
-            <p className="text-sm text-panel-muted mt-2">Itens do menu</p>
-            {content.header.navLinks.map((link, i) => (
-              <div key={link.id} className="flex gap-2 items-end">
-                <Field
-                  label={`Item ${i + 1}`}
-                  value={link.label}
-                  onChange={(v) => {
-                    const navLinks = [...content.header.navLinks];
-                    navLinks[i] = { ...link, label: v };
-                    onEditGlobal("header", { ...content.header, navLinks });
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {globalEdit === "footer" && (
-          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
-            <Field
-              label="Nome no copyright"
-              value={content.footer.copyrightName}
-              onChange={(v) =>
-                onEditGlobal("footer", {
-                  ...content.footer,
-                  copyrightName: v,
-                })
-              }
-            />
-            <Field
-              label="Texto do link de política"
-              value={content.footer.politicaLabel}
-              onChange={(v) =>
-                onEditGlobal("footer", {
-                  ...content.footer,
-                  politicaLabel: v,
-                })
-              }
-            />
-          </div>
-        )}
-
-        {globalEdit === "politica" && (
-          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
-            <Field
-              label="Data da última atualização"
-              value={content.politica.lastUpdated}
-              onChange={(v) =>
-                onEditGlobal("politica", {
-                  ...content.politica,
-                  lastUpdated: v,
-                })
-              }
-              hint="Formato: AAAA-MM-DD"
-            />
-            {content.politica.sections.map((sec, i) => (
-              <div key={sec.title} className="border-t border-panel-border pt-3">
-                <Field
-                  label={`Seção ${i + 1} — título`}
-                  value={sec.title}
-                  onChange={(v) => {
-                    const sections = [...content.politica.sections];
-                    sections[i] = { ...sec, title: v };
-                    onEditGlobal("politica", {
-                      ...content.politica,
-                      sections,
-                    });
-                  }}
-                />
-                <Field
-                  label="Conteúdo"
-                  value={sec.content}
-                  onChange={(v) => {
-                    const sections = [...content.politica.sections];
-                    sections[i] = { ...sec, content: v };
-                    onEditGlobal("politica", {
-                      ...content.politica,
-                      sections,
-                    });
-                  }}
-                  multiline
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      )}
     </div>
+  );
+}
+
+function HeaderFields({
+  header,
+  onChange,
+}: {
+  header: HeaderContent;
+  onChange: (header: HeaderContent) => void;
+}) {
+  return (
+    <>
+      <Field
+        label="Nome no menu"
+        value={header.name}
+        onChange={(v) => onChange({ ...header, name: v })}
+      />
+      <Field
+        label="Tagline"
+        value={header.tagline}
+        onChange={(v) => onChange({ ...header, tagline: v })}
+      />
+      <p className="text-sm text-panel-muted">Itens do menu</p>
+      {header.navLinks.map((link, i) => (
+        <Field
+          key={link.id}
+          label={`Item ${i + 1}`}
+          value={link.label}
+          onChange={(v) => {
+            const navLinks = [...header.navLinks];
+            navLinks[i] = { ...link, label: v };
+            onChange({ ...header, navLinks });
+          }}
+        />
+      ))}
+    </>
+  );
+}
+
+function FooterFields({
+  footer,
+  onChange,
+}: {
+  footer: FooterContent;
+  onChange: (footer: FooterContent) => void;
+}) {
+  return (
+    <>
+      <Field
+        label="Nome no copyright"
+        value={footer.copyrightName}
+        onChange={(v) => onChange({ ...footer, copyrightName: v })}
+      />
+      <Field
+        label="Texto do link de política"
+        value={footer.politicaLabel}
+        onChange={(v) => onChange({ ...footer, politicaLabel: v })}
+      />
+    </>
   );
 }
 
@@ -974,42 +1004,6 @@ function SettingsTab({
           Salvar nova senha
         </button>
       </form>
-    </div>
-  );
-}
-
-function SectionEditor({
-  section,
-  onBack,
-  onPreview,
-  onChange,
-}: {
-  section: SiteSection;
-  onBack: () => void;
-  onPreview: () => void;
-  onChange: (section: SiteSection) => void;
-}) {
-  return (
-    <div className="min-h-screen flex flex-col pb-6 bg-panel-bg">
-      <header className="sticky top-0 z-40 bg-panel-surface/95 backdrop-blur border-b border-panel-border px-4 py-3 flex items-center justify-between safe-top">
-        <button type="button" onClick={onBack} className="text-denim text-sm font-semibold">
-          ← Voltar
-        </button>
-        <span className="font-semibold text-sm text-panel-ink">
-          {SECTION_LABELS[section.type]}
-        </span>
-        <button
-          type="button"
-          onClick={onPreview}
-          className="flex items-center gap-1 text-denim text-sm"
-        >
-          <Eye size={16} /> Ver
-        </button>
-      </header>
-
-      <div className="flex-1 px-4 py-6 max-w-2xl mx-auto w-full space-y-4">
-        <SectionFields section={section} onChange={onChange} />
-      </div>
     </div>
   );
 }

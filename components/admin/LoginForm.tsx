@@ -37,7 +37,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
           <h1 className="font-display font-bold text-2xl text-denim-dark">
             Painel Adriana
           </h1>
-          <StitchDivider className="mt-3 mb-2" />
+          <StitchDivider className="mx-auto mt-3 mb-2" />
           <p className="text-panel-muted text-sm mt-2">
             Entre para administrar o site
           </p>

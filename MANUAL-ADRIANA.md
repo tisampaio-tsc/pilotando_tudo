@@ -51,19 +51,29 @@ O painel tem 5 abas na parte de baixo:
 
 ### Editar uma seção
 
-1. Na aba **Conteúdo**, toque em **Editar** na seção desejada
-2. Altere os textos nos campos
-3. Toque em **Ver** para pré-visualizar
-4. Toque em **← Voltar** — o rascunho é salvo automaticamente
+Na aba **Conteúdo** você vê o site de verdade, de cima a baixo — igual a quem
+visita a página. Cada parte fica dentro de uma moldura com **costura** e um
+"rebite" azul, com uma faixa por cima mostrando o nome daquela parte.
+
+1. Role até a parte que você quer mudar (ela aparece com a cara real do site)
+2. Toque em **Editar**, na faixa azul por cima dela
+3. Altere os textos nos campos que aparecem embaixo
+4. A mudança já aparece ali mesmo, na hora, como rascunho
+5. Toque em **Concluir edição** quando terminar
 
 ### Reordenar ou ocultar seções
 
+Na própria faixa azul de cada seção:
+
 - Use as **setas ↑ ↓** para mudar a ordem na página
-- Use o **interruptor** para mostrar ou esconder uma seção
+- Use o ícone de **olho** para mostrar ou esconder a seção — quando está
+  oculta, ela aparece apagada e com um aviso, mas continua ali para você
+  mostrar de novo quando quiser
 
 ### Adicionar ou remover itens
 
-Dentro de cada seção (depoimentos, perguntas, cards):
+Ao tocar em **Editar** numa seção que tem lista (depoimentos, perguntas,
+cards, cursos), o formulário que abre embaixo mostra cada item com:
 
 - **+ Adicionar** — cria um item novo
 - **↑ ↓** — reordena
@@ -71,13 +81,16 @@ Dentro de cada seção (depoimentos, perguntas, cards):
 
 ### Configurações gerais
 
-Ainda na aba **Conteúdo**, mais abaixo, você edita:
+Mais abaixo na aba **Conteúdo**, em **Outras configurações**, você edita
+o que não aparece diretamente no visual do site:
 
 - **Site** — título e descrição que aparecem no Google
 - **Contatos e links** — WhatsApp, Instagram e links da Hotmart
-- **Menu e logo** — nome e itens do menu
-- **Rodapé** — textos do rodapé
 - **Página de política** — textos da página de termos
+
+> O **menu/logo** (no topo) e o **rodapé** (no final) já aparecem direto na
+> lista de cima, junto com as demais seções — é só tocar em **Editar** neles
+> também.
 
 ## 4. Mudar as cores do site
 
@@ -158,7 +171,7 @@ Se perder a internet enquanto edita:
 ## Resumo rápido
 
 ```
-Entrar → Editar → Ver prévia → Publicar → Aguardar 1-2 min
+Entrar → Editar (já vê a mudança na hora) → Publicar → Aguardar 1-2 min
 ```
 
 Qualquer dúvida, entre em contato com quem configurou o site.

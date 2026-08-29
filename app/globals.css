@@ -149,30 +149,75 @@ body {
 }
 
 /*
-  Enfeites discretos de jeans, usados em poucos pontos do painel.
+  Enfeites de jeans do painel — costura e rebites, bem visíveis
+  (o objetivo é lembrar claramente uma calça jeans, sem exagerar em textura).
 */
 
 .jeans-stitch {
   display: block;
-  height: 5px;
-  background-image:
-    radial-gradient(circle, rgb(var(--p-stitch)) 1px, transparent 1.4px);
-  background-size: 8px 5px;
-  background-repeat: repeat-x;
-  background-position: 0 0, 4px 0;
-  opacity: 0.55;
+  height: 4px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgb(var(--p-stitch)) 0px,
+    rgb(var(--p-stitch)) 8px,
+    transparent 8px,
+    transparent 15px
+  );
+  border-radius: 2px;
+  opacity: 0.95;
 }
 
 .jeans-rivet {
   display: block;
-  width: 7px;
-  height: 7px;
+  width: 11px;
+  height: 11px;
   border-radius: 9999px;
   background: radial-gradient(
-    circle at 35% 30%,
+    circle at 32% 28%,
     rgb(var(--p-denim-light)),
-    rgb(var(--p-denim)) 60%,
+    rgb(var(--p-denim)) 55%,
     rgb(var(--p-denim-dark)) 100%
   );
-  box-shadow: 0 0 0 1px rgb(var(--p-denim-dark) / 0.25);
+  box-shadow:
+    0 0 0 2px rgb(var(--p-stitch) / 0.55),
+    0 1px 2px rgb(var(--p-denim-dark) / 0.5);
+}
+
+.jeans-rivet-sm {
+  width: 8px;
+  height: 8px;
+}
+
+/* Moldura costurada usada em volta dos blocos editáveis do painel. */
+.jeans-frame {
+  position: relative;
+  border: 2px dashed rgb(var(--p-stitch) / 0.8);
+  border-radius: 18px;
+  background: rgb(var(--p-denim-light) / 0.25);
+}
+
+.jeans-frame::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed rgb(var(--p-denim) / 0.35);
+  border-radius: 13px;
+  pointer-events: none;
+}
+
+/* Faixa listrada usada para marcar seções ocultas. */
+.jeans-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgb(var(--p-denim) / 0.12) 0px,
+    rgb(var(--p-denim) / 0.12) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+/* Usado para "desafixar" o <header> real do site dentro da prévia do painel. */
+.admin-live-preview header {
+  position: relative !important;
+  top: auto !important;
 }
