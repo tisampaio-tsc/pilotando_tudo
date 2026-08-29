@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Lock } from "lucide-react";
+import StitchDivider from "./StitchDivider";
 
 interface LoginFormProps {
   onLogin: (username: string, password: string) => Promise<void>;
@@ -27,23 +28,27 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-panel-bg">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gold/20 text-gold mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-denim-light text-denim mb-4">
             <Lock size={28} />
           </div>
-          <h1 className="font-display font-bold text-2xl text-gold">
+          <h1 className="font-display font-bold text-2xl text-denim-dark">
             Painel Adriana
           </h1>
-          <p className="text-white/60 text-sm mt-2">
+          <StitchDivider className="mt-3 mb-2" />
+          <p className="text-panel-muted text-sm mt-2">
             Entre para administrar o site
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4 bg-panel-surface border border-panel-border rounded-2xl p-6 shadow-sm"
+        >
           <div>
-            <label htmlFor="username" className="block text-sm text-white/70 mb-1.5">
+            <label htmlFor="username" className="block text-sm text-panel-muted mb-1.5">
               Usuário
             </label>
             <input
@@ -52,13 +57,13 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
               autoComplete="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3.5 text-base text-white placeholder-white/30 focus:outline-none focus:border-gold min-h-[48px]"
+              className="w-full bg-panel-bg border border-panel-border rounded-xl px-4 py-3.5 text-base text-panel-ink placeholder-panel-muted/60 focus:outline-none focus:border-denim focus:ring-2 focus:ring-denim/20 min-h-[48px]"
               placeholder="Seu usuário"
               required
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm text-white/70 mb-1.5">
+            <label htmlFor="password" className="block text-sm text-panel-muted mb-1.5">
               Senha
             </label>
             <input
@@ -67,14 +72,14 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3.5 text-base text-white placeholder-white/30 focus:outline-none focus:border-gold min-h-[48px]"
+              className="w-full bg-panel-bg border border-panel-border rounded-xl px-4 py-3.5 text-base text-panel-ink placeholder-panel-muted/60 focus:outline-none focus:border-denim focus:ring-2 focus:ring-denim/20 min-h-[48px]"
               placeholder="Sua senha"
               required
             />
           </div>
 
           {error && (
-            <p className="text-red-300 text-sm text-center bg-red-500/10 rounded-lg py-2">
+            <p className="text-panel-danger text-sm text-center bg-panel-danger-bg rounded-lg py-2">
               {error}
             </p>
           )}
@@ -82,7 +87,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-gold hover:bg-gold-light text-navy-900 font-bold rounded-xl text-base transition-colors disabled:opacity-50 min-h-[52px]"
+            className="w-full py-4 bg-denim hover:bg-denim-dark text-white font-bold rounded-xl text-base transition-colors disabled:opacity-50 min-h-[52px]"
           >
             {loading ? "Entrando..." : "Entrar"}
           </button>

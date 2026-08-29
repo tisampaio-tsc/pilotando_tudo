@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a1628",
+  themeColor: "#3d5a80",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -28,11 +28,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    // O painel mantém sempre as cores padrão, independentemente do tema do site.
-    <div
-      data-theme="classico"
-      className="min-h-screen bg-navy-900 text-white admin-safe-area"
-    >
+    // O painel tem sua própria identidade visual (azul jeans, fundo claro),
+    // independente do tema escolhido para o site público.
+    <div className="min-h-screen bg-panel-bg text-panel-ink admin-safe-area">
       {children}
     </div>
   );

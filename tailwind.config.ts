@@ -33,6 +33,26 @@ const config: Config = {
           hover: themed("--c-action-hover"),
         },
         check: themed("--c-check"),
+
+        panel: {
+          bg: themed("--p-bg"),
+          surface: themed("--p-surface"),
+          border: themed("--p-border"),
+          ink: themed("--p-ink"),
+          muted: themed("--p-muted"),
+        },
+        denim: {
+          DEFAULT: themed("--p-denim"),
+          dark: themed("--p-denim-dark"),
+          light: themed("--p-denim-light"),
+        },
+        stitch: themed("--p-stitch"),
+        "panel-success": themed("--p-success"),
+        "panel-success-bg": themed("--p-success-bg"),
+        "panel-warning": themed("--p-warning"),
+        "panel-warning-bg": themed("--p-warning-bg"),
+        "panel-danger": themed("--p-danger"),
+        "panel-danger-bg": themed("--p-danger-bg"),
       },
       fontFamily: {
         display: ["var(--font-playfair)", "serif"],

@@ -42,6 +42,7 @@ import LoginForm from "./LoginForm";
 import Field from "./Field";
 import ThemePicker from "./ThemePicker";
 import ShareTab from "./ShareTab";
+import StitchDivider from "./StitchDivider";
 
 type Tab = "content" | "aparencia" | "share" | "publish" | "settings";
 type PreviewMode = "section" | "site" | null;
@@ -270,8 +271,8 @@ export default function AdminApp() {
 
   if (authenticated === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gold animate-pulse">Verificando...</div>
+      <div className="min-h-screen flex items-center justify-center bg-panel-bg">
+        <div className="text-denim animate-pulse">Verificando...</div>
       </div>
     );
   }
@@ -282,8 +283,8 @@ export default function AdminApp() {
 
   if (!content) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gold animate-pulse">Carregando conteúdo...</div>
+      <div className="min-h-screen flex items-center justify-center bg-panel-bg">
+        <div className="text-denim animate-pulse">Carregando conteúdo...</div>
       </div>
     );
   }
@@ -300,7 +301,7 @@ export default function AdminApp() {
 
     return (
       <div className="min-h-screen bg-white">
-        <div className="sticky top-0 z-50 bg-navy-900 text-white px-4 py-3 flex items-center justify-between safe-top">
+        <div className="sticky top-0 z-50 bg-denim-dark text-white px-4 py-3 flex items-center justify-between safe-top">
           <span className="font-semibold text-sm">
             {preview === "site"
               ? `Prévia do site — ${getThemeOption(content.tema).name}`
@@ -309,7 +310,7 @@ export default function AdminApp() {
           <button
             type="button"
             onClick={() => setPreview(null)}
-            className="px-4 py-2 bg-gold text-navy-900 rounded-lg text-sm font-semibold"
+            className="px-4 py-2 bg-white text-denim-dark rounded-lg text-sm font-semibold"
           >
             Voltar ao painel
           </button>
@@ -349,29 +350,29 @@ export default function AdminApp() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pb-24">
+    <div className="min-h-screen flex flex-col pb-24 bg-panel-bg">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-navy-900/95 backdrop-blur border-b border-white/10 px-4 py-3 safe-top">
+      <header className="sticky top-0 z-40 bg-panel-surface/95 backdrop-blur border-b border-panel-border px-4 py-3 safe-top">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div>
-            <h1 className="font-display font-bold text-gold text-lg">
+            <h1 className="font-display font-bold text-denim-dark text-lg">
               Painel Adriana
             </h1>
-            <p className="text-white/60 text-xs">
+            <p className="text-panel-muted text-xs">
               Olá, {username}
               {saving && " · salvando..."}
             </p>
           </div>
           <div className="flex items-center gap-2">
             {online ? (
-              <Wifi size={16} className="text-green-400" />
+              <Wifi size={16} className="text-panel-success" />
             ) : (
-              <WifiOff size={16} className="text-orange-400" />
+              <WifiOff size={16} className="text-panel-warning" />
             )}
             <button
               type="button"
               onClick={handleLogout}
-              className="p-2 text-white/70 hover:text-white"
+              className="p-2 text-panel-muted hover:text-panel-ink"
               aria-label="Sair"
             >
               <LogOut size={20} />
@@ -379,17 +380,17 @@ export default function AdminApp() {
           </div>
         </div>
         {hasChanges && (
-          <div className="mt-2 max-w-4xl mx-auto bg-orange-500/20 text-orange-200 text-xs px-3 py-1.5 rounded-lg text-center">
+          <div className="mt-2 max-w-4xl mx-auto bg-panel-warning-bg text-panel-warning text-xs px-3 py-1.5 rounded-lg text-center">
             Você tem alterações não publicadas
           </div>
         )}
         {message && (
-          <div className="mt-2 max-w-4xl mx-auto bg-green-500/20 text-green-200 text-xs px-3 py-1.5 rounded-lg text-center">
+          <div className="mt-2 max-w-4xl mx-auto bg-panel-success-bg text-panel-success text-xs px-3 py-1.5 rounded-lg text-center">
             {message}
           </div>
         )}
         {error && (
-          <div className="mt-2 max-w-4xl mx-auto bg-red-500/20 text-red-200 text-xs px-3 py-1.5 rounded-lg text-center">
+          <div className="mt-2 max-w-4xl mx-auto bg-panel-danger-bg text-panel-danger text-xs px-3 py-1.5 rounded-lg text-center">
             {error}
           </div>
         )}
@@ -397,12 +398,12 @@ export default function AdminApp() {
 
       <main className="flex-1 px-4 py-6 max-w-4xl mx-auto w-full">
         {canInstall && !installDismissed && (
-          <div className="mb-6 bg-gold/10 border border-gold/30 rounded-xl p-4">
+          <div className="mb-6 bg-denim-light border border-denim/30 rounded-xl p-4">
             <div className="flex items-start gap-3">
-              <Download size={24} className="text-gold shrink-0 mt-0.5" />
+              <Download size={24} className="text-denim-dark shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
-                <p className="font-semibold">Deixe o painel na tela do celular</p>
-                <p className="text-white/70 text-sm mt-0.5">
+                <p className="font-semibold text-panel-ink">Deixe o painel na tela do celular</p>
+                <p className="text-panel-muted text-sm mt-0.5">
                   {deferredPrompt
                     ? "Assim você abre direto, como um aplicativo, sem precisar digitar o endereço."
                     : "No iPhone: toque em Compartilhar e depois em Adicionar à Tela de Início."}
@@ -414,7 +415,7 @@ export default function AdminApp() {
                 <button
                   type="button"
                   onClick={handleInstall}
-                  className="flex-1 py-3 bg-gold text-navy-900 font-bold rounded-lg min-h-[44px]"
+                  className="flex-1 py-3 bg-denim hover:bg-denim-dark text-white font-bold rounded-lg min-h-[44px] transition-colors"
                 >
                   Instalar agora
                 </button>
@@ -422,7 +423,7 @@ export default function AdminApp() {
               <button
                 type="button"
                 onClick={dismissInstall}
-                className="flex-1 py-3 bg-white/10 hover:bg-white/20 rounded-lg font-semibold min-h-[44px]"
+                className="flex-1 py-3 bg-panel-surface border border-panel-border hover:bg-panel-bg rounded-lg font-semibold text-panel-ink min-h-[44px] transition-colors"
               >
                 Agora não
               </button>
@@ -478,7 +479,7 @@ export default function AdminApp() {
       </main>
 
       {/* Bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-navy-900 border-t border-white/10 safe-bottom z-50">
+      <nav className="fixed bottom-0 left-0 right-0 bg-panel-surface border-t border-panel-border safe-bottom z-50">
         <div className="flex max-w-4xl mx-auto">
           {(
             [
@@ -493,10 +494,13 @@ export default function AdminApp() {
               key={id}
               type="button"
               onClick={() => setTab(id)}
-              className={`flex-1 flex flex-col items-center py-3 gap-1 text-[11px] leading-tight transition-colors ${
-                tab === id ? "text-gold" : "text-white/50"
+              className={`relative flex-1 flex flex-col items-center py-3 gap-1 text-[11px] leading-tight transition-colors ${
+                tab === id ? "text-denim-dark" : "text-panel-muted"
               }`}
             >
+              {tab === id && (
+                <span className="jeans-rivet absolute top-1" aria-hidden />
+              )}
               <Icon size={22} />
               {label}
             </button>
@@ -527,19 +531,20 @@ function ContentTab({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-display font-bold text-xl mb-4">Seções da página</h2>
+        <h2 className="font-semibold text-xl mb-1 text-panel-ink">Seções da página</h2>
+        <StitchDivider className="ml-0 mr-auto mb-4" />
         <div className="space-y-3">
           {content.secoes.map((section, index) => (
             <div
               key={section.id}
-              className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-3"
+              className="bg-panel-surface border border-panel-border rounded-xl p-4 flex items-center gap-3 shadow-sm"
             >
               <div className="flex flex-col gap-1">
                 <button
                   type="button"
                   onClick={() => onMove(index, -1)}
                   disabled={index === 0}
-                  className="p-1 text-white/40 disabled:opacity-20"
+                  className="p-1 text-panel-muted disabled:opacity-20"
                   aria-label="Mover para cima"
                 >
                   <ChevronUp size={18} />
@@ -548,17 +553,17 @@ function ContentTab({
                   type="button"
                   onClick={() => onMove(index, 1)}
                   disabled={index === content.secoes.length - 1}
-                  className="p-1 text-white/40 disabled:opacity-20"
+                  className="p-1 text-panel-muted disabled:opacity-20"
                   aria-label="Mover para baixo"
                 >
                   <ChevronDown size={18} />
                 </button>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold truncate">
+                <p className="font-semibold truncate text-panel-ink">
                   {SECTION_LABELS[section.type]}
                 </p>
-                <p className="text-white/50 text-xs">
+                <p className="text-panel-muted text-xs">
                   {section.visible ? "Visível" : "Oculta"}
                 </p>
               </div>
@@ -569,12 +574,12 @@ function ContentTab({
                   onChange={() => onToggle(section.id)}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:bg-gold after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
+                <div className="w-11 h-6 bg-panel-border peer-focus:outline-none rounded-full peer peer-checked:bg-denim after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full" />
               </label>
               <button
                 type="button"
                 onClick={() => onEdit(section.id)}
-                className="px-4 py-2 bg-gold text-navy-900 rounded-lg text-sm font-semibold shrink-0"
+                className="px-4 py-2 bg-denim hover:bg-denim-dark text-white rounded-lg text-sm font-semibold shrink-0 transition-colors"
               >
                 Editar
               </button>
@@ -584,7 +589,8 @@ function ContentTab({
       </div>
 
       <div>
-        <h2 className="font-display font-bold text-xl mb-4">Configurações gerais</h2>
+        <h2 className="font-semibold text-xl mb-1 text-panel-ink">Configurações gerais</h2>
+        <StitchDivider className="ml-0 mr-auto mb-4" />
         <div className="space-y-2">
           {[
             { id: "site", label: "Site (título, descrição)" },
@@ -597,7 +603,7 @@ function ContentTab({
               key={id}
               type="button"
               onClick={() => setGlobalEdit(globalEdit === id ? null : id)}
-              className="w-full text-left bg-white/5 border border-white/10 rounded-xl p-4 font-medium hover:border-gold/30 transition-colors"
+              className="w-full text-left bg-panel-surface border border-panel-border rounded-xl p-4 font-medium text-panel-ink hover:border-denim/40 transition-colors shadow-sm"
             >
               {label}
             </button>
@@ -605,7 +611,7 @@ function ContentTab({
         </div>
 
         {globalEdit === "site" && (
-          <div className="mt-4 space-y-3 bg-white/5 rounded-xl p-4">
+          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
             <Field
               label="Título do site (Google)"
               value={content.site.title}
@@ -631,7 +637,7 @@ function ContentTab({
         )}
 
         {globalEdit === "contatos" && (
-          <div className="mt-4 space-y-3 bg-white/5 rounded-xl p-4">
+          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
             <Field
               label="WhatsApp (número com DDI)"
               value={content.contatos.whatsappNumber}
@@ -686,7 +692,7 @@ function ContentTab({
         )}
 
         {globalEdit === "header" && (
-          <div className="mt-4 space-y-3 bg-white/5 rounded-xl p-4">
+          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
             <Field
               label="Nome no menu"
               value={content.header.name}
@@ -701,7 +707,7 @@ function ContentTab({
                 onEditGlobal("header", { ...content.header, tagline: v })
               }
             />
-            <p className="text-sm text-white/60 mt-2">Itens do menu</p>
+            <p className="text-sm text-panel-muted mt-2">Itens do menu</p>
             {content.header.navLinks.map((link, i) => (
               <div key={link.id} className="flex gap-2 items-end">
                 <Field
@@ -719,7 +725,7 @@ function ContentTab({
         )}
 
         {globalEdit === "footer" && (
-          <div className="mt-4 space-y-3 bg-white/5 rounded-xl p-4">
+          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
             <Field
               label="Nome no copyright"
               value={content.footer.copyrightName}
@@ -744,7 +750,7 @@ function ContentTab({
         )}
 
         {globalEdit === "politica" && (
-          <div className="mt-4 space-y-3 bg-white/5 rounded-xl p-4">
+          <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
             <Field
               label="Data da última atualização"
               value={content.politica.lastUpdated}
@@ -757,7 +763,7 @@ function ContentTab({
               hint="Formato: AAAA-MM-DD"
             />
             {content.politica.sections.map((sec, i) => (
-              <div key={sec.title} className="border-t border-white/10 pt-3">
+              <div key={sec.title} className="border-t border-panel-border pt-3">
                 <Field
                   label={`Seção ${i + 1} — título`}
                   value={sec.title}
@@ -809,12 +815,12 @@ function PublishTab({
 }) {
   return (
     <div className="space-y-6">
-      <div className="bg-white/5 border border-white/10 rounded-xl p-6 text-center">
-        <Rocket size={40} className="mx-auto text-gold mb-4" />
-        <h2 className="font-display font-bold text-xl mb-2">
+      <div className="bg-panel-surface border border-panel-border rounded-xl p-6 text-center shadow-sm">
+        <Rocket size={40} className="mx-auto text-denim mb-4" />
+        <h2 className="font-semibold text-xl mb-2 text-panel-ink">
           Publicar no site
         </h2>
-        <p className="text-white/60 text-sm mb-6">
+        <p className="text-panel-muted text-sm mb-6">
           Suas alterações ficam salvas como rascunho. Ao publicar, o site será
           reconstruído em cerca de 1 a 2 minutos.
         </p>
@@ -822,38 +828,38 @@ function PublishTab({
           type="button"
           onClick={onPublish}
           disabled={publishing || !hasChanges}
-          className="w-full py-4 bg-gold text-navy-900 font-bold rounded-xl text-lg disabled:opacity-40 hover:bg-gold-light transition-colors"
+          className="w-full py-4 bg-denim text-white font-bold rounded-xl text-lg disabled:opacity-40 hover:bg-denim-dark transition-colors"
         >
           {publishing ? "Publicando..." : "Publicar agora"}
         </button>
         {!hasChanges && (
-          <p className="text-white/40 text-xs mt-3">
+          <p className="text-panel-muted text-xs mt-3">
             Nenhuma alteração pendente
           </p>
         )}
         {deployStatus && (
-          <p className="text-green-300 text-sm mt-4">{deployStatus}</p>
+          <p className="text-panel-success text-sm mt-4">{deployStatus}</p>
         )}
       </div>
 
       <div>
-        <h3 className="font-semibold mb-3">Histórico de versões</h3>
+        <h3 className="font-semibold mb-3 text-panel-ink">Histórico de versões</h3>
         {versions.length === 0 ? (
-          <p className="text-white/50 text-sm">Nenhuma versão publicada ainda.</p>
+          <p className="text-panel-muted text-sm">Nenhuma versão publicada ainda.</p>
         ) : (
           <div className="space-y-2">
             {versions.map((v) => (
               <div
                 key={v.id}
-                className="flex items-center justify-between bg-white/5 rounded-lg px-4 py-3"
+                className="flex items-center justify-between bg-panel-surface border border-panel-border rounded-lg px-4 py-3"
               >
-                <span className="text-sm">
+                <span className="text-sm text-panel-ink">
                   {new Date(v.published_at).toLocaleString("pt-BR")}
                 </span>
                 <button
                   type="button"
                   onClick={() => onRestore(v.id)}
-                  className="text-gold text-sm font-semibold"
+                  className="text-denim text-sm font-semibold"
                 >
                   Restaurar
                 </button>
@@ -900,44 +906,44 @@ function SettingsTab({
 
   return (
     <div className="space-y-6">
-      <div className="bg-gold/10 border border-gold/30 rounded-xl p-4">
+      <div className="bg-denim-light border border-denim/30 rounded-xl p-4">
         <div className="flex items-center gap-3 mb-3">
-          <Download size={24} className="text-gold shrink-0" />
+          <Download size={24} className="text-denim-dark shrink-0" />
           <div>
-            <p className="font-semibold">Painel como aplicativo</p>
-            <p className="text-white/60 text-sm">
+            <p className="font-semibold text-panel-ink">Painel como aplicativo</p>
+            <p className="text-panel-muted text-sm">
               Abra o painel direto da tela do celular
             </p>
           </div>
         </div>
         {installed ? (
-          <p className="text-sm text-green-300">
+          <p className="text-sm text-panel-success">
             Pronto! O painel já está instalado neste aparelho.
           </p>
         ) : deferredPrompt ? (
           <button
             type="button"
             onClick={onInstall}
-            className="w-full py-3 bg-gold text-navy-900 font-bold rounded-lg min-h-[44px]"
+            className="w-full py-3 bg-denim hover:bg-denim-dark text-white font-bold rounded-lg min-h-[44px] transition-colors"
           >
             Instalar agora
           </button>
         ) : showIosInstall ? (
-          <ol className="text-sm text-white/70 space-y-1.5 list-decimal list-inside">
+          <ol className="text-sm text-panel-muted space-y-1.5 list-decimal list-inside">
             <li>
-              Toque no botão <strong>Compartilhar</strong> (quadrado com uma
+              Toque no botão <strong className="text-panel-ink">Compartilhar</strong> (quadrado com uma
               seta para cima), na barra do Safari
             </li>
             <li>
               Role a lista e toque em{" "}
-              <strong>Adicionar à Tela de Início</strong>
+              <strong className="text-panel-ink">Adicionar à Tela de Início</strong>
             </li>
             <li>
-              Toque em <strong>Adicionar</strong>
+              Toque em <strong className="text-panel-ink">Adicionar</strong>
             </li>
           </ol>
         ) : (
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-panel-muted">
             Para instalar, abra o painel no celular pelo Chrome (Android) ou
             Safari (iPhone). No computador, use o ícone de instalação na barra
             de endereço.
@@ -945,8 +951,8 @@ function SettingsTab({
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <h2 className="font-display font-bold text-xl">Alterar senha</h2>
+      <form onSubmit={handleSubmit} className="space-y-4 bg-panel-surface border border-panel-border rounded-xl p-4">
+        <h2 className="font-semibold text-xl text-panel-ink">Alterar senha</h2>
         <Field
           label="Senha atual"
           value={current}
@@ -959,11 +965,11 @@ function SettingsTab({
           onChange={setNewPass}
           type="password"
         />
-        {msg && <p className="text-green-300 text-sm">{msg}</p>}
-        {err && <p className="text-red-300 text-sm">{err}</p>}
+        {msg && <p className="text-panel-success text-sm">{msg}</p>}
+        {err && <p className="text-panel-danger text-sm">{err}</p>}
         <button
           type="submit"
-          className="w-full py-3 bg-white/10 hover:bg-white/20 rounded-lg font-semibold"
+          className="w-full py-3 bg-panel-bg border border-panel-border hover:bg-denim-light rounded-lg font-semibold text-panel-ink transition-colors"
         >
           Salvar nova senha
         </button>
@@ -984,18 +990,18 @@ function SectionEditor({
   onChange: (section: SiteSection) => void;
 }) {
   return (
-    <div className="min-h-screen flex flex-col pb-6">
-      <header className="sticky top-0 z-40 bg-navy-900/95 backdrop-blur border-b border-white/10 px-4 py-3 flex items-center justify-between safe-top">
-        <button type="button" onClick={onBack} className="text-gold text-sm font-semibold">
+    <div className="min-h-screen flex flex-col pb-6 bg-panel-bg">
+      <header className="sticky top-0 z-40 bg-panel-surface/95 backdrop-blur border-b border-panel-border px-4 py-3 flex items-center justify-between safe-top">
+        <button type="button" onClick={onBack} className="text-denim text-sm font-semibold">
           ← Voltar
         </button>
-        <span className="font-display font-bold text-sm">
+        <span className="font-semibold text-sm text-panel-ink">
           {SECTION_LABELS[section.type]}
         </span>
         <button
           type="button"
           onClick={onPreview}
-          className="flex items-center gap-1 text-gold text-sm"
+          className="flex items-center gap-1 text-denim text-sm"
         >
           <Eye size={16} /> Ver
         </button>
@@ -1035,8 +1041,8 @@ function SectionFields({
         <>
           <Field label="Título da seção" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
           {section.cards.map((card, i) => (
-            <div key={card.id} className="bg-white/5 rounded-xl p-4 space-y-3">
-              <p className="text-sm font-semibold text-gold">Card {i + 1}</p>
+            <div key={card.id} className="bg-panel-surface border border-panel-border rounded-xl p-4 space-y-3">
+              <p className="text-sm font-semibold text-denim">Card {i + 1}</p>
               <Field label="Título" value={card.title} onChange={(v) => {
                 const cards = [...section.cards];
                 cards[i] = { ...card, title: v };
@@ -1067,8 +1073,8 @@ function SectionFields({
         <>
           <Field label="Título da seção" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
           {section.cursos.map((curso, i) => (
-            <div key={curso.id} className="bg-white/5 rounded-xl p-4 space-y-3">
-              <p className="text-sm font-semibold text-gold">{curso.title}</p>
+            <div key={curso.id} className="bg-panel-surface border border-panel-border rounded-xl p-4 space-y-3">
+              <p className="text-sm font-semibold text-denim">{curso.title}</p>
               <Field label="Subtítulo" value={curso.subtitle} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, subtitle: v }; onChange({ ...section, cursos }); }} />
               <Field label="Descrição" value={curso.description} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, description: v }; onChange({ ...section, cursos }); }} multiline />
               <Field label="Texto do botão" value={curso.buttonText} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, buttonText: v }; onChange({ ...section, cursos }); }} />
@@ -1093,8 +1099,8 @@ function SectionFields({
         <>
           <Field label="Título" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
           {section.depoimentos.map((dep, i) => (
-            <div key={dep.id} className="bg-white/5 rounded-xl p-4 space-y-3">
-              <p className="text-sm font-semibold text-gold">Depoimento {i + 1}</p>
+            <div key={dep.id} className="bg-panel-surface border border-panel-border rounded-xl p-4 space-y-3">
+              <p className="text-sm font-semibold text-denim">Depoimento {i + 1}</p>
               <Field label="Nome" value={dep.nome} onChange={(v) => { const depoimentos = [...section.depoimentos]; depoimentos[i] = { ...dep, nome: v }; onChange({ ...section, depoimentos }); }} />
               <Field label="Texto" value={dep.texto} onChange={(v) => { const depoimentos = [...section.depoimentos]; depoimentos[i] = { ...dep, texto: v }; onChange({ ...section, depoimentos }); }} multiline />
               <ListActions
@@ -1118,8 +1124,8 @@ function SectionFields({
           <Field label="Título" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
           <Field label="Texto do botão de dúvidas" value={section.ctaText} onChange={(v) => onChange({ ...section, ctaText: v })} />
           {section.items.map((item, i) => (
-            <div key={item.id} className="bg-white/5 rounded-xl p-4 space-y-3">
-              <p className="text-sm font-semibold text-gold">Pergunta {i + 1}</p>
+            <div key={item.id} className="bg-panel-surface border border-panel-border rounded-xl p-4 space-y-3">
+              <p className="text-sm font-semibold text-denim">Pergunta {i + 1}</p>
               <Field label="Pergunta" value={item.pergunta} onChange={(v) => { const items = [...section.items]; items[i] = { ...item, pergunta: v }; onChange({ ...section, items }); }} />
               <Field label="Resposta" value={item.resposta} onChange={(v) => { const items = [...section.items]; items[i] = { ...item, resposta: v }; onChange({ ...section, items }); }} multiline />
               <ListActions
@@ -1153,7 +1159,7 @@ function ListEditor({
 }) {
   return (
     <div>
-      <p className="text-sm font-medium text-white/80 mb-2">{label}</p>
+      <p className="text-sm font-medium text-panel-ink/80 mb-2">{label}</p>
       <div className="space-y-2">
         {items.map((item, i) => (
           <div key={i} className="flex gap-2">
@@ -1164,12 +1170,12 @@ function ListEditor({
                 next[i] = e.target.value;
                 onChange(next);
               }}
-              className="flex-1 bg-white/10 border border-white/20 rounded-lg px-3 py-2.5 text-base text-white min-h-[44px]"
+              className="flex-1 bg-panel-bg border border-panel-border rounded-lg px-3 py-2.5 text-base text-panel-ink focus:outline-none focus:border-denim focus:ring-2 focus:ring-denim/20 min-h-[44px]"
             />
             <button
               type="button"
               onClick={() => onChange(items.filter((_, j) => j !== i))}
-              className="p-2 text-red-400 shrink-0"
+              className="p-2 text-panel-danger shrink-0"
               aria-label="Remover"
             >
               <Trash2 size={18} />
@@ -1180,7 +1186,7 @@ function ListEditor({
       <button
         type="button"
         onClick={() => onChange([...items, ""])}
-        className="mt-2 text-gold text-sm flex items-center gap-1"
+        className="mt-2 text-denim text-sm flex items-center gap-1"
       >
         <Plus size={16} /> Adicionar item
       </button>
@@ -1203,13 +1209,13 @@ function ListActions({
 }) {
   return (
     <div className="flex gap-2 pt-2">
-      <button type="button" onClick={onMoveUp} disabled={!canUp} className="p-2 bg-white/10 rounded disabled:opacity-30">
+      <button type="button" onClick={onMoveUp} disabled={!canUp} className="p-2 bg-panel-bg border border-panel-border text-panel-ink rounded disabled:opacity-30">
         <ChevronUp size={16} />
       </button>
-      <button type="button" onClick={onMoveDown} disabled={!canDown} className="p-2 bg-white/10 rounded disabled:opacity-30">
+      <button type="button" onClick={onMoveDown} disabled={!canDown} className="p-2 bg-panel-bg border border-panel-border text-panel-ink rounded disabled:opacity-30">
         <ChevronDown size={16} />
       </button>
-      <button type="button" onClick={onDelete} className="p-2 bg-red-500/20 text-red-300 rounded ml-auto">
+      <button type="button" onClick={onDelete} className="p-2 bg-panel-danger-bg text-panel-danger rounded ml-auto">
         <Trash2 size={16} />
       </button>
     </div>
@@ -1221,7 +1227,7 @@ function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="w-full py-3 border border-dashed border-gold/30 text-gold rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
+      className="w-full py-3 border border-dashed border-denim/40 text-denim rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
     >
       <Plus size={16} /> {label}
     </button>

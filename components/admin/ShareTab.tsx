@@ -22,10 +22,10 @@ export default function ShareTab({ content }: ShareTabProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-display font-bold text-2xl mb-2">Divulgar</h2>
-        <p className="text-white/70 text-base leading-relaxed">
+        <h2 className="font-semibold text-2xl mb-2 text-panel-ink">Divulgar</h2>
+        <p className="text-panel-muted text-base leading-relaxed">
           Escolha o que você quer divulgar. O texto já vem pronto — se quiser,
-          é só mudar. Ao tocar em <strong>Enviar pelo WhatsApp</strong>, você
+          é só mudar. Ao tocar em <strong className="text-panel-ink">Enviar pelo WhatsApp</strong>, você
           escolhe para quem mandar.
         </p>
       </div>
@@ -65,10 +65,10 @@ function ShareCard({ item }: { item: ShareItem }) {
     typeof navigator !== "undefined" && typeof navigator.share === "function";
 
   return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
+    <div className="bg-panel-surface border border-panel-border rounded-2xl p-4 space-y-3 shadow-sm">
       <div>
-        <h3 className="font-display font-bold text-lg">{item.title}</h3>
-        <p className="text-white/40 text-xs break-all">{item.link}</p>
+        <h3 className="font-semibold text-lg text-panel-ink">{item.title}</h3>
+        <p className="text-panel-muted text-xs break-all">{item.link}</p>
       </div>
 
       <textarea
@@ -76,14 +76,14 @@ function ShareCard({ item }: { item: ShareItem }) {
         onChange={(e) => setMessage(e.target.value)}
         rows={5}
         aria-label={`Mensagem para divulgar ${item.title}`}
-        className="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2.5 text-base text-white leading-relaxed resize-y"
+        className="w-full bg-panel-bg border border-panel-border rounded-lg px-3 py-2.5 text-base text-panel-ink leading-relaxed resize-y focus:outline-none focus:border-denim focus:ring-2 focus:ring-denim/20"
       />
 
       <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full flex items-center justify-center gap-2 py-4 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl text-base"
+        className="w-full flex items-center justify-center gap-2 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-base transition-colors"
       >
         <MessageCircle size={22} /> Enviar pelo WhatsApp
       </a>
@@ -92,11 +92,11 @@ function ShareCard({ item }: { item: ShareItem }) {
         <button
           type="button"
           onClick={handleCopy}
-          className="flex-1 flex items-center justify-center gap-2 py-3 bg-white/10 hover:bg-white/20 rounded-lg font-semibold text-sm min-h-[44px]"
+          className="flex-1 flex items-center justify-center gap-2 py-3 bg-panel-bg border border-panel-border hover:bg-denim-light rounded-lg font-semibold text-sm text-panel-ink min-h-[44px] transition-colors"
         >
           {copied ? (
             <>
-              <Check size={18} className="text-green-400" /> Copiado!
+              <Check size={18} className="text-panel-success" /> Copiado!
             </>
           ) : (
             <>
@@ -108,7 +108,7 @@ function ShareCard({ item }: { item: ShareItem }) {
           <button
             type="button"
             onClick={handleShare}
-            className="flex-1 flex items-center justify-center gap-2 py-3 bg-white/10 hover:bg-white/20 rounded-lg font-semibold text-sm min-h-[44px]"
+            className="flex-1 flex items-center justify-center gap-2 py-3 bg-panel-bg border border-panel-border hover:bg-denim-light rounded-lg font-semibold text-sm text-panel-ink min-h-[44px] transition-colors"
           >
             <Share2 size={18} /> Outros apps
           </button>

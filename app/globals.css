@@ -105,6 +105,29 @@
   --c-check: 166 124 0;
 }
 
+/*
+  Tokens exclusivos do painel administrativo (/admin). Independentes dos
+  temas do site acima — o admin tem sua própria identidade visual (azul
+  jeans, fundo claro) e não muda com o tema escolhido para o site público.
+*/
+:root {
+  --p-bg: 246 248 251;
+  --p-surface: 255 255 255;
+  --p-border: 219 227 238;
+  --p-ink: 30 41 59;
+  --p-muted: 100 116 139;
+  --p-denim: 61 90 128;
+  --p-denim-dark: 37 68 95;
+  --p-denim-light: 219 232 245;
+  --p-stitch: 191 138 55;
+  --p-success: 21 128 61;
+  --p-success-bg: 220 245 230;
+  --p-warning: 161 98 7;
+  --p-warning-bg: 253 240 210;
+  --p-danger: 190 40 40;
+  --p-danger-bg: 253 226 226;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -123,4 +146,33 @@ body {
 
 .admin-safe-area {
   padding-top: env(safe-area-inset-top, 0);
+}
+
+/*
+  Enfeites discretos de jeans, usados em poucos pontos do painel.
+*/
+
+.jeans-stitch {
+  display: block;
+  height: 5px;
+  background-image:
+    radial-gradient(circle, rgb(var(--p-stitch)) 1px, transparent 1.4px);
+  background-size: 8px 5px;
+  background-repeat: repeat-x;
+  background-position: 0 0, 4px 0;
+  opacity: 0.55;
+}
+
+.jeans-rivet {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgb(var(--p-denim-light)),
+    rgb(var(--p-denim)) 60%,
+    rgb(var(--p-denim-dark)) 100%
+  );
+  box-shadow: 0 0 0 1px rgb(var(--p-denim-dark) / 0.25);
 }

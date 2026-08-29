@@ -2,6 +2,7 @@
 
 import { Check, Eye } from "lucide-react";
 import { THEMES, type ThemeName } from "@/lib/theme";
+import StitchDivider from "./StitchDivider";
 
 interface ThemePickerProps {
   value: ThemeName;
@@ -17,8 +18,9 @@ export default function ThemePicker({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-display font-bold text-2xl mb-2">Cores do site</h2>
-        <p className="text-white/70 text-base leading-relaxed">
+        <h2 className="font-semibold text-2xl mb-1 text-panel-ink">Cores do site</h2>
+        <StitchDivider className="ml-0 mr-auto mb-3" />
+        <p className="text-panel-muted text-base leading-relaxed">
           Escolha abaixo como o site vai ficar. Toque no visual que você mais
           gostar — só os textos continuam iguais, nada se perde.
         </p>
@@ -33,24 +35,24 @@ export default function ThemePicker({
               type="button"
               onClick={() => onChange(theme.id)}
               aria-pressed={selected}
-              className={`w-full text-left rounded-2xl overflow-hidden border-4 transition-colors ${
+              className={`w-full text-left rounded-2xl overflow-hidden border-4 transition-colors bg-panel-surface ${
                 selected
-                  ? "border-gold"
-                  : "border-white/10 hover:border-white/40"
+                  ? "border-denim"
+                  : "border-panel-border hover:border-denim/50"
               }`}
             >
               <ThemeMockup theme={theme.id} />
-              <div className="flex items-center gap-3 p-4 bg-white/5">
+              <div className="flex items-center gap-3 p-4">
                 <div className="flex-1 min-w-0">
-                  <p className="font-display font-bold text-lg">{theme.name}</p>
-                  <p className="text-white/60 text-sm">{theme.description}</p>
+                  <p className="font-semibold text-lg text-panel-ink">{theme.name}</p>
+                  <p className="text-panel-muted text-sm">{theme.description}</p>
                 </div>
                 {selected ? (
-                  <span className="flex items-center gap-1.5 bg-gold text-navy-900 font-bold text-sm px-3 py-2 rounded-full shrink-0">
+                  <span className="flex items-center gap-1.5 bg-denim text-white font-bold text-sm px-3 py-2 rounded-full shrink-0">
                     <Check size={16} /> Em uso
                   </span>
                 ) : (
-                  <span className="text-white/50 text-sm font-semibold shrink-0">
+                  <span className="text-panel-muted text-sm font-semibold shrink-0">
                     Escolher
                   </span>
                 )}
@@ -63,14 +65,14 @@ export default function ThemePicker({
       <button
         type="button"
         onClick={onPreview}
-        className="w-full flex items-center justify-center gap-2 py-4 bg-white/10 hover:bg-white/20 rounded-xl font-semibold text-base"
+        className="w-full flex items-center justify-center gap-2 py-4 bg-panel-surface border border-panel-border hover:bg-denim-light rounded-xl font-semibold text-base text-panel-ink transition-colors"
       >
         <Eye size={20} /> Ver o site inteiro nesta cor
       </button>
 
-      <p className="text-white/70 text-base bg-white/5 rounded-xl p-4 leading-relaxed">
-        Escolheu? Agora vá na aba <strong className="text-gold">Publicar</strong>{" "}
-        e toque em <strong className="text-gold">Publicar agora</strong> para o
+      <p className="text-panel-muted text-base bg-panel-surface border border-panel-border rounded-xl p-4 leading-relaxed">
+        Escolheu? Agora vá na aba <strong className="text-denim-dark">Publicar</strong>{" "}
+        e toque em <strong className="text-denim-dark">Publicar agora</strong> para o
         site mudar de verdade.
       </p>
     </div>
