@@ -479,14 +479,20 @@ export default function AdminApp() {
               key={id}
               type="button"
               onClick={() => setTab(id)}
-              className={`relative flex-1 flex flex-col items-center py-3 gap-1 text-[11px] leading-tight transition-colors ${
-                tab === id ? "text-denim-dark" : "text-panel-muted"
+              aria-current={tab === id ? "page" : undefined}
+              className={`flex-1 flex flex-col items-center py-2.5 gap-1 text-[11px] leading-tight transition-colors ${
+                tab === id
+                  ? "text-denim-dark font-semibold"
+                  : "text-panel-muted"
               }`}
             >
-              {tab === id && (
-                <span className="jeans-rivet absolute top-1" aria-hidden />
-              )}
-              <Icon size={22} />
+              <span
+                className={`flex items-center justify-center w-12 h-7 rounded-full transition-colors ${
+                  tab === id ? "bg-denim-light" : ""
+                }`}
+              >
+                <Icon size={20} />
+              </span>
               {label}
             </button>
           ))}
