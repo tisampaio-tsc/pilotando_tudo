@@ -25,7 +25,7 @@ Se o aviso não aparecer, dá para instalar pela aba **Ajustes**:
 2. Vá na aba **Ajustes**
 3. Toque em **Instalar agora**
 4. Confirme a instalação
-5. O ícone **Painel** aparecerá na tela do celular
+5. O ícone **Pilotando Tudo** aparecerá na tela do celular
 
 ### iPhone (Safari)
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = "admin-v3";
+const CACHE_NAME = "admin-v4";
 const ADMIN_PREFIXES = ["/admin", "/api"];
 
 self.addEventListener("install", (event) => {
