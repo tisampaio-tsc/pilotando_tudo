@@ -27,23 +27,15 @@ export default function Header({ header }: HeaderProps) {
               sizes="80px"
             />
           </div>
-          <span className="font-display font-semibold text-navy-900 text-sm md:text-base">
-            {header.name}
-          </span>
+          <span className={headerText.name}>{header.name}</span>
           {header.tagline ? (
-            <span className="hidden sm:inline text-gold text-sm font-medium">
-              {header.tagline}
-            </span>
+            <span className={headerText.tagline}>{header.tagline}</span>
           ) : null}
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="text-navy-900 font-medium text-sm hover:text-gold transition-colors"
-            >
+            <Link key={href} href={href} className={headerText.navLink}>
               {label}
             </Link>
           ))}
@@ -78,3 +70,10 @@ export default function Header({ header }: HeaderProps) {
     </header>
   );
 }
+
+/** Classes de texto reaproveitadas por HeaderEdit.tsx no painel. */
+export const headerText = {
+  name: "font-display font-semibold text-navy-900 text-sm md:text-base",
+  tagline: "hidden sm:inline text-gold text-sm font-medium",
+  navLink: "text-navy-900 font-medium text-sm hover:text-gold transition-colors",
+};

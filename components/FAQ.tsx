@@ -18,9 +18,7 @@ export default function FAQ({ data, contatos }: FAQProps) {
     <section className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="font-display font-extrabold text-navy-900 text-2xl md:text-3xl">
-            {data.title}
-          </h2>
+          <h2 className={faqText.title}>{data.title}</h2>
           <div
             className="mt-2 w-16 h-0.5 bg-gold mx-auto rounded-full"
             aria-hidden
@@ -55,9 +53,7 @@ export default function FAQ({ data, contatos }: FAQProps) {
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-5 pb-4 pt-0 text-navy-700 text-sm md:text-base leading-relaxed border-t border-gold/20">
-                    {item.resposta}
-                  </div>
+                  <div className={faqText.resposta}>{item.resposta}</div>
                 )}
               </div>
             );
@@ -69,7 +65,7 @@ export default function FAQ({ data, contatos }: FAQProps) {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3.5 border-2 border-gold text-gold hover:bg-gold hover:text-white font-semibold rounded-md transition-all duration-300"
+            className={faqText.button}
           >
             <MessageCircle size={22} />
             {data.ctaText}
@@ -79,3 +75,13 @@ export default function FAQ({ data, contatos }: FAQProps) {
     </section>
   );
 }
+
+/** Classes de texto reaproveitadas por FaqEdit.tsx no painel. */
+export const faqText = {
+  title: "font-display font-extrabold text-navy-900 text-2xl md:text-3xl",
+  pergunta: "font-semibold text-navy-900",
+  resposta:
+    "px-5 pb-4 pt-0 text-navy-700 text-sm md:text-base leading-relaxed border-t border-gold/20",
+  button:
+    "inline-flex items-center gap-2 px-6 py-3.5 border-2 border-gold text-gold hover:bg-gold hover:text-white font-semibold rounded-md transition-all duration-300",
+};

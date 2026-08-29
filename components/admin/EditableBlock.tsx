@@ -6,7 +6,8 @@ import { ChevronDown, ChevronUp, Eye, EyeOff, Pencil, X } from "lucide-react";
 interface EditableBlockProps {
   label: string;
   children: ReactNode;
-  editor?: ReactNode;
+  /** Conteúdo mostrado NO LUGAR de `children`, dentro da mesma moldura, quando `expanded` for true. */
+  editing?: ReactNode;
   expanded?: boolean;
   onToggleExpand?: () => void;
   visible?: boolean;
@@ -19,16 +20,10 @@ interface EditableBlockProps {
   clip?: boolean;
 }
 
-/**
- * Envolve um bloco real do site (Header, uma seção ou o Footer) com uma
- * "moldura costurada" do painel: barra com nome do bloco, botões de mover,
- * mostrar/ocultar e editar. Ao editar, o formulário aparece encaixado logo
- * abaixo do próprio bloco, sem esconder o resto do site.
- */
 export default function EditableBlock({
   label,
   children,
-  editor,
+  editing,
   expanded = false,
   onToggleExpand,
   visible = true,
@@ -39,8 +34,14 @@ export default function EditableBlock({
   canMoveDown = true,
   clip = true,
 }: EditableBlockProps) {
+  const showEditing = expanded && editing;
+
   return (
-    <div className={`jeans-frame mb-6 ${clip ? "overflow-hidden" : ""}`}>
+    <div
+      className={`jeans-frame jeans-label mb-6 ${
+        clip ? "overflow-hidden" : ""
+      } ${expanded ? "jeans-frame--editing" : ""}`}
+    >
       <div className="relative flex items-center gap-1 bg-denim-dark text-white px-2.5 py-2 rounded-t-[16px]">
         <span className="jeans-rivet jeans-rivet-sm shrink-0" aria-hidden />
         <span className="font-semibold text-xs sm:text-sm flex-1 truncate pl-1">
@@ -79,13 +80,13 @@ export default function EditableBlock({
             {visible ? <Eye size={16} /> : <EyeOff size={16} />}
           </button>
         )}
-        {editor && onToggleExpand && (
+        {editing && onToggleExpand && (
           <button
             type="button"
             onClick={onToggleExpand}
             className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-colors ${
               expanded
-                ? "bg-white/15 text-white"
+                ? "bg-white text-denim-dark"
                 : "bg-white text-denim-dark hover:bg-denim-light"
             }`}
           >
@@ -102,7 +103,9 @@ export default function EditableBlock({
         )}
       </div>
 
-      <div className={!visible ? "opacity-40 jeans-hatch" : ""}>{children}</div>
+      <div className={!visible ? "opacity-40 jeans-hatch" : ""}>
+        {showEditing ? editing : children}
+      </div>
 
       {!visible && (
         <p className="bg-panel-warning-bg text-panel-warning text-xs text-center py-1.5 px-2">
@@ -110,19 +113,14 @@ export default function EditableBlock({
         </p>
       )}
 
-      {expanded && editor && (
-        <div className="bg-panel-surface border-t-2 border-dashed border-stitch/70 p-4 space-y-4">
-          {editor}
-          {onToggleExpand && (
-            <button
-              type="button"
-              onClick={onToggleExpand}
-              className="w-full py-3 bg-denim hover:bg-denim-dark text-white font-bold rounded-xl transition-colors min-h-[44px]"
-            >
-              Concluir edição
-            </button>
-          )}
-        </div>
+      {showEditing && onToggleExpand && (
+        <button
+          type="button"
+          onClick={onToggleExpand}
+          className="btn-fabric w-full py-2.5 bg-denim-light text-denim-dark font-bold text-sm flex items-center justify-center gap-1.5 hover:bg-denim/20 transition-colors border-t-2 border-dashed border-stitch/60"
+        >
+          <X size={15} /> Concluir edição
+        </button>
       )}
     </div>
   );

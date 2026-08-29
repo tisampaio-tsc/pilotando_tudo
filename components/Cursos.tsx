@@ -14,9 +14,7 @@ export default function Cursos({ data, contatos }: CursosProps) {
     <section id="cursos" className="py-16 md:py-24 bg-navy-900">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="font-display font-extrabold text-white text-2xl md:text-3xl">
-            {data.title}
-          </h2>
+          <h2 className={cursosText.title}>{data.title}</h2>
           <div
             className="mt-2 w-16 h-0.5 bg-gold mx-auto rounded-full"
             aria-hidden
@@ -28,10 +26,7 @@ export default function Cursos({ data, contatos }: CursosProps) {
             const isPilotando = index === 1;
 
             return (
-              <article
-                key={curso.id}
-                className="bg-gold/10 border border-gold/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:border-gold/50 transition-all duration-300 flex flex-col"
-              >
+              <article key={curso.id} className={cursosText.card}>
                 <div className="relative h-48 sm:h-56 w-full bg-navy-800 overflow-hidden">
                   <Image
                     src={curso.image}
@@ -46,7 +41,7 @@ export default function Cursos({ data, contatos }: CursosProps) {
                 <div className="p-6 md:p-8 flex-1 flex flex-col min-h-0">
                   <div className="flex-1 min-h-0">
                     <p
-                      className={`text-sm font-medium uppercase tracking-wide mb-1 ${
+                      className={`${cursosText.subtitle} ${
                         isPilotando
                           ? "text-gold-light font-bold"
                           : "text-gold"
@@ -54,15 +49,11 @@ export default function Cursos({ data, contatos }: CursosProps) {
                     >
                       {curso.subtitle}
                     </p>
-                    <h3 className="font-display font-bold text-white text-xl md:text-2xl mb-3">
-                      {curso.title}
-                    </h3>
-                    <p className="text-white/90 text-sm md:text-base mb-4 leading-relaxed">
+                    <h3 className={cursosText.cardTitle}>{curso.title}</h3>
+                    <p className={cursosText.description}>
                       {curso.description}
                     </p>
-                    <p className="text-gold/90 text-xs font-semibold uppercase tracking-wide mb-2">
-                      {curso.learnLabel}
-                    </p>
+                    <p className={cursosText.listLabel}>{curso.learnLabel}</p>
                     <ul className="space-y-1.5 mb-3 text-white/85 text-sm">
                       {curso.learnList.map((item) => (
                         <li key={item} className="flex items-start gap-2">
@@ -74,9 +65,7 @@ export default function Cursos({ data, contatos }: CursosProps) {
                         </li>
                       ))}
                     </ul>
-                    <p className="text-gold/90 text-xs font-semibold uppercase tracking-wide mb-2">
-                      {curso.bonusLabel}
-                    </p>
+                    <p className={cursosText.listLabel}>{curso.bonusLabel}</p>
                     <ul className="space-y-1.5 mb-6 text-white/80 text-sm">
                       {curso.bonusList.map((item) => (
                         <li key={item} className="flex items-start gap-2">
@@ -94,7 +83,7 @@ export default function Cursos({ data, contatos }: CursosProps) {
                       href={href.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-cta hover:bg-cta-hover text-cta-text font-bold rounded-[12px] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgb(var(--c-cta)/0.5)]"
+                      className={cursosText.button}
                     >
                       {curso.buttonText}
                     </Link>
@@ -112,3 +101,17 @@ export default function Cursos({ data, contatos }: CursosProps) {
     </section>
   );
 }
+
+/** Classes de texto reaproveitadas por CursosEdit.tsx no painel. */
+export const cursosText = {
+  title: "font-display font-extrabold text-white text-2xl md:text-3xl",
+  card:
+    "bg-gold/10 border border-gold/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:border-gold/50 transition-all duration-300 flex flex-col",
+  subtitle: "text-sm font-medium uppercase tracking-wide mb-1",
+  cardTitle: "font-display font-bold text-white text-xl md:text-2xl mb-3",
+  description: "text-white/90 text-sm md:text-base mb-4 leading-relaxed",
+  listLabel: "text-gold/90 text-xs font-semibold uppercase tracking-wide mb-2",
+  listItem: "text-white/85 text-sm",
+  button:
+    "inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-cta hover:bg-cta-hover text-cta-text font-bold rounded-[12px] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgb(var(--c-cta)/0.5)]",
+};

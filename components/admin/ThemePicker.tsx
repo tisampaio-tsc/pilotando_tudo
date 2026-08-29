@@ -35,7 +35,7 @@ export default function ThemePicker({
               type="button"
               onClick={() => onChange(theme.id)}
               aria-pressed={selected}
-              className={`w-full text-left rounded-2xl overflow-hidden border-4 transition-colors bg-panel-surface ${
+              className={`w-full text-left rounded-2xl overflow-hidden border-4 shadow-sm transition-colors bg-panel-surface ${
                 selected
                   ? "border-denim"
                   : "border-panel-border hover:border-denim/50"

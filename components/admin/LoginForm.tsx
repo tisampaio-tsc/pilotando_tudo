@@ -45,8 +45,16 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-4 bg-panel-surface border border-panel-border rounded-2xl p-6 shadow-sm"
+          className="relative space-y-4 bg-panel-surface border-2 border-dashed border-stitch/60 rounded-2xl p-6 shadow-sm"
         >
+          <span
+            className="jeans-rivet jeans-rivet-sm absolute -top-1.5 -left-1.5"
+            aria-hidden
+          />
+          <span
+            className="jeans-rivet jeans-rivet-sm absolute -top-1.5 -right-1.5"
+            aria-hidden
+          />
           <div>
             <label htmlFor="username" className="block text-sm text-panel-muted mb-1.5">
               Usuário
@@ -87,7 +95,7 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-denim hover:bg-denim-dark text-white font-bold rounded-xl text-base transition-colors disabled:opacity-50 min-h-[52px]"
+            className="btn-fabric w-full py-4 bg-denim hover:bg-denim-dark text-white font-bold rounded-xl text-base transition-colors disabled:opacity-50 min-h-[52px]"
           >
             {loading ? "Entrando..." : "Entrar"}
           </button>

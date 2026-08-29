@@ -15,7 +15,7 @@ export default function Footer({ footer, contatos }: FooterProps) {
     <footer className="bg-navy-900 text-white py-12 md:py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
-          <p className="text-white/90 text-sm">
+          <p className={footerText.copyright}>
             © {new Date().getFullYear()} {footer.copyrightName}. Todos os
             direitos reservados.
           </p>
@@ -68,10 +68,7 @@ export default function Footer({ footer, contatos }: FooterProps) {
               </a>
             </>
           )}
-          <Link
-            href="/politica"
-            className="text-white/70 hover:text-gold text-sm transition-colors"
-          >
+          <Link href="/politica" className={footerText.politicaLabel}>
             {footer.politicaLabel}
           </Link>
         </div>
@@ -79,3 +76,9 @@ export default function Footer({ footer, contatos }: FooterProps) {
     </footer>
   );
 }
+
+/** Classes de texto reaproveitadas por FooterEdit.tsx no painel. */
+export const footerText = {
+  copyright: "text-white/90 text-sm",
+  politicaLabel: "text-white/70 hover:text-gold text-sm transition-colors",
+};

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Check, Copy, MessageCircle, Share2 } from "lucide-react";
 import type { SiteContent } from "@/lib/content-schema";
 import { resolveHref } from "@/lib/resolve-links";
+import StitchDivider from "./StitchDivider";
 
 interface ShareItem {
   id: string;
@@ -22,7 +23,8 @@ export default function ShareTab({ content }: ShareTabProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-semibold text-2xl mb-2 text-panel-ink">Divulgar</h2>
+        <h2 className="font-semibold text-2xl mb-1 text-panel-ink">Divulgar</h2>
+        <StitchDivider className="ml-0 mr-auto mb-3" />
         <p className="text-panel-muted text-base leading-relaxed">
           Escolha o que você quer divulgar. O texto já vem pronto — se quiser,
           é só mudar. Ao tocar em <strong className="text-panel-ink">Enviar pelo WhatsApp</strong>, você
@@ -83,7 +85,7 @@ function ShareCard({ item }: { item: ShareItem }) {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full flex items-center justify-center gap-2 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-base transition-colors"
+        className="btn-fabric w-full flex items-center justify-center gap-2 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl text-base transition-colors"
       >
         <MessageCircle size={22} /> Enviar pelo WhatsApp
       </a>

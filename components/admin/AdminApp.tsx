@@ -11,19 +11,12 @@ import {
   Monitor,
   ChevronUp,
   ChevronDown,
-  Plus,
-  Trash2,
   Wifi,
   WifiOff,
   Download,
 } from "lucide-react";
-import type {
-  FooterContent,
-  HeaderContent,
-  SiteContent,
-  SiteSection,
-} from "@/lib/content-schema";
-import { SECTION_LABELS, createId } from "@/lib/content-schema";
+import type { SiteContent, SiteSection } from "@/lib/content-schema";
+import { SECTION_LABELS } from "@/lib/content-schema";
 import { getThemeOption, normalizeTheme } from "@/lib/theme";
 import {
   checkAuth,
@@ -50,6 +43,14 @@ import ThemePicker from "./ThemePicker";
 import ShareTab from "./ShareTab";
 import StitchDivider from "./StitchDivider";
 import EditableBlock from "./EditableBlock";
+import HeaderEdit from "./inline/HeaderEdit";
+import FooterEdit from "./inline/FooterEdit";
+import HeroEdit from "./inline/HeroEdit";
+import ParaVoceEdit from "./inline/ParaVoceEdit";
+import CursosEdit from "./inline/CursosEdit";
+import AutoridadeEdit from "./inline/AutoridadeEdit";
+import ProvaSocialEdit from "./inline/ProvaSocialEdit";
+import FaqEdit from "./inline/FaqEdit";
 
 type Tab = "content" | "aparencia" | "share" | "publish" | "settings";
 type PreviewMode = "site" | null;
@@ -335,7 +336,7 @@ export default function AdminApp() {
   return (
     <div className="min-h-screen flex flex-col pb-24 bg-panel-bg">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-panel-surface/95 backdrop-blur border-b border-panel-border px-4 py-3 safe-top">
+      <header className="jeans-weave sticky top-0 z-40 bg-panel-surface/95 backdrop-blur border-b border-panel-border px-4 py-3 safe-top">
         <div className="flex items-center justify-between max-w-4xl mx-auto">
           <div>
             <h1 className="font-display font-bold text-denim-dark text-lg">
@@ -381,7 +382,7 @@ export default function AdminApp() {
 
       <main className="flex-1 px-4 py-6 max-w-4xl mx-auto w-full">
         {canInstall && !installDismissed && (
-          <div className="mb-6 bg-denim-light border border-denim/30 rounded-xl p-4">
+          <div className="mb-6 bg-denim-light border border-denim/30 rounded-2xl p-4 shadow-sm">
             <div className="flex items-start gap-3">
               <Download size={24} className="text-denim-dark shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
@@ -398,7 +399,7 @@ export default function AdminApp() {
                 <button
                   type="button"
                   onClick={handleInstall}
-                  className="flex-1 py-3 bg-denim hover:bg-denim-dark text-white font-bold rounded-lg min-h-[44px] transition-colors"
+                  className="btn-fabric flex-1 py-3 bg-denim hover:bg-denim-dark text-white font-bold rounded-lg min-h-[44px] transition-colors"
                 >
                   Instalar agora
                 </button>
@@ -463,7 +464,7 @@ export default function AdminApp() {
       </main>
 
       {/* Bottom nav */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-panel-surface border-t border-panel-border safe-bottom z-50">
+      <nav className="jeans-weave fixed bottom-0 left-0 right-0 bg-panel-surface border-t border-panel-border safe-bottom z-50">
         <div className="flex max-w-4xl mx-auto">
           {(
             [
@@ -542,8 +543,8 @@ function ContentTab({
           clip={false}
           expanded={expanded === "header"}
           onToggleExpand={() => toggleExpanded("header")}
-          editor={
-            <HeaderFields
+          editing={
+            <HeaderEdit
               header={content.header}
               onChange={(header) => onEditGlobal("header", header)}
             />
@@ -564,8 +565,8 @@ function ContentTab({
             canMoveDown={index < content.secoes.length - 1}
             expanded={expanded === section.id}
             onToggleExpand={() => toggleExpanded(section.id)}
-            editor={
-              <SectionFields
+            editing={
+              <SectionEdit
                 section={section}
                 onChange={(updated) => onUpdateSection(section.id, updated)}
               />
@@ -582,8 +583,8 @@ function ContentTab({
           label="Rodapé"
           expanded={expanded === "footer"}
           onToggleExpand={() => toggleExpanded("footer")}
-          editor={
-            <FooterFields
+          editing={
+            <FooterEdit
               footer={content.footer}
               onChange={(footer) => onEditGlobal("footer", footer)}
             />
@@ -628,7 +629,7 @@ function SettingsAccordion({
             key={id}
             type="button"
             onClick={() => onToggleExpanded(id)}
-            className="w-full text-left flex items-center justify-between gap-2 bg-panel-surface border border-panel-border rounded-xl p-4 font-medium text-panel-ink hover:border-denim/40 transition-colors shadow-sm"
+            className="w-full text-left flex items-center justify-between gap-2 bg-panel-surface border border-panel-border rounded-2xl p-4 font-medium text-panel-ink hover:border-denim/40 transition-colors shadow-sm"
           >
             {label}
             {expanded === id ? (
@@ -641,7 +642,7 @@ function SettingsAccordion({
       </div>
 
       {expanded === "site" && (
-        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
+        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-2xl p-4 shadow-sm">
           <Field
             label="Título do site (Google)"
             value={content.site.title}
@@ -667,7 +668,7 @@ function SettingsAccordion({
       )}
 
       {expanded === "contatos" && (
-        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
+        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-2xl p-4 shadow-sm">
           <Field
             label="WhatsApp (número com DDI)"
             value={content.contatos.whatsappNumber}
@@ -722,7 +723,7 @@ function SettingsAccordion({
       )}
 
       {expanded === "politica" && (
-        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-xl p-4">
+        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-2xl p-4 shadow-sm">
           <Field
             label="Data da última atualização"
             value={content.politica.lastUpdated}
@@ -769,65 +770,6 @@ function SettingsAccordion({
   );
 }
 
-function HeaderFields({
-  header,
-  onChange,
-}: {
-  header: HeaderContent;
-  onChange: (header: HeaderContent) => void;
-}) {
-  return (
-    <>
-      <Field
-        label="Nome no menu"
-        value={header.name}
-        onChange={(v) => onChange({ ...header, name: v })}
-      />
-      <Field
-        label="Tagline"
-        value={header.tagline}
-        onChange={(v) => onChange({ ...header, tagline: v })}
-      />
-      <p className="text-sm text-panel-muted">Itens do menu</p>
-      {header.navLinks.map((link, i) => (
-        <Field
-          key={link.id}
-          label={`Item ${i + 1}`}
-          value={link.label}
-          onChange={(v) => {
-            const navLinks = [...header.navLinks];
-            navLinks[i] = { ...link, label: v };
-            onChange({ ...header, navLinks });
-          }}
-        />
-      ))}
-    </>
-  );
-}
-
-function FooterFields({
-  footer,
-  onChange,
-}: {
-  footer: FooterContent;
-  onChange: (footer: FooterContent) => void;
-}) {
-  return (
-    <>
-      <Field
-        label="Nome no copyright"
-        value={footer.copyrightName}
-        onChange={(v) => onChange({ ...footer, copyrightName: v })}
-      />
-      <Field
-        label="Texto do link de política"
-        value={footer.politicaLabel}
-        onChange={(v) => onChange({ ...footer, politicaLabel: v })}
-      />
-    </>
-  );
-}
-
 function PublishTab({
   hasChanges,
   publishing,
@@ -845,7 +787,7 @@ function PublishTab({
 }) {
   return (
     <div className="space-y-6">
-      <div className="bg-panel-surface border border-panel-border rounded-xl p-6 text-center shadow-sm">
+      <div className="bg-panel-surface border border-panel-border rounded-2xl p-6 text-center shadow-sm">
         <Rocket size={40} className="mx-auto text-denim mb-4" />
         <h2 className="font-semibold text-xl mb-2 text-panel-ink">
           Publicar no site
@@ -858,7 +800,7 @@ function PublishTab({
           type="button"
           onClick={onPublish}
           disabled={publishing || !hasChanges}
-          className="w-full py-4 bg-denim text-white font-bold rounded-xl text-lg disabled:opacity-40 hover:bg-denim-dark transition-colors"
+          className="btn-fabric w-full py-4 bg-denim text-white font-bold rounded-xl text-lg disabled:opacity-40 hover:bg-denim-dark transition-colors"
         >
           {publishing ? "Publicando..." : "Publicar agora"}
         </button>
@@ -936,7 +878,7 @@ function SettingsTab({
 
   return (
     <div className="space-y-6">
-      <div className="bg-denim-light border border-denim/30 rounded-xl p-4">
+      <div className="bg-denim-light border border-denim/30 rounded-2xl p-4 shadow-sm">
         <div className="flex items-center gap-3 mb-3">
           <Download size={24} className="text-denim-dark shrink-0" />
           <div>
@@ -954,7 +896,7 @@ function SettingsTab({
           <button
             type="button"
             onClick={onInstall}
-            className="w-full py-3 bg-denim hover:bg-denim-dark text-white font-bold rounded-lg min-h-[44px] transition-colors"
+            className="btn-fabric w-full py-3 bg-denim hover:bg-denim-dark text-white font-bold rounded-lg min-h-[44px] transition-colors"
           >
             Instalar agora
           </button>
@@ -981,7 +923,7 @@ function SettingsTab({
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 bg-panel-surface border border-panel-border rounded-xl p-4">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-panel-surface border border-panel-border rounded-2xl p-4 shadow-sm">
         <h2 className="font-semibold text-xl text-panel-ink">Alterar senha</h2>
         <Field
           label="Senha atual"
@@ -1008,7 +950,8 @@ function SettingsTab({
   );
 }
 
-function SectionFields({
+/** Escolhe a irmã editável correta para o tipo de seção, mantendo a mesma aparência do site. */
+function SectionEdit({
   section,
   onChange,
 }: {
@@ -1017,228 +960,20 @@ function SectionFields({
 }) {
   switch (section.type) {
     case "hero":
-      return (
-        <>
-          <Field label="Título principal" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
-          <Field label="Subtítulo" value={section.subtitle} onChange={(v) => onChange({ ...section, subtitle: v })} multiline />
-          <Field label="Texto do botão principal" value={section.primaryButton.text} onChange={(v) => onChange({ ...section, primaryButton: { ...section.primaryButton, text: v } })} />
-          <Field label="Texto do botão WhatsApp" value={section.secondaryButton.text} onChange={(v) => onChange({ ...section, secondaryButton: { ...section.secondaryButton, text: v } })} />
-          <ListEditor
-            label="Selos de confiança"
-            items={section.trustBadges}
-            onChange={(items) => onChange({ ...section, trustBadges: items })}
-          />
-        </>
-      );
+      return <HeroEdit data={section} onChange={onChange} />;
     case "paraVoce":
-      return (
-        <>
-          <Field label="Título da seção" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
-          {section.cards.map((card, i) => (
-            <div key={card.id} className="bg-panel-surface border border-panel-border rounded-xl p-4 space-y-3">
-              <p className="text-sm font-semibold text-denim">Card {i + 1}</p>
-              <Field label="Título" value={card.title} onChange={(v) => {
-                const cards = [...section.cards];
-                cards[i] = { ...card, title: v };
-                onChange({ ...section, cards });
-              }} />
-              <Field label="Descrição" value={card.description} onChange={(v) => {
-                const cards = [...section.cards];
-                cards[i] = { ...card, description: v };
-                onChange({ ...section, cards });
-              }} multiline />
-              <ListActions
-                onDelete={() => onChange({ ...section, cards: section.cards.filter((c) => c.id !== card.id) })}
-                onMoveUp={() => moveItem(section.cards, i, -1, (cards) => onChange({ ...section, cards }))}
-                onMoveDown={() => moveItem(section.cards, i, 1, (cards) => onChange({ ...section, cards }))}
-                canUp={i > 0}
-                canDown={i < section.cards.length - 1}
-              />
-            </div>
-          ))}
-          <AddButton label="Adicionar card" onClick={() => onChange({
-            ...section,
-            cards: [...section.cards, { id: createId("card"), icon: "scissors", title: "Novo card", description: "" }],
-          })} />
-        </>
-      );
+      return <ParaVoceEdit data={section} onChange={onChange} />;
     case "cursos":
-      return (
-        <>
-          <Field label="Título da seção" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
-          {section.cursos.map((curso, i) => (
-            <div key={curso.id} className="bg-panel-surface border border-panel-border rounded-xl p-4 space-y-3">
-              <p className="text-sm font-semibold text-denim">{curso.title}</p>
-              <Field label="Subtítulo" value={curso.subtitle} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, subtitle: v }; onChange({ ...section, cursos }); }} />
-              <Field label="Descrição" value={curso.description} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, description: v }; onChange({ ...section, cursos }); }} multiline />
-              <Field label="Texto do botão" value={curso.buttonText} onChange={(v) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, buttonText: v }; onChange({ ...section, cursos }); }} />
-              <ListEditor label={curso.learnLabel} items={curso.learnList} onChange={(items) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, learnList: items }; onChange({ ...section, cursos }); }} />
-              <ListEditor label={curso.bonusLabel} items={curso.bonusList} onChange={(items) => { const cursos = [...section.cursos]; cursos[i] = { ...curso, bonusList: items }; onChange({ ...section, cursos }); }} />
-            </div>
-          ))}
-        </>
-      );
+      return <CursosEdit data={section} onChange={onChange} />;
     case "autoridade":
-      return (
-        <>
-          <Field label="Título" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
-          <ListEditor label="Parágrafos (use **texto** para negrito)" items={section.paragraphs} onChange={(items) => onChange({ ...section, paragraphs: items })} />
-          <Field label="Título dos diferenciais" value={section.highlightsTitle} onChange={(v) => onChange({ ...section, highlightsTitle: v })} />
-          <ListEditor label="Diferenciais" items={section.highlights} onChange={(items) => onChange({ ...section, highlights: items })} />
-          <Field label="Texto do botão" value={section.buttonText} onChange={(v) => onChange({ ...section, buttonText: v })} />
-        </>
-      );
+      return <AutoridadeEdit data={section} onChange={onChange} />;
     case "provaSocial":
-      return (
-        <>
-          <Field label="Título" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
-          {section.depoimentos.map((dep, i) => (
-            <div key={dep.id} className="bg-panel-surface border border-panel-border rounded-xl p-4 space-y-3">
-              <p className="text-sm font-semibold text-denim">Depoimento {i + 1}</p>
-              <Field label="Nome" value={dep.nome} onChange={(v) => { const depoimentos = [...section.depoimentos]; depoimentos[i] = { ...dep, nome: v }; onChange({ ...section, depoimentos }); }} />
-              <Field label="Texto" value={dep.texto} onChange={(v) => { const depoimentos = [...section.depoimentos]; depoimentos[i] = { ...dep, texto: v }; onChange({ ...section, depoimentos }); }} multiline />
-              <ListActions
-                onDelete={() => onChange({ ...section, depoimentos: section.depoimentos.filter((d) => d.id !== dep.id) })}
-                onMoveUp={() => moveItem(section.depoimentos, i, -1, (depoimentos) => onChange({ ...section, depoimentos }))}
-                onMoveDown={() => moveItem(section.depoimentos, i, 1, (depoimentos) => onChange({ ...section, depoimentos }))}
-                canUp={i > 0}
-                canDown={i < section.depoimentos.length - 1}
-              />
-            </div>
-          ))}
-          <AddButton label="Adicionar depoimento" onClick={() => onChange({
-            ...section,
-            depoimentos: [...section.depoimentos, { id: createId("dep"), nome: "Nome", texto: "Depoimento...", estrelas: 5 }],
-          })} />
-        </>
-      );
+      return <ProvaSocialEdit data={section} onChange={onChange} />;
     case "faq":
-      return (
-        <>
-          <Field label="Título" value={section.title} onChange={(v) => onChange({ ...section, title: v })} />
-          <Field label="Texto do botão de dúvidas" value={section.ctaText} onChange={(v) => onChange({ ...section, ctaText: v })} />
-          {section.items.map((item, i) => (
-            <div key={item.id} className="bg-panel-surface border border-panel-border rounded-xl p-4 space-y-3">
-              <p className="text-sm font-semibold text-denim">Pergunta {i + 1}</p>
-              <Field label="Pergunta" value={item.pergunta} onChange={(v) => { const items = [...section.items]; items[i] = { ...item, pergunta: v }; onChange({ ...section, items }); }} />
-              <Field label="Resposta" value={item.resposta} onChange={(v) => { const items = [...section.items]; items[i] = { ...item, resposta: v }; onChange({ ...section, items }); }} multiline />
-              <ListActions
-                onDelete={() => onChange({ ...section, items: section.items.filter((it) => it.id !== item.id) })}
-                onMoveUp={() => moveItem(section.items, i, -1, (items) => onChange({ ...section, items }))}
-                onMoveDown={() => moveItem(section.items, i, 1, (items) => onChange({ ...section, items }))}
-                canUp={i > 0}
-                canDown={i < section.items.length - 1}
-              />
-            </div>
-          ))}
-          <AddButton label="Adicionar pergunta" onClick={() => onChange({
-            ...section,
-            items: [...section.items, { id: createId("faq"), pergunta: "Nova pergunta?", resposta: "Resposta..." }],
-          })} />
-        </>
-      );
+      return <FaqEdit data={section} onChange={onChange} />;
     default:
       return null;
   }
-}
-
-function ListEditor({
-  label,
-  items,
-  onChange,
-}: {
-  label: string;
-  items: string[];
-  onChange: (items: string[]) => void;
-}) {
-  return (
-    <div>
-      <p className="text-sm font-medium text-panel-ink/80 mb-2">{label}</p>
-      <div className="space-y-2">
-        {items.map((item, i) => (
-          <div key={i} className="flex gap-2">
-            <input
-              value={item}
-              onChange={(e) => {
-                const next = [...items];
-                next[i] = e.target.value;
-                onChange(next);
-              }}
-              className="flex-1 bg-panel-bg border border-panel-border rounded-lg px-3 py-2.5 text-base text-panel-ink focus:outline-none focus:border-denim focus:ring-2 focus:ring-denim/20 min-h-[44px]"
-            />
-            <button
-              type="button"
-              onClick={() => onChange(items.filter((_, j) => j !== i))}
-              className="p-2 text-panel-danger shrink-0"
-              aria-label="Remover"
-            >
-              <Trash2 size={18} />
-            </button>
-          </div>
-        ))}
-      </div>
-      <button
-        type="button"
-        onClick={() => onChange([...items, ""])}
-        className="mt-2 text-denim text-sm flex items-center gap-1"
-      >
-        <Plus size={16} /> Adicionar item
-      </button>
-    </div>
-  );
-}
-
-function ListActions({
-  onDelete,
-  onMoveUp,
-  onMoveDown,
-  canUp,
-  canDown,
-}: {
-  onDelete: () => void;
-  onMoveUp: () => void;
-  onMoveDown: () => void;
-  canUp: boolean;
-  canDown: boolean;
-}) {
-  return (
-    <div className="flex gap-2 pt-2">
-      <button type="button" onClick={onMoveUp} disabled={!canUp} className="p-2 bg-panel-bg border border-panel-border text-panel-ink rounded disabled:opacity-30">
-        <ChevronUp size={16} />
-      </button>
-      <button type="button" onClick={onMoveDown} disabled={!canDown} className="p-2 bg-panel-bg border border-panel-border text-panel-ink rounded disabled:opacity-30">
-        <ChevronDown size={16} />
-      </button>
-      <button type="button" onClick={onDelete} className="p-2 bg-panel-danger-bg text-panel-danger rounded ml-auto">
-        <Trash2 size={16} />
-      </button>
-    </div>
-  );
-}
-
-function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="w-full py-3 border border-dashed border-denim/40 text-denim rounded-xl text-sm font-semibold flex items-center justify-center gap-2"
-    >
-      <Plus size={16} /> {label}
-    </button>
-  );
-}
-
-function moveItem<T>(
-  arr: T[],
-  index: number,
-  direction: -1 | 1,
-  setter: (items: T[]) => void
-) {
-  const target = index + direction;
-  if (target < 0 || target >= arr.length) return;
-  const next = [...arr];
-  [next[index], next[target]] = [next[target], next[index]];
-  setter(next);
 }
 
 interface BeforeInstallPromptEvent extends Event {

@@ -16,9 +16,7 @@ export default function Autoridade({ data, contatos }: AutoridadeProps) {
     <section id="sobre" className="py-16 md:py-24 bg-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="font-display font-extrabold text-navy-900 text-2xl md:text-3xl">
-            {data.title}
-          </h2>
+          <h2 className={autoridadeText.title}>{data.title}</h2>
           <div
             className="mt-2 w-16 h-0.5 bg-gold mx-auto rounded-full"
             aria-hidden
@@ -41,7 +39,7 @@ export default function Autoridade({ data, contatos }: AutoridadeProps) {
                 <p key={paragraph}>{renderInlineMarkdown(paragraph)}</p>
               ))}
             </div>
-            <p className="mt-8 text-sm font-semibold text-navy-800 uppercase tracking-wide">
+            <p className={autoridadeText.highlightsTitle}>
               {data.highlightsTitle}
             </p>
             <ul className="mt-2 space-y-2 text-navy-700">
@@ -57,7 +55,7 @@ export default function Autoridade({ data, contatos }: AutoridadeProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Falar no WhatsApp"
-                className="inline-flex items-center gap-2 px-6 py-3.5 border-2 border-gold text-gold hover:bg-gold hover:text-white font-semibold rounded-md transition-all duration-300"
+                className={autoridadeText.button}
               >
                 <MessageCircle size={22} aria-hidden />
                 {data.buttonText}
@@ -69,3 +67,14 @@ export default function Autoridade({ data, contatos }: AutoridadeProps) {
     </section>
   );
 }
+
+/** Classes de texto reaproveitadas por AutoridadeEdit.tsx no painel. */
+export const autoridadeText = {
+  title: "font-display font-extrabold text-navy-900 text-2xl md:text-3xl",
+  paragraph: "text-navy-700 text-base md:text-lg leading-relaxed",
+  highlightsTitle:
+    "mt-8 text-sm font-semibold text-navy-800 uppercase tracking-wide",
+  highlightItem: "text-navy-700",
+  button:
+    "inline-flex items-center gap-2 px-6 py-3.5 border-2 border-gold text-gold hover:bg-gold hover:text-white font-semibold rounded-md transition-all duration-300",
+};

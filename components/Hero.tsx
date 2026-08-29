@@ -34,27 +34,20 @@ export default function Hero({ data, contatos }: HeroProps) {
 
       <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
-          <h1 className="font-display font-extrabold text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 md:mb-6">
-            {data.title}
-          </h1>
-          <p className="text-white/95 text-base sm:text-lg mb-6 md:mb-8">
-            {data.subtitle}
-          </p>
+          <h1 className={heroText.title}>{data.title}</h1>
+          <p className={heroText.subtitle}>{data.subtitle}</p>
           <div className="flex flex-col sm:flex-row gap-4 mb-8 md:mb-10">
             {primary.external ? (
               <a
                 href={primary.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3.5 bg-action hover:bg-action-hover text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                className={heroText.primaryButton}
               >
                 {data.primaryButton.text}
               </a>
             ) : (
-              <Link
-                href={primary.url}
-                className="inline-flex items-center justify-center px-6 py-3.5 bg-action hover:bg-action-hover text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
-              >
+              <Link href={primary.url} className={heroText.primaryButton}>
                 {data.primaryButton.text}
               </Link>
             )}
@@ -62,12 +55,12 @@ export default function Hero({ data, contatos }: HeroProps) {
               href={secondary.url}
               target={secondary.external ? "_blank" : undefined}
               rel={secondary.external ? "noopener noreferrer" : undefined}
-              className="inline-flex items-center justify-center px-6 py-3.5 border-2 border-gold text-gold bg-transparent hover:bg-gold/10 font-semibold rounded-md transition-all duration-300"
+              className={heroText.secondaryButton}
             >
               {data.secondaryButton.text}
             </a>
           </div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-white/90 text-sm sm:text-base">
+          <div className={heroText.badgeGrid}>
             {data.trustBadges.map((badge) => (
               <div key={badge} className="flex items-center gap-2">
                 <Check className="flex-shrink-0 text-gold" size={20} />
@@ -80,3 +73,15 @@ export default function Hero({ data, contatos }: HeroProps) {
     </section>
   );
 }
+
+/** Classes de texto reaproveitadas por HeroEdit.tsx no painel, para edição in-place idêntica ao site. */
+export const heroText = {
+  title:
+    "font-display font-extrabold text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight mb-4 md:mb-6",
+  subtitle: "text-white/95 text-base sm:text-lg mb-6 md:mb-8",
+  primaryButton:
+    "inline-flex items-center justify-center px-6 py-3.5 bg-action hover:bg-action-hover text-white font-semibold rounded-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg",
+  secondaryButton:
+    "inline-flex items-center justify-center px-6 py-3.5 border-2 border-gold text-gold bg-transparent hover:bg-gold/10 font-semibold rounded-md transition-all duration-300",
+  badgeGrid: "grid grid-cols-2 gap-x-4 gap-y-3 text-white/90 text-sm sm:text-base",
+};

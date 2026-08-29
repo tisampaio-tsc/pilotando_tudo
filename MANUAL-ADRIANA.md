@@ -57,8 +57,9 @@ visita a página. Cada parte fica dentro de uma moldura com **costura** e um
 
 1. Role até a parte que você quer mudar (ela aparece com a cara real do site)
 2. Toque em **Editar**, na faixa azul por cima dela
-3. Altere os textos nos campos que aparecem embaixo
-4. A mudança já aparece ali mesmo, na hora, como rascunho
+3. O próprio texto do site fica editável, ali mesmo, com a mesma letra e cor de
+   sempre — é só tocar em cima e escrever por cima do que já está lá
+4. A mudança já aparece na hora, como rascunho
 5. Toque em **Concluir edição** quando terminar
 
 ### Reordenar ou ocultar seções
@@ -73,11 +74,14 @@ Na própria faixa azul de cada seção:
 ### Adicionar ou remover itens
 
 Ao tocar em **Editar** numa seção que tem lista (depoimentos, perguntas,
-cards, cursos), o formulário que abre embaixo mostra cada item com:
+cards, cursos), todos os itens aparecem abertos e editáveis ao mesmo tempo, no
+próprio lugar deles na página. Em cada item, um pequeno botão azul no canto
+deixa:
 
-- **+ Adicionar** — cria um item novo
-- **↑ ↓** — reordena
-- **Lixeira** — remove
+- **↑ ↓** — reordena o item
+- **Lixeira** — remove o item
+
+E, no fim da lista, um cartão tracejado com **+ Adicionar** cria um item novo.
 
 ### Configurações gerais
 

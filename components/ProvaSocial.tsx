@@ -22,9 +22,7 @@ export default function ProvaSocial({ data }: ProvaSocialProps) {
     <section id="alunas" className="py-16 md:py-24 bg-navy-900">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="font-display font-extrabold text-white text-2xl md:text-3xl">
-            {data.title}
-          </h2>
+          <h2 className={provaSocialText.title}>{data.title}</h2>
           <div
             className="mt-2 w-16 h-0.5 bg-gold mx-auto rounded-full"
             aria-hidden
@@ -32,18 +30,16 @@ export default function ProvaSocial({ data }: ProvaSocialProps) {
         </div>
 
         <div className="relative">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-8 md:p-10 max-w-2xl mx-auto min-h-[220px] flex flex-col justify-center">
+          <div className={provaSocialText.card}>
             <div className="flex gap-1 mb-4 justify-center">
               {Array.from({ length: current.estrelas }).map((_, i) => (
                 <Star key={i} className="text-gold fill-gold" size={20} />
               ))}
             </div>
-            <blockquote className="text-white/95 text-base md:text-lg leading-relaxed text-center mb-6">
+            <blockquote className={provaSocialText.quote}>
               &ldquo;{current.texto}&rdquo;
             </blockquote>
-            <cite className="text-gold font-semibold text-center not-italic">
-              — {current.nome}
-            </cite>
+            <cite className={provaSocialText.nome}>— {current.nome}</cite>
           </div>
 
           {total > 1 && (
@@ -84,3 +80,12 @@ export default function ProvaSocial({ data }: ProvaSocialProps) {
     </section>
   );
 }
+
+/** Classes de texto reaproveitadas por ProvaSocialEdit.tsx no painel. */
+export const provaSocialText = {
+  title: "font-display font-extrabold text-white text-2xl md:text-3xl",
+  card:
+    "bg-white/5 border border-white/10 rounded-2xl p-8 md:p-10 max-w-2xl mx-auto min-h-[220px] flex flex-col justify-center",
+  quote: "text-white/95 text-base md:text-lg leading-relaxed text-center mb-6",
+  nome: "text-gold font-semibold text-center not-italic",
+};
