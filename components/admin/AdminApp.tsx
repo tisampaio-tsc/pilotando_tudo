@@ -742,10 +742,13 @@ function SiteSettingsFields({
         multiline
       />
       <Field
-        label="Endereço do site"
+        label="Link do site"
+        name="site-web-link"
         value={content.site.url ?? ""}
         onChange={(v) => onEditGlobal("site", { ...content.site, url: v })}
-        hint="Usado nos textos da aba Divulgar"
+        placeholder="https://pilotandotudo.com.br"
+        inputMode="url"
+        hint="O link do seu site na internet. Usado nos textos da aba Divulgar"
       />
     </>
   );
