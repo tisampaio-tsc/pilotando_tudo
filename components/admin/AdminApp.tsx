@@ -9,11 +9,13 @@ import {
   Settings,
   LogOut,
   Monitor,
-  ChevronUp,
   ChevronDown,
   Wifi,
   WifiOff,
   Download,
+  Globe,
+  Phone,
+  FileText,
 } from "lucide-react";
 import type { SiteContent, SiteSection } from "@/lib/content-schema";
 import { SECTION_LABELS } from "@/lib/content-schema";
@@ -610,6 +612,34 @@ function ContentTab({
   );
 }
 
+type SettingsAccordionId = "site" | "contatos" | "politica";
+
+const SETTINGS_ITEMS: {
+  id: SettingsAccordionId;
+  label: string;
+  hint: string;
+  icon: typeof Globe;
+}[] = [
+  {
+    id: "site",
+    label: "Site",
+    hint: "Título, descrição e endereço",
+    icon: Globe,
+  },
+  {
+    id: "contatos",
+    label: "Contatos e links",
+    hint: "WhatsApp, Instagram e vendas",
+    icon: Phone,
+  },
+  {
+    id: "politica",
+    label: "Página de política",
+    hint: "Termos e privacidade",
+    icon: FileText,
+  },
+];
+
 function SettingsAccordion({
   content,
   expanded,
@@ -625,154 +655,197 @@ function SettingsAccordion({
     <div>
       <h2 className="font-semibold text-xl mb-1 text-panel-ink">Outras configurações</h2>
       <StitchDivider className="ml-0 mr-auto mb-4" />
-      <div className="space-y-2">
-        {[
-          { id: "site", label: "Site (título, descrição, endereço)" },
-          { id: "contatos", label: "WhatsApp, Instagram e links de venda" },
-          { id: "politica", label: "Página de política" },
-        ].map(({ id, label }) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => onToggleExpanded(id)}
-            className="w-full text-left flex items-center justify-between gap-2 bg-panel-surface border border-panel-border rounded-2xl p-4 font-medium text-panel-ink hover:border-denim/40 transition-colors shadow-sm"
-          >
-            {label}
-            {expanded === id ? (
-              <ChevronUp size={18} className="text-denim shrink-0" />
-            ) : (
-              <ChevronDown size={18} className="text-panel-muted shrink-0" />
-            )}
-          </button>
-        ))}
-      </div>
+      <div className="space-y-3">
+        {SETTINGS_ITEMS.map(({ id, label, hint, icon: Icon }) => {
+          const isOpen = expanded === id;
+          return (
+            <div
+              key={id}
+              className={`rounded-2xl shadow-sm overflow-hidden border-2 transition-colors ${
+                isOpen
+                  ? "border-denim bg-panel-surface"
+                  : "border-panel-border bg-panel-surface"
+              }`}
+            >
+              <button
+                type="button"
+                onClick={() => onToggleExpanded(id)}
+                aria-expanded={isOpen}
+                className="w-full flex items-center gap-3 p-4 text-left"
+              >
+                <span
+                  className={`shrink-0 flex items-center justify-center w-10 h-10 rounded-full transition-colors ${
+                    isOpen
+                      ? "bg-denim text-white"
+                      : "bg-denim-light text-denim-dark"
+                  }`}
+                >
+                  <Icon size={18} />
+                </span>
+                <span className="flex-1 min-w-0">
+                  <span className="block font-semibold text-panel-ink">
+                    {label}
+                  </span>
+                  <span className="block text-panel-muted text-xs mt-0.5">
+                    {hint}
+                  </span>
+                </span>
+                <ChevronDown
+                  size={20}
+                  className={`shrink-0 text-panel-muted transition-transform ${
+                    isOpen ? "rotate-180 text-denim" : ""
+                  }`}
+                />
+              </button>
 
-      {expanded === "site" && (
-        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-2xl p-4 shadow-sm">
-          <Field
-            label="Título do site (Google)"
-            value={content.site.title}
-            onChange={(v) =>
-              onEditGlobal("site", { ...content.site, title: v })
-            }
-          />
-          <Field
-            label="Descrição (Google)"
-            value={content.site.description}
-            onChange={(v) =>
-              onEditGlobal("site", { ...content.site, description: v })
-            }
-            multiline
-          />
-          <Field
-            label="Endereço do site"
-            value={content.site.url ?? ""}
-            onChange={(v) => onEditGlobal("site", { ...content.site, url: v })}
-            hint="Usado nos textos da aba Divulgar"
-          />
-        </div>
-      )}
-
-      {expanded === "contatos" && (
-        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-2xl p-4 shadow-sm">
-          <Field
-            label="WhatsApp (número com DDI)"
-            value={content.contatos.whatsappNumber}
-            onChange={(v) =>
-              onEditGlobal("contatos", {
-                ...content.contatos,
-                whatsappNumber: v,
-              })
-            }
-            hint="Ex: 5511960614120"
-            inputMode="numeric"
-          />
-          <Field
-            label="Mensagem padrão do WhatsApp"
-            value={content.contatos.whatsappMessage}
-            onChange={(v) =>
-              onEditGlobal("contatos", {
-                ...content.contatos,
-                whatsappMessage: v,
-              })
-            }
-            multiline
-          />
-          <Field
-            label="Instagram"
-            value={content.contatos.instagram}
-            onChange={(v) =>
-              onEditGlobal("contatos", { ...content.contatos, instagram: v })
-            }
-          />
-          <Field
-            label="Link Hotmart — Oficina da Calça Jeans"
-            value={content.contatos.hotmartOficina}
-            onChange={(v) =>
-              onEditGlobal("contatos", {
-                ...content.contatos,
-                hotmartOficina: v,
-              })
-            }
-          />
-          <Field
-            label="Link Hotmart — Pilotando Tudo"
-            value={content.contatos.hotmartPilotando}
-            onChange={(v) =>
-              onEditGlobal("contatos", {
-                ...content.contatos,
-                hotmartPilotando: v,
-              })
-            }
-          />
-        </div>
-      )}
-
-      {expanded === "politica" && (
-        <div className="mt-4 space-y-3 bg-panel-surface border border-panel-border rounded-2xl p-4 shadow-sm">
-          <Field
-            label="Data da última atualização"
-            value={content.politica.lastUpdated}
-            onChange={(v) =>
-              onEditGlobal("politica", {
-                ...content.politica,
-                lastUpdated: v,
-              })
-            }
-            hint="Formato: AAAA-MM-DD"
-          />
-          {content.politica.sections.map((sec, i) => (
-            <div key={sec.title} className="border-t border-panel-border pt-3">
-              <Field
-                label={`Seção ${i + 1} — título`}
-                value={sec.title}
-                onChange={(v) => {
-                  const sections = [...content.politica.sections];
-                  sections[i] = { ...sec, title: v };
-                  onEditGlobal("politica", {
-                    ...content.politica,
-                    sections,
-                  });
-                }}
-              />
-              <Field
-                label="Conteúdo"
-                value={sec.content}
-                onChange={(v) => {
-                  const sections = [...content.politica.sections];
-                  sections[i] = { ...sec, content: v };
-                  onEditGlobal("politica", {
-                    ...content.politica,
-                    sections,
-                  });
-                }}
-                multiline
-              />
+              {isOpen && (
+                <div className="border-t-2 border-dashed border-stitch/40 p-4 space-y-3 bg-panel-bg/60">
+                  {id === "site" && (
+                    <SiteSettingsFields content={content} onEditGlobal={onEditGlobal} />
+                  )}
+                  {id === "contatos" && (
+                    <ContatosSettingsFields content={content} onEditGlobal={onEditGlobal} />
+                  )}
+                  {id === "politica" && (
+                    <PoliticaSettingsFields content={content} onEditGlobal={onEditGlobal} />
+                  )}
+                </div>
+              )}
             </div>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
     </div>
+  );
+}
+
+function SiteSettingsFields({
+  content,
+  onEditGlobal,
+}: {
+  content: SiteContent;
+  onEditGlobal: (key: "site", value: unknown) => void;
+}) {
+  return (
+    <>
+      <Field
+        label="Título do site (Google)"
+        value={content.site.title}
+        onChange={(v) => onEditGlobal("site", { ...content.site, title: v })}
+      />
+      <Field
+        label="Descrição (Google)"
+        value={content.site.description}
+        onChange={(v) =>
+          onEditGlobal("site", { ...content.site, description: v })
+        }
+        multiline
+      />
+      <Field
+        label="Endereço do site"
+        value={content.site.url ?? ""}
+        onChange={(v) => onEditGlobal("site", { ...content.site, url: v })}
+        hint="Usado nos textos da aba Divulgar"
+      />
+    </>
+  );
+}
+
+function ContatosSettingsFields({
+  content,
+  onEditGlobal,
+}: {
+  content: SiteContent;
+  onEditGlobal: (key: "contatos", value: unknown) => void;
+}) {
+  return (
+    <>
+      <Field
+        label="WhatsApp (número com DDI)"
+        value={content.contatos.whatsappNumber}
+        onChange={(v) =>
+          onEditGlobal("contatos", { ...content.contatos, whatsappNumber: v })
+        }
+        hint="Ex: 5511960614120"
+        inputMode="numeric"
+      />
+      <Field
+        label="Mensagem padrão do WhatsApp"
+        value={content.contatos.whatsappMessage}
+        onChange={(v) =>
+          onEditGlobal("contatos", { ...content.contatos, whatsappMessage: v })
+        }
+        multiline
+      />
+      <Field
+        label="Instagram"
+        value={content.contatos.instagram}
+        onChange={(v) =>
+          onEditGlobal("contatos", { ...content.contatos, instagram: v })
+        }
+      />
+      <Field
+        label="Link Hotmart — Oficina da Calça Jeans"
+        value={content.contatos.hotmartOficina}
+        onChange={(v) =>
+          onEditGlobal("contatos", { ...content.contatos, hotmartOficina: v })
+        }
+      />
+      <Field
+        label="Link Hotmart — Pilotando Tudo"
+        value={content.contatos.hotmartPilotando}
+        onChange={(v) =>
+          onEditGlobal("contatos", {
+            ...content.contatos,
+            hotmartPilotando: v,
+          })
+        }
+      />
+    </>
+  );
+}
+
+function PoliticaSettingsFields({
+  content,
+  onEditGlobal,
+}: {
+  content: SiteContent;
+  onEditGlobal: (key: "politica", value: unknown) => void;
+}) {
+  return (
+    <>
+      <Field
+        label="Data da última atualização"
+        value={content.politica.lastUpdated}
+        onChange={(v) =>
+          onEditGlobal("politica", { ...content.politica, lastUpdated: v })
+        }
+        hint="Formato: AAAA-MM-DD"
+      />
+      {content.politica.sections.map((sec, i) => (
+        <div key={sec.title} className="border-t border-panel-border pt-3">
+          <Field
+            label={`Seção ${i + 1} — título`}
+            value={sec.title}
+            onChange={(v) => {
+              const sections = [...content.politica.sections];
+              sections[i] = { ...sec, title: v };
+              onEditGlobal("politica", { ...content.politica, sections });
+            }}
+          />
+          <Field
+            label="Conteúdo"
+            value={sec.content}
+            onChange={(v) => {
+              const sections = [...content.politica.sections];
+              sections[i] = { ...sec, content: v };
+              onEditGlobal("politica", { ...content.politica, sections });
+            }}
+            multiline
+          />
+        </div>
+      ))}
+    </>
   );
 }
 
