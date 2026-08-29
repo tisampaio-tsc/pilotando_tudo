@@ -1,6 +1,5 @@
 import type { ThemeName } from "./theme";
-
-export type IconName = "scissors" | "shirt" | "dollarSign";
+import type { IconName } from "./icons";
 
 export type SectionType =
   | "hero"

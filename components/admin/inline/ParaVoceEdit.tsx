@@ -1,26 +1,27 @@
 "use client";
 
-import { Scissors, Shirt, DollarSign } from "lucide-react";
-import type { IconName, ParaVoceSection } from "@/lib/content-schema";
+import { useState } from "react";
+import type { ParaVoceSection } from "@/lib/content-schema";
 import { createId } from "@/lib/content-schema";
+import { DEFAULT_ICON } from "@/lib/icons";
 import { paraVoceText } from "@/components/ParaVoce";
 import EditableText from "./EditableText";
 import ItemToolbar from "./ItemToolbar";
 import AddGhostCard from "./AddGhostCard";
-
-const iconMap = {
-  scissors: Scissors,
-  shirt: Shirt,
-  dollarSign: DollarSign,
-};
+import IconPicker from "./IconPicker";
 
 interface ParaVoceEditProps {
   data: ParaVoceSection;
   onChange: (data: ParaVoceSection) => void;
 }
 
-/** Irmã editável do ParaVoce: título e, em cada card, título/descrição editáveis + mover/excluir + adicionar. */
+/**
+ * Irmã editável do ParaVoce: título e, em cada card, ícone (escolhido numa
+ * grade de opções), título/descrição editáveis + mover/excluir + adicionar.
+ */
 export default function ParaVoceEdit({ data, onChange }: ParaVoceEditProps) {
+  const [iconPickerOpen, setIconPickerOpen] = useState<string | null>(null);
+
   const moveCard = (index: number, dir: -1 | 1) => {
     const target = index + dir;
     if (target < 0 || target >= data.cards.length) return;
@@ -47,7 +48,6 @@ export default function ParaVoceEdit({ data, onChange }: ParaVoceEditProps) {
         </div>
         <div className="grid sm:grid-cols-3 gap-8 md:gap-10">
           {data.cards.map(({ id, icon, title, description }, i) => {
-            const Icon = iconMap[icon as IconName] ?? Scissors;
             return (
               <div key={id} className={`editable-item ${paraVoceText.card}`}>
                 <ItemToolbar
@@ -62,9 +62,20 @@ export default function ParaVoceEdit({ data, onChange }: ParaVoceEditProps) {
                   canMoveUp={i > 0}
                   canMoveDown={i < data.cards.length - 1}
                 />
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gold/10 text-gold mb-4">
-                  <Icon size={28} />
-                </div>
+                <IconPicker
+                  className="mb-4"
+                  value={icon}
+                  open={iconPickerOpen === id}
+                  onToggle={() =>
+                    setIconPickerOpen((prev) => (prev === id ? null : id))
+                  }
+                  onChange={(newIcon) => {
+                    const cards = [...data.cards];
+                    cards[i] = { ...cards[i], icon: newIcon };
+                    onChange({ ...data, cards });
+                    setIconPickerOpen(null);
+                  }}
+                />
                 <EditableText
                   as="input"
                   value={title}
@@ -100,7 +111,7 @@ export default function ParaVoceEdit({ data, onChange }: ParaVoceEditProps) {
                 ...data.cards,
                 {
                   id: createId("card"),
-                  icon: "scissors",
+                  icon: DEFAULT_ICON,
                   title: "Novo card",
                   description: "Descrição...",
                 },

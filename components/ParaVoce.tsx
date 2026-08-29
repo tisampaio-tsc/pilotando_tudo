@@ -1,11 +1,5 @@
-import { Scissors, Shirt, DollarSign } from "lucide-react";
-import type { IconName, ParaVoceSection } from "@/lib/content-schema";
-
-const iconMap = {
-  scissors: Scissors,
-  shirt: Shirt,
-  dollarSign: DollarSign,
-};
+import type { ParaVoceSection } from "@/lib/content-schema";
+import { getIcon } from "@/lib/icons";
 
 interface ParaVoceProps {
   data: ParaVoceSection;
@@ -24,7 +18,7 @@ export default function ParaVoce({ data }: ParaVoceProps) {
         </div>
         <div className="grid sm:grid-cols-3 gap-8 md:gap-10">
           {data.cards.map(({ id, icon, title, description }) => {
-            const Icon = iconMap[icon as IconName] ?? Scissors;
+            const Icon = getIcon(icon);
             return (
               <div key={id} className={paraVoceText.card}>
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gold/10 text-gold mb-4">
